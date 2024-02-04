@@ -9,8 +9,10 @@ public class TicTacToe extends JFrame {
     JButton[][] buttons;
     private Boolean isXTurn = true;
     private Boolean gameIsOver = false;
+    private int turnCounter = 0;
     private final int LENGTH = 3;
     private final int HEIGHT = 3;
+
 
     public TicTacToe() {
         initGUI();
@@ -31,10 +33,11 @@ public class TicTacToe extends JFrame {
         setTitle("Tic Tac Toe");
 
         buttonPanel = new JPanel(new GridLayout(HEIGHT, LENGTH)); // split the panel in 1 rows and 2 cols)
+        lbl = new JLabel("It is player X turn");
+
         buttonPanel.setPreferredSize(new Dimension(0, 200));
         initButtons();
 
-        lbl = new JLabel("It is player X turn");
         labelPanel = new JPanel();
         labelPanel.add(lbl);
     }
@@ -60,16 +63,20 @@ public class TicTacToe extends JFrame {
     private void btnMouseClicked(java.awt.event.MouseEvent ae) {
         JButton clickedButton = (JButton) ae.getSource();
 
-        if(clickedButton.isEnabled() && !gameIsOver) {
+        if (clickedButton.isEnabled() && !gameIsOver) {
             clickedButton.setText(isXTurn ? "X" : "O");
             clickedButton.setEnabled(false);
 
             isGameOver(clickedButton);
 
             //not totally comfortable putting the consequences of a game over here
-            if(gameIsOver)
+            if (gameIsOver)
                 lbl.setText("Game is over, " + (isXTurn ? "X" : "O") + " won");
-            else{
+            else if (turnCounter == HEIGHT * LENGTH - 1 && !gameIsOver) {
+                gameIsOver = true;
+                lbl.setText("Game is over, cat's eye");
+            } else {
+                turnCounter++;
                 isXTurn = !isXTurn;
 
                 lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
@@ -77,21 +84,19 @@ public class TicTacToe extends JFrame {
         }
     }
 
-    private void isGameOver(JButton clickedButton){
+    private void isGameOver(JButton clickedButton) {
         rankCheck();
-        if(gameIsOver)
-            System.out.println("game is over");
 
-        if(!gameIsOver){
+        if (!gameIsOver) {
             fileCheck();
         }
 
-        if(!gameIsOver){
+        if (!gameIsOver) {
             diagonalCheck();
         }
     }
 
-    private void rankCheck(){
+    private void rankCheck() {
         gameIsOver = true;
 
         //check all rows, so long as a solid one isn't found
@@ -109,16 +114,16 @@ public class TicTacToe extends JFrame {
             }
 
             //if no dissimilarity was found to reset the gameIsOver state
-            if(gameIsOver)
+            if (gameIsOver)
                 break;
         }
     }
 
-    private void fileCheck(){
+    private void fileCheck() {
         gameIsOver = true;
 
         //check all columns, so long as a solid one isn't found
-        for(int i = 0; i < LENGTH; i++){
+        for (int i = 0; i < LENGTH; i++) {
             gameIsOver = true;
             String previousText = buttons[0][i].getText();
 
@@ -132,12 +137,12 @@ public class TicTacToe extends JFrame {
             }
 
             //if no dissimilarity was found to reset the gameIsOver state
-            if(gameIsOver)
+            if (gameIsOver)
                 break;
         }
     }
 
-    private void diagonalCheck(){
+    private void diagonalCheck() {
         dexterCheck();
 //        if(HEIGHT != LENGTH)
 //            dexterAscendantCheck();
@@ -146,7 +151,7 @@ public class TicTacToe extends JFrame {
 //            sinisterAscendantCheck();
     }
 
-    private void dexterCheck(){
+    private void dexterCheck() {
         gameIsOver = true;
         String previousText = buttons[0][0].getText();
 
@@ -158,7 +163,7 @@ public class TicTacToe extends JFrame {
         }
     }
 
-    private void sinisterCheck(){
+    private void sinisterCheck() {
         System.out.println("Sinister Check Running");
         gameIsOver = true;
         String previousText = buttons[0][LENGTH - 1].getText();
