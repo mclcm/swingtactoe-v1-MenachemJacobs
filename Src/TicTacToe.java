@@ -67,7 +67,7 @@ public class TicTacToe extends JFrame {
             clickedButton.setText(isXTurn ? "X" : "O");
             clickedButton.setEnabled(false);
 
-            isGameOver(clickedButton);
+            gameIsOver = GameLogic.isGameOver(buttons, isXTurn);
 
             //not totally comfortable putting the consequences of a game over here
             if (gameIsOver)
