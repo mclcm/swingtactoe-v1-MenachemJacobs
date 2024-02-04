@@ -60,12 +60,18 @@ public class TicTacToe extends JFrame {
 
         if(clickedButton.isEnabled() && !gameIsOver) {
             clickedButton.setText(isXTurn ? "X" : "O");
-            isXTurn = !isXTurn;
-
-            lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
             clickedButton.setEnabled(false);
 
             isGameOver(clickedButton);
+
+            //not totally comfortable putting the consequences of a game over here
+            if(gameIsOver)
+                lbl.setText("Game is over, " + (isXTurn ? "X" : "O") + " won");
+            else{
+                isXTurn = !isXTurn;
+
+                lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
+            }
         }
     }
 
