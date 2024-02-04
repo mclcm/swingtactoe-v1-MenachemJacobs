@@ -85,6 +85,10 @@ public class TicTacToe extends JFrame {
         if(!gameIsOver){
             fileCheck();
         }
+
+        if(!gameIsOver){
+            diagonalCheck();
+        }
     }
 
     private void rankCheck(){
@@ -134,6 +138,27 @@ public class TicTacToe extends JFrame {
             //if no dissimilarity was found to reset the gameIsOver state
             if(gameIsOver)
                 break;
+        }
+    }
+
+    private void diagonalCheck(){
+        dexterCheck();
+//        if(HEIGHT != LENGTH)
+//            dexterAsendantCheck();
+//        sinisterCheck();
+//        if(HEIGHT != LENGTH)
+//            sinisterAsendantCheck();
+    }
+
+    private void dexterCheck(){
+        gameIsOver = true;
+        String previousText = buttons[0][0].getText();
+
+        for (int i = 0; i < HEIGHT; i++) {
+            if (!Objects.equals(buttons[i][i].getText(), previousText) || Objects.equals(buttons[i][i].getText(), "")) {
+                gameIsOver = false;
+                break;
+            }
         }
     }
 
