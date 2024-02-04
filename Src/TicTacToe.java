@@ -9,6 +9,8 @@ public class TicTacToe extends JFrame {
     JButton[][] buttons;
     private Boolean isXTurn = true;
     private Boolean gameIsOver = false;
+    private final int LENGTH = 3;
+    private final int HEIGHT = 3;
 
     public TicTacToe() {
         initGUI();
@@ -28,7 +30,7 @@ public class TicTacToe extends JFrame {
     private void initGUI() {
         setTitle("Tic Tac Toe");
 
-        buttonPanel = new JPanel(new GridLayout(3, 3)); // split the panel in 1 rows and 2 cols)
+        buttonPanel = new JPanel(new GridLayout(HEIGHT, LENGTH)); // split the panel in 1 rows and 2 cols)
         buttonPanel.setPreferredSize(new Dimension(0, 200));
         initButtons();
 
@@ -41,8 +43,8 @@ public class TicTacToe extends JFrame {
         buttons = new JButton[3][3];
 
         // Initialize buttons and add ActionListener
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < HEIGHT; i++) {
+            for (int j = 0; j < LENGTH; j++) {
                 buttons[i][j] = new JButton();
                 buttons[i][j].addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
@@ -81,7 +83,7 @@ public class TicTacToe extends JFrame {
             System.out.println("game is over");
 
         if(!gameIsOver){
-            //fileCheck();
+            fileCheck();
         }
     }
 
@@ -104,6 +106,32 @@ public class TicTacToe extends JFrame {
                 previousText = button.getText();
             }
 
+            //if no dissimilarity was found to reset the gameIsOver state
+            if(gameIsOver)
+                break;
+        }
+    }
+
+    private void fileCheck(){
+        gameIsOver = true;
+
+        //check all columns, so long as a solid one isn't found
+        for(int i = 0; i < LENGTH; i++){
+            gameIsOver = true;
+            String previousText = buttons[0][i].getText();
+
+            //check a single column (i) for either an empty spot or a dissimilarity. set gameIsOver to false and break if found.
+            for (int j = 0; j < HEIGHT; j++) {
+
+                if (!Objects.equals(buttons[j][i].getText(), previousText) || Objects.equals(buttons[j][i].getText(), "")) {
+                    gameIsOver = false;
+                    break;
+                }
+
+                previousText = buttons[j][i].getText();
+            }
+
+            //if no dissimilarity was found to reset the gameIsOver state
             if(gameIsOver)
                 break;
         }
