@@ -106,8 +106,6 @@ public class TicTacToe extends JFrame {
                     gameIsOver = false;
                     break;
                 }
-
-                previousText = button.getText();
             }
 
             //if no dissimilarity was found to reset the gameIsOver state
@@ -131,8 +129,6 @@ public class TicTacToe extends JFrame {
                     gameIsOver = false;
                     break;
                 }
-
-                previousText = buttons[j][i].getText();
             }
 
             //if no dissimilarity was found to reset the gameIsOver state
@@ -144,10 +140,10 @@ public class TicTacToe extends JFrame {
     private void diagonalCheck(){
         dexterCheck();
 //        if(HEIGHT != LENGTH)
-//            dexterAsendantCheck();
-//        sinisterCheck();
+//            dexterAscendantCheck();
+        sinisterCheck();
 //        if(HEIGHT != LENGTH)
-//            sinisterAsendantCheck();
+//            sinisterAscendantCheck();
     }
 
     private void dexterCheck(){
@@ -156,6 +152,19 @@ public class TicTacToe extends JFrame {
 
         for (int i = 0; i < HEIGHT; i++) {
             if (!Objects.equals(buttons[i][i].getText(), previousText) || Objects.equals(buttons[i][i].getText(), "")) {
+                gameIsOver = false;
+                break;
+            }
+        }
+    }
+
+    private void sinisterCheck(){
+        System.out.println("Sinister Check Running");
+        gameIsOver = true;
+        String previousText = buttons[0][LENGTH - 1].getText();
+
+        for (int i = 0; i < LENGTH; i++) {
+            if (!Objects.equals(buttons[LENGTH - i - 1][i].getText(), previousText) || Objects.equals(buttons[LENGTH - i - 1][i].getText(), "")) {
                 gameIsOver = false;
                 break;
             }
