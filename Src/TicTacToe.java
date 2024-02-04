@@ -5,7 +5,7 @@ public class TicTacToe extends JFrame {
     JLabel lbl;
     JPanel panel;
     JButton[][] buttons;
-    Boolean isXTurn = true;
+    private Boolean isXTurn = true;
 
     public TicTacToe() {
         lbl = new JLabel();
@@ -41,7 +41,7 @@ public class TicTacToe extends JFrame {
         lbl.setText("Hello World");
         clickedButton.setText(isXTurn ? "X" : "O");
         // Remove the click listener from the button
-        clickedButton.removeMouseListener(clickedButton.getMouseListeners()[0]);
+        clickedButton.setEnabled(false);
 
         isXTurn = !isXTurn;
     }
