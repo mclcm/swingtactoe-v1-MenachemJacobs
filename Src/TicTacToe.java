@@ -7,6 +7,8 @@ public class TicTacToe extends JFrame {
     JPanel labelPanel;
     JPanel buttonPanel;
     JButton[][] buttons;
+    JButton restartButton;
+
     private Boolean isXTurn = true;
     private Boolean gameIsOver = false;
     private int turnCounter = 0;
@@ -32,14 +34,25 @@ public class TicTacToe extends JFrame {
     private void initGUI() {
         setTitle("Tic Tac Toe");
 
+        labelPanel = new JPanel();
         buttonPanel = new JPanel(new GridLayout(HEIGHT, LENGTH)); // split the panel in 1 rows and 2 cols)
+
         lbl = new JLabel("It is player X turn");
+        restartButton = new JButton("Start over?");
 
         buttonPanel.setPreferredSize(new Dimension(0, 200));
         initButtons();
 
-        labelPanel = new JPanel();
         labelPanel.add(lbl);
+
+        restartButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent ae) {
+                restartGame();
+            }
+        });
+
+        labelPanel.add(restartButton);
     }
 
     private void initButtons() {
@@ -58,6 +71,12 @@ public class TicTacToe extends JFrame {
                 buttonPanel.add(buttons[i][j]);
             }
         }
+    }
+
+    private void restartGame(){
+        TicTacToe newGame = new TicTacToe();
+        newGame.setVisible(true);
+        dispose();
     }
 
     private void btnMouseClicked(java.awt.event.MouseEvent ae) {
@@ -80,98 +99,6 @@ public class TicTacToe extends JFrame {
                 isXTurn = !isXTurn;
 
                 lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
-            }
-        }
-    }
-
-    private void isGameOver(JButton clickedButton) {
-        rankCheck();
-
-        if (!gameIsOver) {
-            fileCheck();
-        }
-
-        if (!gameIsOver) {
-            diagonalCheck();
-        }
-    }
-
-    private void rankCheck() {
-        gameIsOver = true;
-
-        //check all rows, so long as a solid one isn't found
-        for (JButton[] buttonRow : buttons) {
-            gameIsOver = true;
-            String previousText = buttonRow[0].getText();
-
-            //check a single row for either an empty spot or a dissimilarity. set gameIsOver to false and break if found.
-            for (JButton button : buttonRow) {
-
-                if (!Objects.equals(button.getText(), previousText) || Objects.equals(button.getText(), "")) {
-                    gameIsOver = false;
-                    break;
-                }
-            }
-
-            //if no dissimilarity was found to reset the gameIsOver state
-            if (gameIsOver)
-                break;
-        }
-    }
-
-    private void fileCheck() {
-        gameIsOver = true;
-
-        //check all columns, so long as a solid one isn't found
-        for (int i = 0; i < LENGTH; i++) {
-            gameIsOver = true;
-            String previousText = buttons[0][i].getText();
-
-            //check a single column (i) for either an empty spot or a dissimilarity. set gameIsOver to false and break if found.
-            for (int j = 0; j < HEIGHT; j++) {
-
-                if (!Objects.equals(buttons[j][i].getText(), previousText) || Objects.equals(buttons[j][i].getText(), "")) {
-                    gameIsOver = false;
-                    break;
-                }
-            }
-
-            //if no dissimilarity was found to reset the gameIsOver state
-            if (gameIsOver)
-                break;
-        }
-    }
-
-    private void diagonalCheck() {
-        dexterCheck();
-//        if(HEIGHT != LENGTH)
-//            dexterAscendantCheck();
-        sinisterCheck();
-//        if(HEIGHT != LENGTH)
-//            sinisterAscendantCheck();
-    }
-
-    private void dexterCheck() {
-        gameIsOver = true;
-        String previousText = buttons[0][0].getText();
-
-        for (int i = 0; i < HEIGHT; i++) {
-            if (!Objects.equals(buttons[i][i].getText(), previousText) || Objects.equals(buttons[i][i].getText(), "")) {
-                gameIsOver = false;
-                break;
-            }
-        }
-    }
-
-    private void sinisterCheck() {
-        System.out.println("Sinister Check Running");
-        gameIsOver = true;
-        String previousText = buttons[0][LENGTH - 1].getText();
-
-        for (int i = 0; i < LENGTH; i++) {
-            if (!Objects.equals(buttons[LENGTH - i - 1][i].getText(), previousText) || Objects.equals(buttons[LENGTH - i - 1][i].getText(), "")) {
-                gameIsOver = false;
-                break;
             }
         }
     }
