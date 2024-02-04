@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public class TicTacToe extends JFrame {
     JLabel lbl;
@@ -7,6 +8,7 @@ public class TicTacToe extends JFrame {
     JPanel buttonPanel;
     JButton[][] buttons;
     private Boolean isXTurn = true;
+    private Boolean gameIsOver = false;
 
     public TicTacToe() {
         initGUI();
@@ -14,8 +16,9 @@ public class TicTacToe extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        add(labelPanel);
         add(buttonPanel);
+        add(labelPanel);
+        setLocationRelativeTo(null);
 
         setSize(500, 300);
         //pack();
@@ -25,12 +28,13 @@ public class TicTacToe extends JFrame {
     private void initGUI() {
         setTitle("Tic Tac Toe");
 
-        lbl = new JLabel();
+        buttonPanel = new JPanel(new GridLayout(3, 3)); // split the panel in 1 rows and 2 cols)
+        buttonPanel.setPreferredSize(new Dimension(0, 200));
+        initButtons();
+
+        lbl = new JLabel("It is player X turn");
         labelPanel = new JPanel();
         labelPanel.add(lbl);
-
-        buttonPanel = new JPanel(new GridLayout(3, 3)); // split the panel in 1 rows and 2 cols)
-        initButtons();
     }
 
     private void initButtons() {
@@ -39,7 +43,7 @@ public class TicTacToe extends JFrame {
         // Initialize buttons and add ActionListener
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                buttons[i][j] = new JButton("Click Me!");
+                buttons[i][j] = new JButton();
                 buttons[i][j].addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent ae) {
@@ -53,16 +57,50 @@ public class TicTacToe extends JFrame {
 
     private void btnMouseClicked(java.awt.event.MouseEvent ae) {
         JButton clickedButton = (JButton) ae.getSource();
-        lbl.setText("Hello World");
 
-        if(clickedButton.isEnabled()) {
+        if(clickedButton.isEnabled() && !gameIsOver) {
             clickedButton.setText(isXTurn ? "X" : "O");
             isXTurn = !isXTurn;
+
+            lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
+            clickedButton.setEnabled(false);
+
+            isGameOver(clickedButton);
         }
+    }
 
-        clickedButton.setEnabled(false);
+    private void isGameOver(JButton clickedButton){
+        rankCheck();
+        if(gameIsOver)
+            System.out.println("game is over");
 
+        if(!gameIsOver){
+            //fileCheck();
+        }
+    }
 
+    private void rankCheck(){
+        gameIsOver = true;
+
+        //check all rows, so long as a solid one isn't found
+        for (JButton[] buttonRow : buttons) {
+            gameIsOver = true;
+            String previousText = buttonRow[0].getText();
+
+            //check a single row for either an empty spot or a dissimilarity. set gameIsOver to false and break if found.
+            for (JButton button : buttonRow) {
+
+                if (!Objects.equals(button.getText(), previousText) || Objects.equals(button.getText(), "")) {
+                    gameIsOver = false;
+                    break;
+                }
+
+                previousText = button.getText();
+            }
+
+            if(gameIsOver)
+                break;
+        }
     }
 
     public static void main(String[] args) {
