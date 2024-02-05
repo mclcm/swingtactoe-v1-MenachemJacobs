@@ -4,7 +4,7 @@ import java.util.Objects;
 public class GameLogic {
 
     public static boolean isGameOver(JButton[][] buttons, boolean isXTurn, final int HEIGHT, final int LENGTH) {
-        return rankCheck(buttons, isXTurn) || fileCheck(buttons, isXTurn) || diagonalCheck(buttons, isXTurn, HEIGHT, LENGTH);
+        return rankCheck(buttons, isXTurn) || fileCheck(buttons, isXTurn) || diagonalCheck(buttons, isXTurn);
     }
 
     private static boolean rankCheck(JButton[][] buttons, boolean isXTurn) {
@@ -57,7 +57,7 @@ public class GameLogic {
         return gameIsOver;
     }
 
-    private static boolean diagonalCheck(JButton[][] buttons, boolean isXTurn, final int HEIGHT, final int LENGTH) {
+    private static boolean diagonalCheck(JButton[][] buttons, boolean isXTurn) {
 //        if (buttons.length != buttons[0].length)
 //            return dexterAscendantCheck(buttons, isXTurn) || sinisterAscendantCheck(buttons, isXTurn) || dexterCheck(buttons, isXTurn) || sinisterCheck(buttons, isXTurn);
 //        else
