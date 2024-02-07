@@ -3,11 +3,14 @@ import java.util.Objects;
 
 public class GameLogic {
 
-    public static boolean isGameOver(JButton[][] buttons, boolean isXTurn, final int HEIGHT, final int LENGTH) {
-        return rankCheck(buttons, isXTurn) || fileCheck(buttons, isXTurn) || diagonalCheck(buttons, isXTurn);
+    BoardBuilder currentGame;
+    static JButton[][] buttons;
+    public static boolean isGameOver(BoardBuilder currentGame) {
+        buttons = currentGame.buttons;
+        return rankCheck(buttons) || fileCheck(buttons) || diagonalCheck(buttons);
     }
 
-    private static boolean rankCheck(JButton[][] buttons, boolean isXTurn) {
+    private static boolean rankCheck(JButton[][] buttons) {
         boolean gameIsOver = true;
 
         //check all rows, so long as a solid one isn't found
@@ -32,7 +35,7 @@ public class GameLogic {
         return gameIsOver;
     }
 
-    private static boolean fileCheck(JButton[][] buttons, boolean isXTurn) {
+    private static boolean fileCheck(JButton[][] buttons) {
         boolean gameIsOver = true;
 
         //check all columns, so long as a solid one isn't found
@@ -57,14 +60,14 @@ public class GameLogic {
         return gameIsOver;
     }
 
-    private static boolean diagonalCheck(JButton[][] buttons, boolean isXTurn) {
+    private static boolean diagonalCheck(JButton[][] buttons) {
 //        if (buttons.length != buttons[0].length)
 //            return dexterAscendantCheck(buttons, isXTurn) || sinisterAscendantCheck(buttons, isXTurn) || dexterCheck(buttons, isXTurn) || sinisterCheck(buttons, isXTurn);
 //        else
-            return dexterCheck(buttons, isXTurn) || sinisterCheck(buttons, isXTurn);
+            return dexterCheck(buttons) || sinisterCheck(buttons);
     }
 
-    private static boolean dexterCheck(JButton[][] buttons, boolean isXTurn) {
+    private static boolean dexterCheck(JButton[][] buttons) {
         boolean gameIsOver = true;
         String previousText = buttons[0][0].getText();
 
@@ -78,7 +81,7 @@ public class GameLogic {
         return gameIsOver;
     }
 
-    private static boolean sinisterCheck(JButton[][] buttons, boolean isXTurn) {
+    private static boolean sinisterCheck(JButton[][] buttons) {
         boolean gameIsOver = true;
         String previousText = buttons[0][(buttons[0].length) - 1].getText();
 
