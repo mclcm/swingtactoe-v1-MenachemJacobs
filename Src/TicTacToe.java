@@ -17,9 +17,10 @@ public class TicTacToe extends JFrame {
     }
 
     void restartGame(){
-        TicTacToe newGame = new TicTacToe();
-        newGame.setVisible(true);
-        dispose();
+        currentGame.dispose();
+        currentGame = new BoardBuilder(this, HEIGHT, LENGTH);
+        isXTurn = true;
+        turnCounter = 0;
     }
 
     void btnMouseClicked(java.awt.event.MouseEvent ae) {
