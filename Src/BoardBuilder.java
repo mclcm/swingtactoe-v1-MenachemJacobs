@@ -52,7 +52,7 @@ public class BoardBuilder extends JFrame {
     }
 
     private void initButtons(int height, int length) {
-        buttons = new JButton[3][3];
+        buttons = new JButton[height][length];
 
         // Initialize buttons and add ActionListener
         for (int i = 0; i < height; i++) {

@@ -1,8 +1,6 @@
 import javax.swing.*;
-import java.awt.*;
-import java.util.Objects;
 
-public class TicTacToe extends JFrame {
+public class TicTacToe {
     BoardBuilder currentGame;
 
     private Boolean isXTurn = true;
@@ -19,8 +17,11 @@ public class TicTacToe extends JFrame {
     void restartGame(){
         currentGame.dispose();
         currentGame = new BoardBuilder(this, HEIGHT, LENGTH);
+
+        //reset state
         isXTurn = true;
         turnCounter = 0;
+        gameIsOver = false;
     }
 
     void btnMouseClicked(java.awt.event.MouseEvent ae) {

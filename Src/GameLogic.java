@@ -71,7 +71,7 @@ public class GameLogic {
         boolean gameIsOver = true;
         String previousText = buttons[0][0].getText();
 
-        for (int i = 0; i < buttons.length; i++) {
+        for (int i = 0; i < buttons[0].length; i++) {
             if (!Objects.equals(buttons[i][i].getText(), previousText) || Objects.equals(buttons[i][i].getText(), "")) {
                 gameIsOver = false;
                 break;
