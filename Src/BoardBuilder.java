@@ -3,21 +3,17 @@ import java.awt.*;
 
 public class BoardBuilder extends JFrame {
     private final TicTacToe ticTacToe;
-    JLabel lbl;
-    JPanel labelPanel;
-    JPanel buttonPanel;
-    JButton[][] buttons;
+    public JLabel lbl;
+    private JPanel labelPanel;
+    private JPanel buttonPanel;
+    public JButton[][] buttons;
     JButton restartButton;
-    int height;
-    int length;
 
     public BoardBuilder(TicTacToe ticTacToe, int height, int length){
         this.ticTacToe = ticTacToe;
-        this.height = height;
-        this.length = length;
-        buttonPanel = new JPanel(new GridLayout(this.height , this.length));
+        buttonPanel = new JPanel(new GridLayout(height, length));
 
-        initGUI();
+        initGUI(height, length);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -31,7 +27,7 @@ public class BoardBuilder extends JFrame {
         setVisible(true);
     }
 
-    private void initGUI() {
+    private void initGUI(int height, int length) {
         setTitle("Tic Tac Toe");
 
         labelPanel = new JPanel();
@@ -41,7 +37,7 @@ public class BoardBuilder extends JFrame {
         restartButton = new JButton("Start over?");
 
         buttonPanel.setPreferredSize(new Dimension(0, 200));
-        initButtons();
+        initButtons(height, length);
 
         labelPanel.add(lbl);
 
@@ -55,7 +51,7 @@ public class BoardBuilder extends JFrame {
         labelPanel.add(restartButton);
     }
 
-    private void initButtons() {
+    private void initButtons(int height, int length) {
         buttons = new JButton[3][3];
 
         // Initialize buttons and add ActionListener
