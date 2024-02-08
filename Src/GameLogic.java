@@ -3,10 +3,7 @@ import java.util.Objects;
 
 public class GameLogic {
 
-    BoardBuilder currentGame;
-    static JButton[][] buttons;
-    public static boolean isGameOver(BoardBuilder currentGame) {
-        buttons = currentGame.buttons;
+    public static boolean isGameOver(JButton[][] buttons) {
         return rankCheck(buttons) || fileCheck(buttons) || diagonalCheck(buttons);
     }
 
@@ -64,14 +61,14 @@ public class GameLogic {
 //        if (buttons.length != buttons[0].length)
 //            return dexterAscendantCheck(buttons, isXTurn) || sinisterAscendantCheck(buttons, isXTurn) || dexterCheck(buttons, isXTurn) || sinisterCheck(buttons, isXTurn);
 //        else
-            return dexterCheck(buttons) || sinisterCheck(buttons);
+        return dexterCheck(buttons) || sinisterCheck(buttons);
     }
 
     private static boolean dexterCheck(JButton[][] buttons) {
         boolean gameIsOver = true;
         String previousText = buttons[0][0].getText();
 
-        for (int i = 0; i < buttons[0].length; i++) {
+        for (int i = 0; i < buttons.length; i++) {
             if (!Objects.equals(buttons[i][i].getText(), previousText) || Objects.equals(buttons[i][i].getText(), "")) {
                 gameIsOver = false;
                 break;
