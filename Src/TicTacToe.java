@@ -14,7 +14,7 @@ public class TicTacToe {
         currentGame = new BoardBuilder(this, HEIGHT, LENGTH);
     }
 
-    void restartGame(){
+    void restartGame() {
         currentGame.dispose();
         currentGame = new BoardBuilder(this, HEIGHT, LENGTH);
 
@@ -27,26 +27,40 @@ public class TicTacToe {
     void btnMouseClicked(java.awt.event.MouseEvent ae) {
         JButton clickedButton = (JButton) ae.getSource();
 
+        //checks both that the particular button has not been pressed before, and that the game is not over
         if (clickedButton.isEnabled() && !gameIsOver) {
-            clickedButton.setText(isXTurn ? "X" : "O");
-            clickedButton.setEnabled(false);
-
-            gameIsOver = GameLogic.isGameOver(currentGame);
+            gameIsOver = buttonClickerUpdate(clickedButton, isXTurn, currentGame);
 
             //not totally comfortable putting the consequences of a game over here
-            if (gameIsOver)
-                currentGame.lbl.setText("Game is over, " + (isXTurn ? "X" : "O") + " won");
-            //game is over logic
-            else if (turnCounter == HEIGHT * LENGTH - 1) {
-                gameIsOver = true;
-                currentGame.lbl.setText("Game is over, cat's eye");
-            } else {
-                turnCounter++;
-                isXTurn = !isXTurn;
+            gameOverUpdate();
 
-                currentGame.lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
-            }
+            if (!gameIsOver) turnUpdate();
         }
+    }
+
+    private static boolean buttonClickerUpdate(JButton clickedButton, Boolean isXTurn, BoardBuilder currentGame) {
+        clickedButton.setText(isXTurn ? "X" : "O");
+        clickedButton.setEnabled(false);
+
+        //check for game over
+        return GameLogic.isGameOver(currentGame);
+    }
+
+    private void gameOverUpdate() {
+        //not totally comfortable putting the consequences of a game over here
+        if (gameIsOver) currentGame.lbl.setText("Game is over, " + (isXTurn ? "X" : "O") + " won");
+            //end game if board is full
+        else if (turnCounter == HEIGHT * LENGTH - 1) {
+            gameIsOver = true;
+            currentGame.lbl.setText("Game is over, cat's eye");
+        }
+    }
+
+    private void turnUpdate() {
+        turnCounter++;
+        isXTurn = !isXTurn;
+
+        currentGame.lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
     }
 
     public static void main(String[] args) {
@@ -56,8 +70,5 @@ public class TicTacToe {
                 new TicTacToe();
             }
         });
-        //Model
-        //View
-        //Controller
     }
 }
