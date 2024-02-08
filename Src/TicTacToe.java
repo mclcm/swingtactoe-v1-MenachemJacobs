@@ -1,17 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public class TicTacToe extends JFrame {
+    GameStateLogic gameState;
     JLabel lbl;
     JPanel labelPanel;
     JPanel buttonPanel;
     JButton[][] buttons;
     JButton restartButton;
 
-    private Boolean isXTurn = true;
-    private Boolean gameIsOver = false;
-    private int turnCounter = 0;
     private final int LENGTH = 3;
     private final int HEIGHT = 3;
 
@@ -29,6 +26,28 @@ public class TicTacToe extends JFrame {
         setSize(500, 300);
         //pack();
         setVisible(true);
+
+        gameState = new GameStateLogic(HEIGHT,LENGTH);
+    }
+
+    public class MyButton extends JButton {
+
+        private final int xPos;
+        private final int yPos;
+
+        // Constructor
+        public MyButton(int xPos, int yPos) {
+            this.xPos = xPos;
+            this.yPos = yPos;
+        }
+
+        public int getXPos() {
+            return xPos;
+        }
+
+        public int getYPos(){
+            return yPos;
+        }
     }
 
     private void initGUI() {
@@ -48,6 +67,8 @@ public class TicTacToe extends JFrame {
         restartButton.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent ae) {
+                //this shouldn't be necessary
+                //gameState.resetState();
                 restartGame();
             }
         });
@@ -56,16 +77,16 @@ public class TicTacToe extends JFrame {
     }
 
     private void initButtons() {
-        buttons = new JButton[3][3];
+        buttons = new JButton[HEIGHT][LENGTH];
 
         // Initialize buttons and add ActionListener
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < LENGTH; j++) {
-                buttons[i][j] = new JButton();
+                buttons[i][j] = new MyButton(i, j);
                 buttons[i][j].addMouseListener(new java.awt.event.MouseAdapter() {
                     @Override
                     public void mouseClicked(java.awt.event.MouseEvent ae) {
-                        btnMouseClicked(ae);
+                        mouseClickHandler(ae);
                     }
                 });
                 buttonPanel.add(buttons[i][j]);
@@ -73,34 +94,24 @@ public class TicTacToe extends JFrame {
         }
     }
 
+    private void mouseClickHandler(java.awt.event.MouseEvent ae){
+        MyButton clickedButton = (MyButton) ae.getSource();
+
+        //if game is not over update text and label
+        if(!gameState.gameIsOverGetter()) {
+            clickedButton.setText(gameState.btnMouseClicked(clickedButton));
+
+            //update lbl, game may be over and need to reflect that
+            //TODO: this should call a logical method which returns the right label
+            lbl.setText(gameState.lblUpdater());
+        }
+
+    }
+
     private void restartGame(){
         TicTacToe newGame = new TicTacToe();
         newGame.setVisible(true);
         dispose();
-    }
-
-    private void btnMouseClicked(java.awt.event.MouseEvent ae) {
-        JButton clickedButton = (JButton) ae.getSource();
-
-        if (clickedButton.isEnabled() && !gameIsOver) {
-            clickedButton.setText(isXTurn ? "X" : "O");
-            clickedButton.setEnabled(false);
-
-            gameIsOver = GameLogic.isGameOver(buttons);
-
-            //not totally comfortable putting the consequences of a game over here
-            if (gameIsOver)
-                lbl.setText("Game is over, " + (isXTurn ? "X" : "O") + " won");
-            else if (turnCounter == HEIGHT * LENGTH - 1 && !gameIsOver) {
-                gameIsOver = true;
-                lbl.setText("Game is over, cat's eye");
-            } else {
-                turnCounter++;
-                isXTurn = !isXTurn;
-
-                lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
-            }
-        }
     }
 
     public static void main(String[] args) {
