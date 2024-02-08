@@ -102,7 +102,6 @@ public class TicTacToe extends JFrame {
             clickedButton.setText(gameState.btnMouseClicked(clickedButton));
 
             //update lbl, game may be over and need to reflect that
-            //TODO: this should call a logical method which returns the right label
             lbl.setText(gameState.lblUpdater());
         }
 

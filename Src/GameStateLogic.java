@@ -27,8 +27,11 @@ public class GameStateLogic {
             logicalBoard[clickedButton.getXPos()][clickedButton.getYPos()] = isXTurn ? 1 : -1;
 
             gameIsOver = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
+
+            //if this turn ended the game according to the checker set the win tag.
             if (gameIsOver) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
-            else if(turnCounter >= 9) {
+            //the turn number to look for is the first one that would allow all cells to be filled, or height times length.
+            else if(turnCounter >= logicalBoard.length * logicalBoard[0].length) {
                 gameOverLegend = "Game is over, cat's eye";
                 gameIsOver = true;
             }
@@ -52,16 +55,3 @@ public class GameStateLogic {
     public boolean gameIsOverGetter() {
         return gameIsOver;
     }
-
-    //not totally comfortable putting the consequences of a game over here
-//            if (gameIsOver)
-//            lbl.setText("Game is over, " + (isXTurn ? "X" : "O") + " won");
-//            else if (turnCounter == HEIGHT * LENGTH - 1 && !gameIsOver) {
-//        gameIsOver = true;
-//        lbl.setText("Game is over, cat's eye");
-//    } else {
-//
-//
-//        lbl.setText("It is player " + (isXTurn ? "X" : "O") + " turn");
-//    }
-}
