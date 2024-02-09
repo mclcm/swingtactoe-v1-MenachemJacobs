@@ -39,9 +39,10 @@ public class GameOverLogic {
         return gameIsOver;
     }
 
+    //TODO: As it stands, diagonal checks do not work
     private static boolean diagonalCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
         //if the button pressed was not on a diagonal skip the analysis
-        if (xPos + yPos % 2 != 0)
+        if ((xPos + yPos) % 2 != 0)
             return false;
 
 //        if (buttons.length != buttons[0].length)

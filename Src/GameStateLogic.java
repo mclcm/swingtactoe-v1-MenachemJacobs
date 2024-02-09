@@ -18,20 +18,21 @@ public class GameStateLogic {
         }
     }
 
-    //This can only be called while the game is not yet over
+    //This method can only be called while the game is not yet over
     public String btnMouseClicked(TicTacToe.MyButton clickedButton) {
 
         if (clickedButton.isEnabled()) {
             clickedButton.setEnabled(false);
 
             logicalBoard[clickedButton.getXPos()][clickedButton.getYPos()] = isXTurn ? 1 : -1;
+            //System.out.println("Button pushed was " + clickedButton.getXPos() + ", " + clickedButton.getYPos());
 
             gameIsOver = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
 
             //if this turn ended the game according to the checker set the win tag.
             if (gameIsOver) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
-            //the turn number to look for is the first one that would allow all cells to be filled, or height times length.
-            else if(turnCounter >= logicalBoard.length * logicalBoard[0].length) {
+                //the turn number to look for is the first one that would allow all cells to be filled, or height times length.
+            else if (turnCounter >= logicalBoard.length * logicalBoard[0].length) {
                 gameOverLegend = "Game is over, cat's eye";
                 gameIsOver = true;
             }
@@ -55,3 +56,4 @@ public class GameStateLogic {
     public boolean gameIsOverGetter() {
         return gameIsOver;
     }
+}

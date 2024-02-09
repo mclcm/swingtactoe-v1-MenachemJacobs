@@ -1,6 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
+/**
+ * This class represents a Tic Tac Toe game application.
+ */
 public class TicTacToe extends JFrame {
     GameStateLogic gameState;
     JLabel lbl;
@@ -13,6 +17,9 @@ public class TicTacToe extends JFrame {
     private final int HEIGHT = 3;
 
 
+    /**
+     * Constructs a new TicTacToe game.
+     */
     public TicTacToe() {
         initGUI();
 
@@ -30,27 +37,46 @@ public class TicTacToe extends JFrame {
         gameState = new GameStateLogic(HEIGHT,LENGTH);
     }
 
-    public class MyButton extends JButton {
+    /**
+     * Custom JButton class with additional properties.
+     */
+    public static class MyButton extends JButton {
 
         private final int xPos;
         private final int yPos;
 
-        // Constructor
+        /**
+         * Constructs a new MyButton.
+         * @param xPos The x position of the button.
+         * @param yPos The y position of the button.
+         */
         public MyButton(int xPos, int yPos) {
             this.xPos = xPos;
             this.yPos = yPos;
         }
 
+        /**
+         * Get the x position of the button.
+         * @return The x position.
+         */
         public int getXPos() {
             return xPos;
         }
 
+        /**
+         * Get the y position of the button.
+         * @return The y position.
+         */
         public int getYPos(){
             return yPos;
         }
     }
 
+    /**
+     * Initializes the GUI components.
+     */
     private void initGUI() {
+        //TODO: Illegal GUI on two fronts
         setTitle("Tic Tac Toe");
 
         labelPanel = new JPanel();
@@ -64,18 +90,14 @@ public class TicTacToe extends JFrame {
 
         labelPanel.add(lbl);
 
-        restartButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent ae) {
-                //this shouldn't be necessary
-                //gameState.resetState();
-                restartGame();
-            }
-        });
+        restartButton.addActionListener(e -> restartGame());
 
         labelPanel.add(restartButton);
     }
 
+    /**
+     * Initializes the buttons grid.
+     */
     private void initButtons() {
         buttons = new JButton[HEIGHT][LENGTH];
 
@@ -83,18 +105,17 @@ public class TicTacToe extends JFrame {
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < LENGTH; j++) {
                 buttons[i][j] = new MyButton(i, j);
-                buttons[i][j].addMouseListener(new java.awt.event.MouseAdapter() {
-                    @Override
-                    public void mouseClicked(java.awt.event.MouseEvent ae) {
-                        mouseClickHandler(ae);
-                    }
-                });
+                buttons[i][j].addActionListener(this::mouseClickHandler);
                 buttonPanel.add(buttons[i][j]);
             }
         }
     }
 
-    private void mouseClickHandler(java.awt.event.MouseEvent ae){
+    /**
+     * Handles the mouse click event on buttons.
+     * @param ae The MouseEvent object representing the click event.
+     */
+    private void mouseClickHandler(ActionEvent ae){
         MyButton clickedButton = (MyButton) ae.getSource();
 
         //if game is not over update text and label
@@ -107,12 +128,19 @@ public class TicTacToe extends JFrame {
 
     }
 
+    /**
+     * Restarts the game by...
+     */
     private void restartGame(){
         TicTacToe newGame = new TicTacToe();
         newGame.setVisible(true);
         dispose();
     }
 
+    /**
+     * Main method to launch the application.
+     * @param args Command-line arguments (unused).
+     */
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -120,8 +148,5 @@ public class TicTacToe extends JFrame {
                 new TicTacToe();
             }
         });
-        //Model
-        //View
-        //Controller
     }
 }
