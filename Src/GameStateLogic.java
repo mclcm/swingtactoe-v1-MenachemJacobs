@@ -24,25 +24,29 @@ public class GameStateLogic {
         if (clickedButton.isEnabled()) {
             clickedButton.setEnabled(false);
 
+            //set the value on the logicalBoard
             logicalBoard[clickedButton.getXPos()][clickedButton.getYPos()] = isXTurn ? 1 : -1;
-            //System.out.println("Button pushed was " + clickedButton.getXPos() + ", " + clickedButton.getYPos());
 
+            //check if someone has a win condition
             gameIsOver = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
 
-            //if this turn ended the game according to the checker set the win tag.
+            //if someone has a win condition set the win tag.
             if (gameIsOver) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
-                //the turn number to look for is the first one that would allow all cells to be filled, or height times length.
+                //check if board is full, and call a cat's eye if it is.
             else if (turnCounter >= logicalBoard.length * logicalBoard[0].length) {
                 gameOverLegend = "Game is over, cat's eye";
                 gameIsOver = true;
             }
 
+            //update state
             turnCounter++;
             isXTurn = !isXTurn;
 
+            //update the text in the button
             return !isXTurn ? "X" : "O";
         }
 
+        //ideally, clicking the button would do nothing, but the responsibility for checking that is delegated too far down stream
         return clickedButton.getText();
     }
 

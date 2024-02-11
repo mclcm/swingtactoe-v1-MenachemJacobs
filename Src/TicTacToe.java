@@ -25,9 +25,16 @@ public class TicTacToe extends JFrame {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        // Set layout to BorderLayout
+        setLayout(new BorderLayout());
+
+        JPanel header = new JPanel();
+        header.add(new JLabel("TicTacToe"));
+        add(header, BorderLayout.NORTH);
+
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        add(buttonPanel);
-        add(labelPanel);
+        add(buttonPanel, BorderLayout.CENTER);
+        add(labelPanel, BorderLayout.SOUTH);
         setLocationRelativeTo(null);
 
         setSize(500, 300);
@@ -76,7 +83,7 @@ public class TicTacToe extends JFrame {
      * Initializes the GUI components.
      */
     private void initGUI() {
-        //TODO: Illegal GUI on two fronts
+        //TODO: Illegal GUI on one front
         setTitle("Tic Tac Toe");
 
         labelPanel = new JPanel();
@@ -132,6 +139,7 @@ public class TicTacToe extends JFrame {
      * Restarts the game by...
      */
     private void restartGame(){
+        //TODO: Have reset redo the buttons and clear the state
         TicTacToe newGame = new TicTacToe();
         newGame.setVisible(true);
         dispose();
