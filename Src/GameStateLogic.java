@@ -32,8 +32,8 @@ public class GameStateLogic {
 
             //if someone has a win condition set the win tag.
             if (gameIsOver) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
-                //check if board is full, and call a cat's eye if it is.
-            else if (turnCounter >= logicalBoard.length * logicalBoard[0].length) {
+                //check if this turn fills the board, and call a cat's eye if it is.
+            else if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1) {
                 gameOverLegend = "Game is over, cat's eye";
                 gameIsOver = true;
             }
