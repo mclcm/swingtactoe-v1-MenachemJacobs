@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
  * This class represents a Tic Tac Toe game application.
@@ -32,14 +34,21 @@ public class TicTacToe extends JFrame {
         header.add(new JLabel("TicTacToe"));
         add(header, BorderLayout.NORTH);
 
-        setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         add(buttonPanel, BorderLayout.CENTER);
         add(labelPanel, BorderLayout.SOUTH);
         setLocationRelativeTo(null);
 
         setSize(500, 300);
-        //pack();
+        pack();
         setVisible(true);
+
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                TicTacToe.this.handleResize();
+            }
+        });
 
         gameState = new GameStateLogic(HEIGHT,LENGTH);
     }
@@ -87,12 +96,15 @@ public class TicTacToe extends JFrame {
         setTitle("Tic Tac Toe");
 
         labelPanel = new JPanel();
-        buttonPanel = new JPanel(new GridLayout(HEIGHT, LENGTH)); // split the panel in 1 rows and 2 cols)
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,0));
 
         lbl = new JLabel("It is player X turn");
         restartButton = new JButton("Start over?");
 
-        buttonPanel.setPreferredSize(new Dimension(0, 200));
+        // Set the preferred size for the labelPanel and buttonPanel
+        labelPanel.setPreferredSize(new Dimension(500, 50));
+        buttonPanel.setPreferredSize(new Dimension(500, 200));
+
         initButtons();
 
         labelPanel.add(lbl);
@@ -143,6 +155,21 @@ public class TicTacToe extends JFrame {
         TicTacToe newGame = new TicTacToe();
         newGame.setVisible(true);
         dispose();
+    }
+
+    // Method to handle resizing of the components
+    private void handleResize() {
+        int buttonWidth = buttonPanel.getWidth() / LENGTH;
+        int buttonHeight = buttonPanel.getHeight() / HEIGHT;
+
+        for (int i = 0; i < HEIGHT; i++) {
+            for (int j = 0; j < LENGTH; j++) {
+                buttons[i][j].setPreferredSize(new Dimension(buttonWidth, buttonHeight));
+            }
+        }
+
+        buttonPanel.revalidate();
+        buttonPanel.repaint();
     }
 
     /**

@@ -2,22 +2,35 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TicTacToeTest {
-    TicTacToe testingGame;
+    GameStateLogic testingGame;
+    final int HEIGHT = 3;
+    final int LENGTH = 3;
 
     @BeforeEach
     void setUp() {
-        TicTacToe testingGame = new TicTacToe();
+        testingGame = new GameStateLogic(HEIGHT, LENGTH);
     }
 
     @Test
-    void restartGame() {
+    void btnMouseClicked_Normal() {
+        TicTacToe.MyButton testingButton = new TicTacToe.MyButton(-1,-1);
+
+        testingGame
     }
 
     @Test
-    void btnMouseClicked() {
+    void lblUpdater() {
     }
 
     @Test
-    void main() {
+    void gameIsOverGetter() {
+    }
+
+    void setTestingGame(int[][] testBoard) {
+        testingGame.testEnabler(testBoard);
+    }
+
+    @Test
+    void isGameOver() {
     }
 }

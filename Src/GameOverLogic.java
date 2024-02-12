@@ -39,12 +39,12 @@ public class GameOverLogic {
         return gameIsOver;
     }
 
-    //TODO: As it stands, diagonal checks do not work
     private static boolean diagonalCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
         //if the button pressed was not on a diagonal skip the analysis
         if ((xPos + yPos) % 2 != 0)
             return false;
 
+        //The ascendant checks are only necessary if the board is not a square. The assignment seems to assume the board is always 3, 3
 //        if (buttons.length != buttons[0].length)
 //            return dexterAscendantCheck(buttons, isXTurn) || sinisterAscendantCheck(buttons, isXTurn) || dexterCheck(buttons, isXTurn) || sinisterCheck(buttons, isXTurn);
 //        else
