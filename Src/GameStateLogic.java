@@ -1,5 +1,8 @@
 import javax.swing.*;
 
+/**
+ * This class manages the game state logic of the Tic Tac Toe game.
+ */
 public class GameStateLogic {
     public String gameOverLegend = "Something has gone horribly wrong if this is displayed";
     private Boolean isXTurn = true;
@@ -7,6 +10,12 @@ public class GameStateLogic {
     private int turnCounter = 0;
     public int[][] logicalBoard;
 
+    /**
+     * Constructs a new game state logic object.
+     *
+     * @param height The height of the game board.
+     * @param length The length of the game board.
+     */
     GameStateLogic(int height, int length) {
         logicalBoard = new int[height][length];
 
@@ -18,7 +27,13 @@ public class GameStateLogic {
         }
     }
 
-    //This method can only be called while the game is not yet over
+    /**
+     * Handles the logic when a button is clicked. Cannot be called while the game is over.
+     * More formally, this method will never be called while isGame over is true.
+     *
+     * @param clickedButton The button that was clicked.
+     * @return The text to be displayed on the clicked button.
+     */
     public String btnMouseClicked(TicTacToe.MyButton clickedButton) {
 
         if (clickedButton.isEnabled()) {
@@ -27,29 +42,44 @@ public class GameStateLogic {
             //set the value on the logicalBoard
             logicalBoard[clickedButton.getXPos()][clickedButton.getYPos()] = isXTurn ? 1 : -1;
 
-            //check if someone has a win condition
-            gameIsOver = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
+            //check if game is over and update state if so
+            gameOverHandler(clickedButton);
 
-            //if someone has a win condition set the win tag.
-            if (gameIsOver) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
-                //check if this turn fills the board, and call a cat's eye if it is.
-            else if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1) {
-                gameOverLegend = "Game is over, cat's eye";
-                gameIsOver = true;
-            }
-
-            //update state
+            //update turn state
             turnCounter++;
             isXTurn = !isXTurn;
 
-            //update the text in the button
+            //update the text in the clicked button
             return !isXTurn ? "X" : "O";
         }
 
-        //ideally, clicking the button would do nothing, but the responsibility for checking that is delegated too far down stream
+        //Ideally, clicking a disabled button would do nothing, but the responsibility for checking that is delegated too far down stream
         return clickedButton.getText();
     }
 
+    /**
+     * Handles the logic when the game is over.
+     *
+     * @param clickedButton The button that was clicked.
+     */
+    private void gameOverHandler(TicTacToe.MyButton clickedButton) {
+        //check if someone has a win condition
+        gameIsOver = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
+
+        //if someone has a win condition set the win tag.
+        if (gameIsOver) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
+            //check if this turn fills the board, and call a cat's eye if it is.
+        else if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1) {
+            gameOverLegend = "Game is over, cat's eye";
+            gameIsOver = true;
+        }
+    }
+
+    /**
+     * Updates the label text based on the game state.
+     *
+     * @return The text to be displayed on the label.
+     */
     public String lblUpdater() {
         if (gameIsOver) {
             return gameOverLegend;
@@ -57,6 +87,11 @@ public class GameStateLogic {
         return "It is player " + (isXTurn ? "X" : "O") + " turn";
     }
 
+    /**
+     * Checks if the game is over.
+     *
+     * @return True if the game is over, false otherwise.
+     */
     public boolean gameIsOverGetter() {
         return gameIsOver;
     }

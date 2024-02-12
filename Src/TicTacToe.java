@@ -46,7 +46,7 @@ public class TicTacToe extends JFrame {
             @Override
             public void componentResized(ComponentEvent e) {
                 super.componentResized(e);
-                TicTacToe.this.handleResize();
+                handleResize();
             }
         });
 
@@ -153,7 +153,7 @@ public class TicTacToe extends JFrame {
         buttonPanel.removeAll();
 
         initButtons();
-        TicTacToe.this.handleResize();
+        handleResize();
 
         buttonPanel.revalidate();
         buttonPanel.repaint();
@@ -161,7 +161,9 @@ public class TicTacToe extends JFrame {
         gameState = new GameStateLogic(HEIGHT, LENGTH);
     }
 
-    // Method to handle resizing of the components
+    /**
+     * Handles resizing of the components.
+     */
     private void handleResize() {
         int buttonWidth = buttonPanel.getWidth() / LENGTH;
         int buttonHeight = buttonPanel.getHeight() / HEIGHT;
@@ -181,11 +183,6 @@ public class TicTacToe extends JFrame {
      * @param args Command-line arguments (unused).
      */
     public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new TicTacToe();
-            }
-        });
+        java.awt.EventQueue.invokeLater(TicTacToe::new);
     }
 }
