@@ -92,7 +92,6 @@ public class TicTacToe extends JFrame {
      * Initializes the GUI components.
      */
     private void initGUI() {
-        //TODO: Illegal GUI on one front
         setTitle("Tic Tac Toe");
 
         labelPanel = new JPanel();
@@ -151,10 +150,15 @@ public class TicTacToe extends JFrame {
      * Restarts the game by...
      */
     private void restartGame(){
-        //TODO: Have reset redo the buttons and clear the state
-        TicTacToe newGame = new TicTacToe();
-        newGame.setVisible(true);
-        dispose();
+        buttonPanel.removeAll();
+
+        initButtons();
+        TicTacToe.this.handleResize();
+
+        buttonPanel.revalidate();
+        buttonPanel.repaint();
+
+        gameState = new GameStateLogic(HEIGHT, LENGTH);
     }
 
     // Method to handle resizing of the components
