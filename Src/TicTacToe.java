@@ -50,42 +50,7 @@ public class TicTacToe extends JFrame {
             }
         });
 
-        gameState = new GameStateLogic(HEIGHT,LENGTH);
-    }
-
-    /**
-     * Custom JButton class with additional properties.
-     */
-    public static class MyButton extends JButton {
-
-        private final int xPos;
-        private final int yPos;
-
-        /**
-         * Constructs a new MyButton.
-         * @param xPos The x position of the button.
-         * @param yPos The y position of the button.
-         */
-        public MyButton(int xPos, int yPos) {
-            this.xPos = xPos;
-            this.yPos = yPos;
-        }
-
-        /**
-         * Get the x position of the button.
-         * @return The x position.
-         */
-        public int getXPos() {
-            return xPos;
-        }
-
-        /**
-         * Get the y position of the button.
-         * @return The y position.
-         */
-        public int getYPos(){
-            return yPos;
-        }
+        gameState = new GameStateLogic(HEIGHT, LENGTH);
     }
 
     /**
@@ -122,7 +87,7 @@ public class TicTacToe extends JFrame {
         // Initialize buttons and add ActionListener
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < LENGTH; j++) {
-                buttons[i][j] = new MyButton(i, j);
+                buttons[i][j] = new GameStateLogic.MyButton(j, i);
                 buttons[i][j].addActionListener(this::mouseClickHandler);
                 buttonPanel.add(buttons[i][j]);
             }
@@ -134,10 +99,11 @@ public class TicTacToe extends JFrame {
      * @param ae The MouseEvent object representing the click event.
      */
     private void mouseClickHandler(ActionEvent ae){
-        MyButton clickedButton = (MyButton) ae.getSource();
+        GameStateLogic.MyButton clickedButton = (GameStateLogic.MyButton) ae.getSource();
 
         //if game is not over update text and label
-        if(!gameState.gameIsOverGetter()) {
+        if(!gameState.gameIsOverGetter() && !clickedButton.isPressed) {
+            clickedButton.setEnabled(false);
             clickedButton.setText(gameState.btnMouseClicked(clickedButton));
 
             //update lbl, game may be over and need to reflect that
@@ -155,8 +121,8 @@ public class TicTacToe extends JFrame {
         initButtons();
         handleResize();
 
-        //buttonPanel.revalidate();
-        //buttonPanel.repaint();
+        buttonPanel.revalidate();
+        buttonPanel.repaint();
 
         gameState = new GameStateLogic(HEIGHT, LENGTH);
     }

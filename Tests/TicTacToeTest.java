@@ -13,7 +13,7 @@ class TicTacToeTest {
 
     @Test
     void btnMouseClicked_Normal() {
-        TicTacToe.MyButton testingButton = new TicTacToe.MyButton(-1,-1);
+        GameStateLogic.MyButton testingButton = new GameStateLogic.MyButton(-1,-1);
 
         testingGame
     }
