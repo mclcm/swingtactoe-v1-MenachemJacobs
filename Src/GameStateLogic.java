@@ -36,8 +36,9 @@ public class GameStateLogic {
      */
     public String btnMouseClicked(TicTacToe.MyButton clickedButton) {
 
-        if (clickedButton.isEnabled()) {
-            clickedButton.setEnabled(false);
+        if (clickedButton.isEnabled() && !gameIsOver) {
+            //TODO: Use dedicated boolean
+            //clickedButton.setEnabled(false);
 
             //set the value on the logicalBoard
             logicalBoard[clickedButton.getXPos()][clickedButton.getYPos()] = isXTurn ? 1 : -1;

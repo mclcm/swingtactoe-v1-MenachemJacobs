@@ -15,7 +15,7 @@ public class TicTacToe extends JFrame {
     JButton[][] buttons;
     JButton restartButton;
 
-    private final int LENGTH = 3;
+    private final int LENGTH = 4;
     private final int HEIGHT = 3;
 
 
@@ -155,8 +155,8 @@ public class TicTacToe extends JFrame {
         initButtons();
         handleResize();
 
-        buttonPanel.revalidate();
-        buttonPanel.repaint();
+        //buttonPanel.revalidate();
+        //buttonPanel.repaint();
 
         gameState = new GameStateLogic(HEIGHT, LENGTH);
     }

@@ -40,18 +40,23 @@ public class GameOverLogic {
     }
 
     private static boolean diagonalCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
-        //if the button pressed was not on a diagonal skip the analysis
-        if ((xPos + yPos) % 2 != 0)
-            return false;
+
+        //check for descending dexter
+        if(xPos == yPos) return dexterCheck(logicalBoard, xPos, yPos, searchValue);
+        //check for descending sinister
+        else if (xPos + yPos == logicalBoard[0].length - 1) return sinisterCheck(logicalBoard, xPos, yPos, searchValue);
 
         //The ascendant checks are only necessary if the board is not a square. The assignment seems to assume the board is always 3, 3
-//        if (buttons.length != buttons[0].length)
-//            return dexterAscendantCheck(buttons, isXTurn) || sinisterAscendantCheck(buttons, isXTurn) || dexterCheck(buttons, isXTurn) || sinisterCheck(buttons, isXTurn);
-//        else
-        return dexterCheck(logicalBoard, xPos, yPos, searchValue) || sinisterCheck(logicalBoard, xPos, yPos, searchValue);
+//       else if (buttons.length != buttons[0].length &&)
+//            return dexterAscendantCheck(buttons, isXTurn)
+//       else if (buttons.length != buttons[0].length &&)
+//            return sinisterAscendantCheck(buttons, isXTurn);
+
+        else return false;
     }
 
     private static boolean dexterCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
+        System.out.println("dexter is go");
         boolean gameIsOver = true;
         int firstVal = logicalBoard[0][0];
 
@@ -62,19 +67,25 @@ public class GameOverLogic {
             }
         }
 
+        if(gameIsOver) System.out.println("dexter win");
+
         return gameIsOver;
     }
 
     private static boolean sinisterCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
+        System.out.println("sinister is go");
         boolean gameIsOver = true;
-        int firstVal = logicalBoard[0][(logicalBoard[0].length) - 1];
+        int firstVal = logicalBoard[0][logicalBoard[0].length - 1];
 
-        for (int i = 0; i < logicalBoard[0].length; i++) {
-            if (logicalBoard[logicalBoard[0].length - i - 1][i] != firstVal || logicalBoard[logicalBoard[0].length - i - 1][i] == 0) {
+        for (int i = 0; i < logicalBoard.length; i++) {
+            //checks from top down, that is, from top left back and down.
+            if (logicalBoard[i][logicalBoard[0].length - 1 - i] != firstVal || logicalBoard[i][logicalBoard[0].length - 1 - i] == 0) {
                 gameIsOver = false;
                 break;
             }
         }
+
+        if(gameIsOver) System.out.println("sinister win");
 
         return gameIsOver;
     }
