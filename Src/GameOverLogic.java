@@ -74,14 +74,15 @@ public class GameOverLogic {
      * @return True if there is a win condition in any diagonal, false otherwise.
      */
     private static boolean diagonalCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
+        boolean returnVal = false;
 
         //diagonal check loops should only check until the smaller of the two values
         int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
 
         //check for if clicked value is on the descending dexter
-        if (xPos == yPos) return dexterCheck(logicalBoard, searchValue, loopLimit);
+        if (xPos == yPos) returnVal = dexterCheck(logicalBoard, searchValue, loopLimit);
             //check for if clicked value is on the descending sinister
-        else if (xPos + yPos == logicalBoard[0].length - 1) return sinisterCheck(logicalBoard, searchValue, loopLimit);
+        if (xPos + yPos == logicalBoard[0].length - 1) returnVal = returnVal || sinisterCheck(logicalBoard, searchValue, loopLimit);
 
             //The ascendant checks are only necessary if the board is not a square. The assignment seems to assume the board is always 3, 3
 //       else if (buttons.length != buttons[0].length &&)
@@ -89,7 +90,7 @@ public class GameOverLogic {
 //       else if (buttons.length != buttons[0].length &&)
 //            return sinisterAscendantCheck(logicalBoard, searchValue, loopLimit);
 
-        else return false;
+        return returnVal;
     }
 
     /**
@@ -123,6 +124,7 @@ public class GameOverLogic {
      * @return True if there is a win condition in the secondary diagonal, false otherwise.
      */
     private static boolean sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
+        System.out.println("reached sinister check");
         boolean gameIsOver = true;
 
         //should count until either the rows or columns run out

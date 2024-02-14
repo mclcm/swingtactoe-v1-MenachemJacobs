@@ -13,7 +13,7 @@ public class GameStateLogic {
     //Number of turns that have elapsed under the current logical instance
     private int turnCounter = 0;
     //Logical analogue of the GUI board
-    private static int[][] logicalBoard;
+    private int[][] logicalBoard;
 
     /**
      * Constructs a new game state logic object.
@@ -109,7 +109,7 @@ public class GameStateLogic {
      *
      * @param clickedButton The button that was clicked.
      */
-    private void gameOverHandler(MyButton clickedButton) {
+    public void gameOverHandler(MyButton clickedButton) {
         //check if someone has a win condition
         gameIsOver = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
 
@@ -142,5 +142,10 @@ public class GameStateLogic {
      */
     public boolean getGameIsOver() {
         return gameIsOver;
+    }
+
+    public void testingBoardAccepter(int[][] acceptedBoard){
+        System.out.println("Reached testingBoardAccepter()");
+        logicalBoard = acceptedBoard;
     }
 }
