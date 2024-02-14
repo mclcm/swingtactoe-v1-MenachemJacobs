@@ -57,7 +57,11 @@ public class GameOverLogic {
     private static boolean dexterCheck(int[][] logicalBoard, int searchValue) {
         boolean gameIsOver = true;
 
-        for (int i = 0; i < logicalBoard.length; i++) {
+        //the loop should only check until the smaller of the two values
+        int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
+
+        //should count until the row runs out, not the column
+        for (int i = 0; i < loopLimit; i++) {
             if (logicalBoard[i][i] != searchValue) {
                 gameIsOver = false;
                 break;
@@ -72,7 +76,11 @@ public class GameOverLogic {
     private static boolean sinisterCheck(int[][] logicalBoard, int searchValue) {
         boolean gameIsOver = true;
 
-        for (int i = 0; i < logicalBoard.length; i++) {
+        //the loop should only check until the smaller of the two values
+        int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
+
+        //should count until the row runs out, not the column
+        for (int i = 0; i < loopLimit; i++) {
             //checks from top down, that is, from top left back and down.
             if (logicalBoard[i][logicalBoard[0].length - 1 - i] != searchValue) {
                 gameIsOver = false;
