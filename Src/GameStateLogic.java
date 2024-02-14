@@ -4,9 +4,6 @@ import javax.swing.*;
  * This class manages the game state logic of the Tic Tac Toe game.
  */
 public class GameStateLogic {
-    //Message to be returned to the lblUpdater if the game ends
-    private String gameOverLegend = "Something has gone horribly wrong if this is displayed";
-
     //0 is an ongoing game. 1 is a rank win, 2 a file win. 3 is a dexter win, and 4 is sinister. -1 is a cats eye.
     private int gameState = 0;
 
@@ -117,11 +114,8 @@ public class GameStateLogic {
         //check if someone has a win condition
         gameState = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
 
-        //if someone has a win condition set the win tag.
-        if (gameState != 0) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
-            //check if this turn fills the board, and call a cat's eye if it is.
-        else if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1) {
-            gameOverLegend = "Game is over, cat's eye";
+        //if no one won but the board is full call a cats eye
+        if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1 && gameState == 0) {
             gameState = -1;
         }
     }
@@ -133,8 +127,9 @@ public class GameStateLogic {
      * @return The text to be displayed on the information label.
      */
     public String lblUpdater() {
-        if (gameState != 0) {
-            return gameOverLegend;
+        if(gameState == -1) return "Game is over, cat's eye";
+        else if (gameState != 0) {
+            return "Game is over, " + (!isXTurn ? "X" : "O") + " won";
         }
         return "It is player " + (isXTurn ? "X's" : "O's") + " turn";
     }

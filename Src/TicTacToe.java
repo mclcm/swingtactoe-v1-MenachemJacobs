@@ -16,7 +16,7 @@ public class TicTacToe extends JFrame {
     JButton restartButton;
 
     private final int LENGTH = 3;
-    private final int HEIGHT = 4;
+    private final int HEIGHT = 3;
 
 
     /**
