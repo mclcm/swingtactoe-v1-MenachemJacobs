@@ -1,6 +1,3 @@
-import javax.swing.*;
-import java.util.Objects;
-
 public class GameOverLogic {
 
     public static boolean isGameOver(int[][] logicalBoard, int xPos, int yPos) {
@@ -40,27 +37,27 @@ public class GameOverLogic {
 
     private static boolean diagonalCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
 
+        //diagonal check loops should only check until the smaller of the two values
+        int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
+
         //check for descending dexter
-        if (xPos == yPos) return dexterCheck(logicalBoard, searchValue);
+        if (xPos == yPos) return dexterCheck(logicalBoard, searchValue, loopLimit);
             //check for descending sinister
-        else if (xPos + yPos == logicalBoard[0].length - 1) return sinisterCheck(logicalBoard, searchValue);
+        else if (xPos + yPos == logicalBoard[0].length - 1) return sinisterCheck(logicalBoard, searchValue, loopLimit);
 
             //The ascendant checks are only necessary if the board is not a square. The assignment seems to assume the board is always 3, 3
 //       else if (buttons.length != buttons[0].length &&)
-//            return dexterAscendantCheck(buttons, isXTurn)
+//            return dexterAscendantCheck(logicalBoard, searchValue, loopLimit)
 //       else if (buttons.length != buttons[0].length &&)
-//            return sinisterAscendantCheck(buttons, isXTurn);
+//            return sinisterAscendantCheck(logicalBoard, searchValue, loopLimit);
 
         else return false;
     }
 
-    private static boolean dexterCheck(int[][] logicalBoard, int searchValue) {
+    private static boolean dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         boolean gameIsOver = true;
 
-        //the loop should only check until the smaller of the two values
-        int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
-
-        //should count until the row runs out, not the column
+        //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
             if (logicalBoard[i][i] != searchValue) {
                 gameIsOver = false;
@@ -73,13 +70,10 @@ public class GameOverLogic {
         return gameIsOver;
     }
 
-    private static boolean sinisterCheck(int[][] logicalBoard, int searchValue) {
+    private static boolean sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         boolean gameIsOver = true;
 
-        //the loop should only check until the smaller of the two values
-        int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
-
-        //should count until the row runs out, not the column
+        //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
             //checks from top down, that is, from top left back and down.
             if (logicalBoard[i][logicalBoard[0].length - 1 - i] != searchValue) {
