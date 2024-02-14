@@ -124,7 +124,6 @@ public class GameOverLogic {
      * @return True if there is a win condition in the secondary diagonal, false otherwise.
      */
     private static boolean sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        System.out.println("reached sinister check");
         boolean gameIsOver = true;
 
         //should count until either the rows or columns run out

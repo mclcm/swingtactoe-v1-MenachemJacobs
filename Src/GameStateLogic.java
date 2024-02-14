@@ -132,7 +132,7 @@ public class GameStateLogic {
         if (gameIsOver) {
             return gameOverLegend;
         }
-        return "It is player " + (isXTurn ? "X" : "O") + " turn";
+        return "It is player " + (isXTurn ? "Xes'" : "O's") + " turn";
     }
 
     /**
@@ -144,8 +144,11 @@ public class GameStateLogic {
         return gameIsOver;
     }
 
-    public void testingBoardAccepter(int[][] acceptedBoard){
-        System.out.println("Reached testingBoardAccepter()");
+    void testingBoardAccepter(int[][] acceptedBoard){
         logicalBoard = acceptedBoard;
+    }
+
+    Boolean getXTurn() {
+        return isXTurn;
     }
 }
