@@ -24,10 +24,6 @@ public class GameStateLogic {
      */
     GameStateLogic(int height, int length) {
         logicalBoard = new int[height][length];
-
-//        //set all positions in the logical board to 0.
-//        // Apparently these default to zero, so nothing needs to be done.
-//        for (int[] row : logicalBoard) {  for (int cell : row) {  cell = 0;   }   }
     }
 
     /**
@@ -111,13 +107,13 @@ public class GameStateLogic {
      * @param clickedButton The button that was clicked.
      */
     public void gameOverHandler(MyButton clickedButton) {
-        //check if someone has a win condition
-        gameState = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
+        //check if someone has a win condition. Checks should only begin after turn five, which is the minimum need to win the game.
+        if (turnCounter >= 4)
+            gameState = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
 
         //if no one won but the board is full call a cats eye
-        if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1 && gameState == 0) {
+        if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1 && gameState == 0)
             gameState = -1;
-        }
     }
 
     /**
@@ -127,7 +123,7 @@ public class GameStateLogic {
      * @return The text to be displayed on the information label.
      */
     public String lblUpdater() {
-        if(gameState == -1) return "Game is over, cat's eye";
+        if (gameState == -1) return "Game is over, cat's eye";
         else if (gameState != 0) {
             return "Game is over, " + (!isXTurn ? "X" : "O") + " won";
         }
@@ -143,7 +139,7 @@ public class GameStateLogic {
         return gameState != 0;
     }
 
-    void testingBoardAccepter(int[][] acceptedBoard){
+    void testingBoardAccepter(int[][] acceptedBoard) {
         logicalBoard = acceptedBoard;
     }
 
@@ -151,7 +147,7 @@ public class GameStateLogic {
         return isXTurn;
     }
 
-    int getGameState(){
+    int getGameState() {
         return gameState;
     }
 }
