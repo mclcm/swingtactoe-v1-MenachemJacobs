@@ -84,26 +84,10 @@ class TicTacToeTest {
 
     @Test
     void catsEye() {
-        //1
-        turnTaker(0,0);
-        //2
-        turnTaker(1,1);
-        //3
-        turnTaker(0,2);
-        //4
-        turnTaker(0,1);
-        //5
-        turnTaker(2,1);
-        //6
-        turnTaker(1,0);
-        //7
-        turnTaker(1,2);
-        //8
-        turnTaker(2,2);
-        //9
-        turnTaker(2,0);
+        state = -1;
+        setSimpleBoard(state);
 
-        Assertions.assertTrue(testingGame.getGameIsOver(), "A cats eye is not being correctly scored by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameState(), "A cats eye is not being correctly scored by the game over handler");
         Assertions.assertEquals("Game is over, cat's eye", testingGame.lblUpdater(), "Cat's Eye reflected properly in the lblUpdater");
     }
 
@@ -113,49 +97,88 @@ class TicTacToeTest {
         switch (choice) {
             //game not over case
             case 0:
-                passingBoard[0][0] = 1;
-                passingBoard[0][2] = 1;
-                passingBoard[1][1] = -1;
-                passingBoard[0][1] = -1;
+                //x
+                turnTaker(0,0);
+                //y
+                turnTaker(1,1);
+                //x
+                turnTaker(2,0);
+                //y
+                turnTaker(1,0);
 
-                testingGame.testingBoardAccepter(passingBoard);
                 break;
             //rank win case
             case 1:
-                passingBoard[1][0] = 1;
-                passingBoard[1][1] = 1;
-                passingBoard[1][2] = 1;
-
-                testingGame.testingBoardAccepter(passingBoard);
+                //x
+                turnTaker(0,1);
+                //y
+                turnTaker(0,0);
+                //x
+                turnTaker(2,1);
+                //y
+                turnTaker(1,0);
+                //x
+                turnTaker(1,1);
                 break;
             //file win case
             case 2:
-                passingBoard[0][1] = 1;
-                passingBoard[1][1] = 1;
-                passingBoard[2][1] = 1;
-
-                testingGame.testingBoardAccepter(passingBoard);
+                //x
+                turnTaker(1,0);
+                //y
+                turnTaker(0,0);
+                //x
+                turnTaker(1,2);
+                //y
+                turnTaker(0,1);
+                //x
+                turnTaker(1,1);
                 break;
             //dexter win case
             case 3:
-                passingBoard[0][0] = 1;
-                passingBoard[1][1] = 1;
-                passingBoard[2][2] = 1;
-
-                testingGame.testingBoardAccepter(passingBoard);
+                //x
+                turnTaker(0,0);
+                //y
+                turnTaker(1,0);
+                //x
+                turnTaker(2,2);
+                //y
+                turnTaker(2,1);
+                //x
+                turnTaker(1,1);
                 break;
             //sinister win case
             case 4:
-                passingBoard[0][2] = 1;
-                passingBoard[1][1] = 1;
-                passingBoard[2][0] = 1;
-
-                testingGame.testingBoardAccepter(passingBoard);
+                //x
+                turnTaker(2,0);
+                //y
+                turnTaker(1,0);
+                //x
+                turnTaker(0,2);
+                //y
+                turnTaker(2,1);
+                //x
+                turnTaker(1,1);
                 break;
             //Cats eye case
             case -1:
-                //The board for the cat's eye should be constructed in the test itself.
-                // The case is preserved only to agree with the game state tracker in the State Logic.
+                //1
+                turnTaker(0,0);
+                //2
+                turnTaker(1,1);
+                //3
+                turnTaker(0,2);
+                //4
+                turnTaker(0,1);
+                //5
+                turnTaker(2,1);
+                //6
+                turnTaker(1,0);
+                //7
+                turnTaker(1,2);
+                //8
+                turnTaker(2,2);
+                //9
+                turnTaker(2,0);
                 break;
             default:
                 System.out.println("Invalid choice");
