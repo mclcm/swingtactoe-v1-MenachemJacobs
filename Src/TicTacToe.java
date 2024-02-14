@@ -101,8 +101,8 @@ public class TicTacToe extends JFrame {
     private void mouseClickHandler(ActionEvent ae){
         GameStateLogic.MyButton clickedButton = (GameStateLogic.MyButton) ae.getSource();
 
-        //if game is not over update text and label
-        if(!gameState.gameIsOverGetter() && !clickedButton.isPressed) {
+        //if game is not over and the current button has not been clicked before, update text and label
+        if(!gameState.getGameIsOver() && !clickedButton.isPressed) {
             clickedButton.setEnabled(false);
             clickedButton.setText(gameState.btnMouseClicked(clickedButton));
 

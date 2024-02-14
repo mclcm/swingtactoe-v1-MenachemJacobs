@@ -4,11 +4,16 @@ import javax.swing.*;
  * This class manages the game state logic of the Tic Tac Toe game.
  */
 public class GameStateLogic {
-    public String gameOverLegend = "Something has gone horribly wrong if this is displayed";
+    //Message to be returned to the lblUpdater if the game ends
+    private String gameOverLegend = "Something has gone horribly wrong if this is displayed";
+    //Track which player's turn it currently is
     private Boolean isXTurn = true;
+    //Track if the game has ended
     private Boolean gameIsOver = false;
+    //Number of turns that have elapsed under the current logical instance
     private int turnCounter = 0;
-    public int[][] logicalBoard;
+    //Logical analogue of the GUI board
+    private static int[][] logicalBoard;
 
     /**
      * Constructs a new game state logic object.
@@ -19,12 +24,9 @@ public class GameStateLogic {
     GameStateLogic(int height, int length) {
         logicalBoard = new int[height][length];
 
-        //default the logical board to 0
-        for (int[] row : logicalBoard) {
-            for (int cell : row) {
-                cell = 0;
-            }
-        }
+//        //set all positions in the logical board to 0.
+//        // Apparently these default to zero, so nothing needs to be done.
+//        for (int[] row : logicalBoard) {  for (int cell : row) {  cell = 0;   }   }
     }
 
     /**
@@ -32,12 +34,16 @@ public class GameStateLogic {
      */
     public static class MyButton extends JButton {
 
+        //xPos of this button. Analogous to this button's Length position in the board
         private final int xPos;
+        //xPos of this button. Analogous to this button's Height position in the board
         private final int yPos;
+        //Bool value tracking if this button has been pressed already
         public boolean isPressed;
 
         /**
          * Constructs a new MyButton.
+         *
          * @param xPos The x position of the button.
          * @param yPos The y position of the button.
          */
@@ -50,6 +56,7 @@ public class GameStateLogic {
 
         /**
          * Get the x position of the button.
+         *
          * @return The x position.
          */
         public int getXPos() {
@@ -58,9 +65,10 @@ public class GameStateLogic {
 
         /**
          * Get the y position of the button.
+         *
          * @return The y position.
          */
-        public int getYPos(){
+        public int getYPos() {
             return yPos;
         }
     }
@@ -74,24 +82,25 @@ public class GameStateLogic {
      */
     public String btnMouseClicked(MyButton clickedButton) {
 
+        //One would hope that the GUI implementing this class would have run the check on its end, but there is no way to know
         if (!clickedButton.isPressed && !gameIsOver) {
             clickedButton.isPressed = true;
 
             //set the value on the logicalBoard
             logicalBoard[clickedButton.getYPos()][clickedButton.getXPos()] = isXTurn ? 1 : -1;
 
-            //check if game is over and update state if so
+            //check if game is over and update the relevant state if so
             gameOverHandler(clickedButton);
 
             //update turn state
             turnCounter++;
             isXTurn = !isXTurn;
 
-            //update the text in the clicked button
+            //update the text in the clicked button.
             return !isXTurn ? "X" : "O";
         }
 
-        //Ideally, clicking a disabled button would do nothing, but the responsibility for checking that is delegated too far down stream
+        //Ideally, clicking a disabled button would do nothing, but the responsibility for checking that is delegated too far up stream
         return clickedButton.getText();
     }
 
@@ -114,9 +123,10 @@ public class GameStateLogic {
     }
 
     /**
-     * Updates the label text based on the game state.
+     * Updates the label text based on the current turn, unless the game has ended
+     * in which case the gameOverLegend is returned instead.
      *
-     * @return The text to be displayed on the label.
+     * @return The text to be displayed on the information label.
      */
     public String lblUpdater() {
         if (gameIsOver) {
@@ -130,7 +140,7 @@ public class GameStateLogic {
      *
      * @return True if the game is over, false otherwise.
      */
-    public boolean gameIsOverGetter() {
+    public boolean getGameIsOver() {
         return gameIsOver;
     }
 }
