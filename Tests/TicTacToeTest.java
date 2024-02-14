@@ -7,7 +7,6 @@ import static org.junit.Assert.*;
 
 class TicTacToeTest {
     GameStateLogic testingGame;
-    GameStateLogic.MyButton testingButton;
     final int HEIGHT = 3;
     final int LENGTH = 3;
 
@@ -20,7 +19,16 @@ class TicTacToeTest {
     void turnTracker(){
         Assertions.assertTrue(testingGame.getXTurn());
         turnTaker(0,0);
-        Assertions.assertFalse(testingGame.getXTurn());
+        Assertions.assertFalse(testingGame.getXTurn(), "turn isn't updating after a click");
+    }
+
+    @Test
+    void turnTracker_Edge_doubleClick(){
+        GameStateLogic.MyButton testingButton = new GameStateLogic.MyButton(0, 0);
+
+        testingGame.btnMouseClicked(testingButton);
+        testingGame.btnMouseClicked(testingButton);
+        Assertions.assertFalse(testingGame.getXTurn(), "clicking the same button twice is updating the state. It should not.");
     }
 
     @Test
@@ -90,25 +98,6 @@ class TicTacToeTest {
 
         Assertions.assertTrue(testingGame.getGameIsOver(), "A cats eye is not being correctly scored by the game over handler");
         Assertions.assertEquals("Game is over, cat's eye", testingGame.lblUpdater(), "Cat's Eye reflected properly in the lblUpdater");
-    }
-
-    @Test
-    void btnMouseClicked_Normal() {
-        GameStateLogic.MyButton testingButton = new GameStateLogic.MyButton(0, 0);
-
-        //testingGame
-    }
-
-    @Test
-    void lblUpdater() {
-    }
-
-    @Test
-    void gameIsOverGetter() {
-    }
-
-    @Test
-    void isGameOver() {
     }
 
     void setSimpleBoard(int choice) {
