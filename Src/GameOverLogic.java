@@ -4,6 +4,8 @@
  */
 public class GameOverLogic {
 
+    private static int numOfEndGameConditions = 4;
+
     /**
      * Determines if the game is over based on the current state of the board.
      *
@@ -13,13 +15,25 @@ public class GameOverLogic {
      * @return True if the game is over, false otherwise.
      * @throws IllegalArgumentException If the clicked value remains 0, indicating it has not been set properly.
      */
-    public static boolean isGameOver(int[][] logicalBoard, int xPos, int yPos) {
+    public static int isGameOver(int[][] logicalBoard, int xPos, int yPos) {
+        int returnVal = 0;
+
         int searchValue = logicalBoard[yPos][xPos];
         if (searchValue == 0)
             throw new IllegalArgumentException("If the clicked value remains 0, it has not been set properly");
 
+        returnVal = rankCheck(logicalBoard, yPos, searchValue);
 
-        return rankCheck(logicalBoard, yPos, searchValue) || fileCheck(logicalBoard, xPos, searchValue) || diagonalCheck(logicalBoard, xPos, yPos, searchValue);
+        if(returnVal == 0) returnVal = fileCheck(logicalBoard, xPos, searchValue);
+
+        //diagonal check loops should only check until the smaller of the two values
+        int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
+
+        if(returnVal == 0) returnVal = dexterCheck(logicalBoard, searchValue, loopLimit);
+
+        if(returnVal == 0) returnVal = sinisterCheck(logicalBoard, searchValue, loopLimit);
+
+        return returnVal;
     }
 
     /**
@@ -30,12 +44,12 @@ public class GameOverLogic {
      * @param searchValue  The value of the last move.
      * @return True if there is a win condition in the same row, false otherwise.
      */
-    private static boolean rankCheck(int[][] logicalBoard, int yPos, int searchValue) {
-        boolean gameIsOver = true;
+    private static int rankCheck(int[][] logicalBoard, int yPos, int searchValue) {
+        int gameIsOver = 1;
 
         for (int i = 0; i < logicalBoard[0].length; i++) {
             if (logicalBoard[yPos][i] != searchValue) {
-                gameIsOver = false;
+                gameIsOver = 0;
                 break;
             }
         }
@@ -51,12 +65,12 @@ public class GameOverLogic {
      * @param searchValue  The value of the last move.
      * @return True if there is a win condition in the same column, false otherwise.
      */
-    private static boolean fileCheck(int[][] logicalBoard, int xPos, int searchValue) {
-        boolean gameIsOver = true;
+    private static int fileCheck(int[][] logicalBoard, int xPos, int searchValue) {
+        int gameIsOver = 2;
 
         for (int[] row : logicalBoard) {
             if (row[xPos] != searchValue) {
-                gameIsOver = false;
+                gameIsOver = 0;
                 break;
             }
         }
@@ -73,18 +87,19 @@ public class GameOverLogic {
      * @param searchValue  The value of the last move.
      * @return True if there is a win condition in any diagonal, false otherwise.
      */
-    private static boolean diagonalCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
-        boolean returnVal = false;
+    private static int diagonalCheck(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
+        int returnVal = 0;
 
         //diagonal check loops should only check until the smaller of the two values
         int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
 
         //check for if clicked value is on the descending dexter
         if (xPos == yPos) returnVal = dexterCheck(logicalBoard, searchValue, loopLimit);
-            //check for if clicked value is on the descending sinister
-        if (xPos + yPos == logicalBoard[0].length - 1) returnVal = returnVal || sinisterCheck(logicalBoard, searchValue, loopLimit);
+        //check for if clicked value is on the descending sinister
+        if (xPos + yPos == logicalBoard[0].length - 1)
+            returnVal = returnVal + sinisterCheck(logicalBoard, searchValue, loopLimit);
 
-            //The ascendant checks are only necessary if the board is not a square. The assignment seems to assume the board is always 3, 3
+        //The ascendant checks are only necessary if the board is not a square. The assignment seems to assume the board is always 3, 3
 //       else if (buttons.length != buttons[0].length &&)
 //            return dexterAscendantCheck(logicalBoard, searchValue, loopLimit)
 //       else if (buttons.length != buttons[0].length &&)
@@ -101,13 +116,13 @@ public class GameOverLogic {
      * @param loopLimit    The limit for the loop iteration.
      * @return True if there is a win condition in the main diagonal, false otherwise.
      */
-    private static boolean dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        boolean gameIsOver = true;
+    private static int dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
+        int gameIsOver = 3;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
             if (logicalBoard[i][i] != searchValue) {
-                gameIsOver = false;
+                gameIsOver = 0;
                 break;
             }
         }
@@ -123,14 +138,14 @@ public class GameOverLogic {
      * @param loopLimit    The limit for the loop iteration.
      * @return True if there is a win condition in the secondary diagonal, false otherwise.
      */
-    private static boolean sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        boolean gameIsOver = true;
+    private static int sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
+        int gameIsOver = 4;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
             //checks from top down, that is, from top left back and down.
             if (logicalBoard[i][logicalBoard[0].length - 1 - i] != searchValue) {
-                gameIsOver = false;
+                gameIsOver = 0;
                 break;
             }
         }

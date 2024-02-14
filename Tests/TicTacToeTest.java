@@ -9,6 +9,7 @@ class TicTacToeTest {
     GameStateLogic testingGame;
     final int HEIGHT = 3;
     final int LENGTH = 3;
+    int state;
 
     @BeforeEach
     void setUp() {
@@ -20,6 +21,7 @@ class TicTacToeTest {
         Assertions.assertTrue(testingGame.getXTurn());
         turnTaker(0,0);
         Assertions.assertFalse(testingGame.getXTurn(), "turn isn't updating after a click");
+        Assertions.assertEquals("It is player O's turn", testingGame.lblUpdater(), "lblUpdater is changing the lbl despite game not ending");
     }
 
     @Test
@@ -29,6 +31,7 @@ class TicTacToeTest {
         testingGame.btnMouseClicked(testingButton);
         testingGame.btnMouseClicked(testingButton);
         Assertions.assertFalse(testingGame.getXTurn(), "clicking the same button twice is updating the state. It should not.");
+        Assertions.assertEquals("It is player O's turn", testingGame.lblUpdater(), "lblUpdater is changing the lbl despite game not ending");
     }
 
     @Test
@@ -41,37 +44,41 @@ class TicTacToeTest {
 
     @Test
     void rankWin() {
-        setSimpleBoard(1);
+        state = 1;
+        setSimpleBoard(state);
         testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
 
-        Assertions.assertTrue(testingGame.getGameIsOver(), "A rank win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameState(), "A rank win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Rank win isn't reflected properly in the lblUpdater");
     }
 
     @Test
     void fileWin() {
-        setSimpleBoard(2);
+        state = 2;
+        setSimpleBoard(state);
         testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
 
-        Assertions.assertTrue(testingGame.getGameIsOver(), "A file win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameState(), "A file win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "File win isn't reflected properly in the lblUpdater");
     }
 
     @Test
     void dexterWin() {
-        setSimpleBoard(3);
+        state = 3;
+        setSimpleBoard(state);
         testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
 
-        Assertions.assertTrue(testingGame.getGameIsOver(), "A dexter win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameState(), "A dexter win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Dexter win isn't reflected properly in the lblUpdater");
     }
 
     @Test
     void sinisterWin() {
-        setSimpleBoard(4);
+        state = 4;
+        setSimpleBoard(state);
         testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
 
-        Assertions.assertTrue(testingGame.getGameIsOver(), "A sinister win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameState(), "A sinister win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Sinister win isn't reflected properly in the lblUpdater");
     }
 
@@ -146,7 +153,7 @@ class TicTacToeTest {
                 testingGame.testingBoardAccepter(passingBoard);
                 break;
             //Cats eye case
-            case 5:
+            case -1:
                 //The board for the cat's eye should be constructed in the test itself.
                 // The case is preserved only to agree with the game state tracker in the State Logic.
                 break;

@@ -6,12 +6,16 @@ import javax.swing.*;
 public class GameStateLogic {
     //Message to be returned to the lblUpdater if the game ends
     private String gameOverLegend = "Something has gone horribly wrong if this is displayed";
+
+    //0 is an ongoing game. 1 is a rank win, 2 a file win. 3 is a dexter win, and 4 is sinister. -1 is a cats eye.
+    private int gameState = 0;
+
     //Track which player's turn it currently is
     private Boolean isXTurn = true;
-    //Track if the game has ended
-    private Boolean gameIsOver = false;
+
     //Number of turns that have elapsed under the current logical instance
     private int turnCounter = 0;
+
     //Logical analogue of the GUI board
     private int[][] logicalBoard;
 
@@ -83,7 +87,7 @@ public class GameStateLogic {
     public String btnMouseClicked(MyButton clickedButton) {
 
         //One would hope that the GUI implementing this class would have run the check on its end, but there is no way to know
-        if (!clickedButton.isPressed && !gameIsOver) {
+        if (!clickedButton.isPressed && gameState == 0) {
             clickedButton.isPressed = true;
 
             //set the value on the logicalBoard
@@ -111,14 +115,14 @@ public class GameStateLogic {
      */
     public void gameOverHandler(MyButton clickedButton) {
         //check if someone has a win condition
-        gameIsOver = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
+        gameState = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
 
         //if someone has a win condition set the win tag.
-        if (gameIsOver) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
+        if (gameState != 0) gameOverLegend = "Game is over, " + (isXTurn ? "X" : "O") + " won";
             //check if this turn fills the board, and call a cat's eye if it is.
         else if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1) {
             gameOverLegend = "Game is over, cat's eye";
-            gameIsOver = true;
+            gameState = -1;
         }
     }
 
@@ -129,10 +133,10 @@ public class GameStateLogic {
      * @return The text to be displayed on the information label.
      */
     public String lblUpdater() {
-        if (gameIsOver) {
+        if (gameState != 0) {
             return gameOverLegend;
         }
-        return "It is player " + (isXTurn ? "Xes'" : "O's") + " turn";
+        return "It is player " + (isXTurn ? "X's" : "O's") + " turn";
     }
 
     /**
@@ -141,7 +145,7 @@ public class GameStateLogic {
      * @return True if the game is over, false otherwise.
      */
     public boolean getGameIsOver() {
-        return gameIsOver;
+        return gameState != 0;
     }
 
     void testingBoardAccepter(int[][] acceptedBoard){
@@ -150,5 +154,9 @@ public class GameStateLogic {
 
     Boolean getXTurn() {
         return isXTurn;
+    }
+
+    int getGameState(){
+        return gameState;
     }
 }
