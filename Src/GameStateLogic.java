@@ -14,7 +14,7 @@ public class GameStateLogic {
     private int turnCounter = 0;
 
     //Logical analogue of the GUI board
-    private int[][] logicalBoard;
+    private final int[][] logicalBoard;
 
     /**
      * Constructs a new game state logic object.
@@ -137,10 +137,6 @@ public class GameStateLogic {
      */
     public boolean getGameIsOver() {
         return gameState != 0;
-    }
-
-    void testingBoardAccepter(int[][] acceptedBoard) {
-        logicalBoard = acceptedBoard;
     }
 
     Boolean getXTurn() {

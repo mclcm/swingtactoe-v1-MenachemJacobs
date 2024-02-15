@@ -102,14 +102,56 @@ public class TicTacToe extends JFrame {
         GameStateLogic.MyButton clickedButton = (GameStateLogic.MyButton) ae.getSource();
 
         //if game is not over and the current button has not been clicked before, update text and label
-        if(!gameState.getGameIsOver() && !clickedButton.isPressed) {
+        if(gameState.getGameState() == 0 && !clickedButton.isPressed) {
             clickedButton.setEnabled(false);
             clickedButton.setText(gameState.btnMouseClicked(clickedButton));
 
             //update lbl, game may be over and need to reflect that
             lbl.setText(gameState.lblUpdater());
-        }
 
+            //game has ended by means other than cats eye
+            if(gameState.getGameState() > 0){
+                buttonEndGameRepaint(clickedButton, gameState.getGameState());
+            }
+        }
+    }
+
+    private void buttonEndGameRepaint(GameStateLogic.MyButton clickedButton, int endGameCondition){
+        int loopLimit = Math.min(buttons.length, buttons[0].length);
+        switch (endGameCondition){
+            //1 is a rank win.
+            case 1:
+                for (int i = 0; i < buttons[0].length; i++) {
+                    JButton btnToSet = buttons[clickedButton.getYPos()][i];
+                    btnToSet.setEnabled(true);
+                    btnToSet.setBackground(Color.orange);
+                }
+                break;
+            //2 a file win.
+            case 2:
+                for (JButton[] button : buttons) {
+                    JButton btnToSet = button[clickedButton.getXPos()];
+                    btnToSet.setEnabled(true);
+                    btnToSet.setBackground(Color.orange);
+                }
+                break;
+            //3 is a dexter win.
+            case 3:
+                for (int i = 0; i < loopLimit; i++) {
+                    JButton btnToSet = buttons[i][i];
+                    btnToSet.setEnabled(true);
+                    btnToSet.setBackground(Color.orange);
+                }
+                break;
+            //4 is sinister.
+            case 4:
+                for (int i = 0; i < loopLimit; i++) {
+                    JButton btnToSet = buttons[i][buttons[0].length - 1 - i];
+                    btnToSet.setEnabled(true);
+                    btnToSet.setBackground(Color.orange);
+                }
+                break;
+        }
     }
 
     /**
