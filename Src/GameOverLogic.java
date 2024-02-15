@@ -149,7 +149,7 @@ public class GameOverLogic {
      * @return True if there is a win condition in the secondary diagonal, false otherwise.
      */
     private static int sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = 5;
+        int gameIsOver = 7;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
@@ -164,10 +164,32 @@ public class GameOverLogic {
     }
 
     private static int dexterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        return 0;
+        int gameIsOver = 11;
+
+        //should count until either the rows or columns run out
+        for (int i = 0; i < loopLimit; i++) {
+            //checks from top down, that is, from top left back and down.
+            if (logicalBoard[logicalBoard.length - 1 - i][i] != searchValue) {
+                gameIsOver = 1;
+                break;
+            }
+        }
+
+        return gameIsOver;
     }
 
     private static int sinisterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit){
-        return 0;
+        int gameIsOver = 13;
+
+        //should count until either the rows or columns run out
+        for (int i = 0; i < loopLimit; i++) {
+            //checks from top down, that is, from top left back and down.
+            if (logicalBoard[logicalBoard.length - 1 - i][logicalBoard[0].length - 1 - i] != searchValue) {
+                gameIsOver = 1;
+                break;
+            }
+        }
+
+        return gameIsOver;
     }
 }

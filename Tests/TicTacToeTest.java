@@ -1,9 +1,6 @@
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.Assert.*;
 
 class TicTacToeTest {
     GameStateLogic testingGame;
@@ -44,8 +41,8 @@ class TicTacToeTest {
 
     @Test
     void rankWin() {
-        state = 1;
-        setSimpleBoard(state);
+        state = 2;
+        setBoard(state);
         testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A rank win is not being scored correctly by the game over handler");
@@ -54,8 +51,8 @@ class TicTacToeTest {
 
     @Test
     void fileWin() {
-        state = 2;
-        setSimpleBoard(state);
+        state = 3;
+        setBoard(state);
         testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A file win is not being scored correctly by the game over handler");
@@ -64,8 +61,8 @@ class TicTacToeTest {
 
     @Test
     void dexterWin() {
-        state = 3;
-        setSimpleBoard(state);
+        state = 5;
+        setBoard(state);
         testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A dexter win is not being scored correctly by the game over handler");
@@ -74,8 +71,8 @@ class TicTacToeTest {
 
     @Test
     void sinisterWin() {
-        state = 4;
-        setSimpleBoard(state);
+        state = 7;
+        setBoard(state);
         testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A sinister win is not being scored correctly by the game over handler");
@@ -85,13 +82,13 @@ class TicTacToeTest {
     @Test
     void catsEye() {
         state = -1;
-        setSimpleBoard(state);
+        setBoard(state);
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A cats eye is not being correctly scored by the game over handler");
         Assertions.assertEquals("Game is over, cat's eye", testingGame.lblUpdater(), "Cat's Eye reflected properly in the lblUpdater");
     }
 
-    void setSimpleBoard(int choice) {
+    void setBoard(int choice) {
         int[][] passingBoard = new int[3][3];
 
         switch (choice) {
@@ -108,7 +105,7 @@ class TicTacToeTest {
 
                 break;
             //rank win case
-            case 1:
+            case 2:
                 //x
                 turnTaker(0,1);
                 //y
@@ -121,7 +118,7 @@ class TicTacToeTest {
                 turnTaker(1,1);
                 break;
             //file win case
-            case 2:
+            case 3:
                 //x
                 turnTaker(1,0);
                 //y
@@ -134,7 +131,7 @@ class TicTacToeTest {
                 turnTaker(1,1);
                 break;
             //dexter win case
-            case 3:
+            case 5:
                 //x
                 turnTaker(0,0);
                 //y
@@ -147,7 +144,7 @@ class TicTacToeTest {
                 turnTaker(1,1);
                 break;
             //sinister win case
-            case 4:
+            case 7:
                 //x
                 turnTaker(2,0);
                 //y

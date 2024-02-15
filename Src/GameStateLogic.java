@@ -4,7 +4,9 @@ import javax.swing.*;
  * This class manages the game state logic of the Tic Tac Toe game.
  */
 public class GameStateLogic {
-    //0 is an ongoing game. 2 is a rank win, 3 a file win. 5 is a dexter win, and 7 is sinister. -1 is a cats eye.
+    //0 is an ongoing game. 2 is a rank win, 3 a file win. 5 is a dexter win, and 7 is sinister.
+    // The special diagonals are 11 for DexterAscendant and 13 for SinisterAscendant.
+    // -1 is a cats eye.
     private int gameState = 0;
 
     //Track which player's turn it currently is
