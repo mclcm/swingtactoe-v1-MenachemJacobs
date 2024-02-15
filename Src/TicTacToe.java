@@ -15,8 +15,8 @@ public class TicTacToe extends JFrame {
     JButton[][] buttons;
     JButton restartButton;
 
-    private final int LENGTH = 4;
-    private final int HEIGHT = 4;
+    private final int LENGTH = 3;
+    private final int HEIGHT = 3;
 
     static final int RANK_WIN = 2;
     static final int FILE_WIN = 3;
@@ -127,11 +127,11 @@ public class TicTacToe extends JFrame {
     }
 
     private void buttonEndGameRepaint(GameStateLogic.MyButton clickedButton, int endGameCondition) {
-        int loopLimit = Math.min(buttons.length, buttons[0].length);
+        int loopLimit = Math.min(HEIGHT, LENGTH);
 
         //2 is a rank win.
         if (endGameCondition % RANK_WIN == 0) {
-            for (int i = 0; i < buttons[0].length; i++) {
+            for (int i = 0; i < LENGTH; i++) {
                 dryPaintBtn(buttons[clickedButton.getYPos()][i]);
             }
         }
@@ -153,7 +153,7 @@ public class TicTacToe extends JFrame {
         //7 is sinister.
         if (endGameCondition % SINISTER_WIN == 0) {
             for (int i = 0; i < loopLimit; i++) {
-                dryPaintBtn(buttons[i][buttons[0].length - 1 - i]);
+                dryPaintBtn(buttons[i][LENGTH - 1 - i]);
             }
         }
 
@@ -161,14 +161,14 @@ public class TicTacToe extends JFrame {
             //11 is dexterAscendant.
             if (endGameCondition % DEXTER_ASCENDANT_WIN == 0) {
                 for (int i = 0; i < loopLimit; i++) {
-                    dryPaintBtn(buttons[buttons.length - 1 - i][i]);
+                    dryPaintBtn(buttons[HEIGHT - 1 - i][i]);
                 }
             }
 
             //13 is sinisterAscendant.
             if (endGameCondition % SINISTER_ASCENDANT__WIN == 0) {
                 for (int i = 0; i < loopLimit; i++) {
-                    dryPaintBtn(buttons[buttons.length - 1 - i][buttons[0].length - 1 - i]);
+                    dryPaintBtn(buttons[HEIGHT - 1 - i][LENGTH - 1 - i]);
                 }
             }
         }
