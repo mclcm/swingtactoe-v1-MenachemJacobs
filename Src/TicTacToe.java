@@ -30,6 +30,8 @@ public class TicTacToe extends JFrame {
      * Constructs a new TicTacToe game.
      */
     public TicTacToe() {
+        if(HEIGHT < 1 || LENGTH < 1) throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
+
         initGUI();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +67,6 @@ public class TicTacToe extends JFrame {
      * Custom JButton class with additional properties.
      */
     public static class MyButton extends JButton {
-        //TODO: put back in GUI
 
         //xPos of this button. Analogous to this button's Length position in the board
         private final int xPos;
@@ -158,23 +159,33 @@ public class TicTacToe extends JFrame {
         //if game is not over and the current button has not been clicked before, update text and label
         if (gameState.getGameState() == 0 && !clickedButton.isPressed) {
             clickedButton.setEnabled(false);
+
+            // Update text on the clicked button and handle game state logic
             clickedButton.setText(gameState.btnMouseClicked(clickedButton));
 
-            //update lbl, game may be over and need to reflect that
+            // Update label text to reflect the current game state
             lbl.setText(gameState.lblUpdater());
 
             //check if game has ended by means other than cats eye
             if (gameState.getGameState() > 0) {
+                // Repaint buttons based on the end game condition
                 buttonEndGameRepaint(clickedButton, gameState.getGameState());
             }
         }
     }
 
+    /**
+     * Repaints the buttons involved in the end game based on the given end game condition.
+     *
+     * @param clickedButton    The button that was clicked to trigger the end game condition.
+     * @param endGameCondition The condition indicating the type of win (rank, file, diagonal, and/or the ascendants).
+     */
     private void buttonEndGameRepaint(MyButton clickedButton, int endGameCondition) {
         int loopLimit = Math.min(HEIGHT, LENGTH);
 
-        //2 is a rank win.
+        //2 is the code for a rank win.
         if (endGameCondition % RANK_WIN == 0) {
+            // Rank win: repaint buttons in the same row
             for (int i = 0; i < LENGTH; i++) {
                 dryPaintBtn(buttons[clickedButton.getYPos()][i]);
             }
@@ -182,35 +193,40 @@ public class TicTacToe extends JFrame {
 
         //3 a file win.
         if (endGameCondition % FILE_WIN == 0) {
+            // File win: repaint buttons in the same column
             for (JButton[] button : buttons) {
                 dryPaintBtn(button[clickedButton.getXPos()]);
             }
         }
 
-        //5 is a dexter win.
+        //5 is the code for a dexter win.
         if (endGameCondition % DEXTER_WIN == 0) {
+            // Dexter win: repaint buttons in the main diagonal
             for (int i = 0; i < loopLimit; i++) {
                 dryPaintBtn(buttons[i][i]);
             }
         }
 
-        //7 is sinister.
+        //7 is the code for a sinister win.
         if (endGameCondition % SINISTER_WIN == 0) {
+            // Sinister win: repaint buttons in the secondary diagonal
             for (int i = 0; i < loopLimit; i++) {
                 dryPaintBtn(buttons[i][LENGTH - 1 - i]);
             }
         }
 
-        if(HEIGHT != LENGTH){
-            //11 is dexterAscendant.
+        if (HEIGHT != LENGTH) {
+            //11 is the code for a dexterAscendant win.
             if (endGameCondition % DEXTER_ASCENDANT_WIN == 0) {
+                // Dexter Ascendant win: repaint buttons in the ascending diagonal from bottom left to top right
                 for (int i = 0; i < loopLimit; i++) {
                     dryPaintBtn(buttons[HEIGHT - 1 - i][i]);
                 }
             }
 
-            //13 is sinisterAscendant.
+            //13 is the code for a sinisterAscendant win.
             if (endGameCondition % SINISTER_ASCENDANT__WIN == 0) {
+                // Sinister Ascendant win: repaint buttons in the ascending diagonal from top left to bottom right
                 for (int i = 0; i < loopLimit; i++) {
                     dryPaintBtn(buttons[HEIGHT - 1 - i][LENGTH - 1 - i]);
                 }
@@ -218,13 +234,20 @@ public class TicTacToe extends JFrame {
         }
     }
 
-    private void dryPaintBtn(JButton btnToPaint){
+    /**
+     * Repaints the given button to indicate its state during the end game.
+     *
+     * @param btnToPaint The button to repaint.
+     */
+    private void dryPaintBtn(JButton btnToPaint) {
         btnToPaint.setEnabled(true);
         btnToPaint.setBackground(Color.orange);
     }
 
     /**
-     * Restarts the game by...
+     * Restarts the game by clearing the button panel,
+     * initializing new buttons, handling resize,
+     * and resetting the game state.
      */
     private void restartGame() {
         buttonPanel.removeAll();
@@ -232,25 +255,26 @@ public class TicTacToe extends JFrame {
         initButtons();
         handleResize();
 
-        buttonPanel.revalidate();
-        buttonPanel.repaint();
-
+        // Reset game state
         gameState = new GameStateLogic(HEIGHT, LENGTH);
     }
 
     /**
-     * Handles resizing of the components.
+     * Handles resizing of the buttons to fit within the updated panel dimensions.
      */
     private void handleResize() {
+        // Calculate new dimensions for buttons based on panel size and number of buttons
         int buttonWidth = buttonPanel.getWidth() / LENGTH;
         int buttonHeight = buttonPanel.getHeight() / HEIGHT;
 
+        // Resize each button accordingly
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < LENGTH; j++) {
                 buttons[i][j].setPreferredSize(new Dimension(buttonWidth, buttonHeight));
             }
         }
 
+        // Refresh button panel
         buttonPanel.revalidate();
         buttonPanel.repaint();
     }

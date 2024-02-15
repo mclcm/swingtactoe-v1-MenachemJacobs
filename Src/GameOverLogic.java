@@ -4,15 +4,23 @@
  */
 public class GameOverLogic {
 
-    private static int numOfEndGameConditions = 4;
-
     /**
      * Determines if the game is over based on the current state of the board.
+     * Each win condition has a distinctive prime return value, which is multiplied into the global return.
+     * This ensures that each possible return state of the class is unique.
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param xPos         The x position of the last move.
      * @param yPos         The y position of the last move.
-     * @return int returnVal representing the game state.
+     * @return An integer representing the game state:
+     * - 0 if the game is not ended.
+     * - 2 for a rank win.
+     * - 3 for a file win.
+     * - 5 for a main diagonal win.
+     * - 7 for a secondary diagonal win.
+     * - 11 for a diagonal win ascending from bottom left to top right.
+     * - 13 for a diagonal win ascending from top left to bottom right.
+     * or some product their of if more than one condition is met
      * @throws IllegalArgumentException If the clicked value remains 0, indicating it has not been set properly.
      */
     public static int isGameOver(int[][] logicalBoard, int xPos, int yPos) {
@@ -26,52 +34,66 @@ public class GameOverLogic {
 
         returnVal *= fileCheck(logicalBoard, xPos, searchValue);
 
-        returnVal *= diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
+        //diagonals only run on every other button, resulting in a simple check for tiles that should trigger the diagonal checker
+        if ((xPos + yPos) % 2 == 0) returnVal *= diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
 
         return returnVal == 1 ? 0 : returnVal;
     }
 
     /**
-     * Checks the main diagonals for a win condition.
+     * Checks the main and secondary diagonals for a win condition.
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param xPos         The x position of the last move.
      * @param yPos         The y position of the last move.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
-     * @return int returnVal representing the game state.
+     * @return An integer representing the game state:
+     * - 1 if no win condition is found.
+     * - 5 for a main diagonal win.
+     * - 7 for a secondary diagonal win.
+     * - 11 for a diagonal win ascending from bottom left to top right.
+     * - 13 for a diagonal win ascending from top left to bottom right.
+     * or some product their of if more than one condition is met
      */
-    private static int diagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue){
+    private static int diagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
         int returnVal = 1;
 
-        //diagonal check loops should only check until the smaller of the two values
+        //diagonal check loops should only check until the smallest of Height or Length.
         int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
 
         if (xPos == yPos) returnVal *= dexterCheck(logicalBoard, searchValue, loopLimit);
 
         if (xPos + yPos == logicalBoard[0].length - 1) returnVal *= sinisterCheck(logicalBoard, searchValue, loopLimit);
 
-        //if nothing has yet been found, and the board is not square, the last resort is to check the more obscure diagonals
-        if (logicalBoard.length != logicalBoard[0].length)  returnVal *= obscureDiagonalsChecker(logicalBoard, xPos, yPos, searchValue, loopLimit);
+        //if the board is not square, the more obscure diagonals must also be checked for a win
+        if (logicalBoard.length != logicalBoard[0].length)
+            returnVal *= obscureDiagonalsChecker(logicalBoard, xPos, yPos, searchValue, loopLimit);
 
         return returnVal;
     }
 
     /**
-     * Checks the obscure diagonals for a win condition.
+     * Checks the obscure diagonals for a win condition. Only implemented in games with non-square boards
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param xPos         The x position of the last move.
      * @param yPos         The y position of the last move.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @param loopLimit    The loop limit to prevent out-of-bounds access.
-     * @return int returnVal representing the game state.
+     * @return An integer representing the game state:
+     * - 1 if no win condition is found.
+     * - 11 for a diagonal win ascending from bottom left to top right.
+     * - 13 for a diagonal win ascending from top left to bottom right.
+     * or the product of those if both conditions are met.
      */
-    private static int obscureDiagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue, int loopLimit){
+    private static int obscureDiagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue, int loopLimit) {
         int returnVal = 1;
 
-        if((xPos + yPos == logicalBoard.length - 1)) returnVal *= dexterAscendantCheck(logicalBoard, searchValue, loopLimit);
+        if ((xPos + yPos == logicalBoard.length - 1))
+            returnVal *= dexterAscendantCheck(logicalBoard, searchValue, loopLimit);
 
-        if(xPos - yPos == logicalBoard[0].length - logicalBoard.length) returnVal *= sinisterAscendantCheck(logicalBoard, searchValue, loopLimit);
+        if (xPos - yPos == logicalBoard[0].length - logicalBoard.length)
+            returnVal *= sinisterAscendantCheck(logicalBoard, searchValue, loopLimit);
 
         return returnVal;
     }
@@ -81,8 +103,10 @@ public class GameOverLogic {
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param yPos         The y position of the last move.
-     * @param searchValue  The value of the last move.
-     * @return True if there is a win condition in the same row, false otherwise.
+     * @param searchValue  The value to search for (either 1 for X or -1 for O).
+     * @return An integer representing the game state:
+     * - 1 if no win condition is found.
+     * - 2 if there is a win condition in the same row.
      */
     private static int rankCheck(int[][] logicalBoard, int yPos, int searchValue) {
         int gameIsOver = 2;
@@ -102,8 +126,10 @@ public class GameOverLogic {
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param xPos         The x position of the last move.
-     * @param searchValue  The value of the last move.
-     * @return True if there is a win condition in the same column, false otherwise.
+     * @param searchValue  The value to search for (either 1 for X or -1 for O).
+     * @return An integer representing the game state:
+     * - 1 if no win condition is found.
+     * - 3 if there is a win condition in the same column.
      */
     private static int fileCheck(int[][] logicalBoard, int xPos, int searchValue) {
         int gameIsOver = 3;
@@ -122,9 +148,12 @@ public class GameOverLogic {
      * Checks if there is a win condition in the main diagonal (descending dexter).
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
-     * @param searchValue  The value of the last move.
+     * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @param loopLimit    The limit for the loop iteration.
-     * @return True if there is a win condition in the main diagonal, false otherwise.
+     * @return An integer representing the game state:
+     * - 1 if no win condition is found.
+     * - 5 if there is a win condition in the main diagonal.
+
      */
     private static int dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = 5;
@@ -144,9 +173,12 @@ public class GameOverLogic {
      * Checks if there is a win condition in the secondary diagonal (descending sinister).
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
-     * @param searchValue  The value of the last move.
+     * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @param loopLimit    The limit for the loop iteration.
-     * @return True if there is a win condition in the secondary diagonal, false otherwise.
+     * @return An integer representing the game state:
+     * - 1 if no win condition is found.
+     * - 7 if there is a win condition in the secondary diagonal.
+
      */
     private static int sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = 7;
@@ -163,6 +195,17 @@ public class GameOverLogic {
         return gameIsOver;
     }
 
+    /**
+     * Checks if there is a win condition in the diagonal ascending from bottom left to top right (ascending dexter).
+     * Only called in the event that the game board is not square
+     *
+     * @param logicalBoard The logical representation of the Tic Tac Toe board.
+     * @param searchValue  The value to search for (either 1 for X or -1 for O).
+     * @param loopLimit    The limit for the loop iteration.
+     * @return An integer representing the game state:
+     * - 1 if no win condition is found.
+     * - 11 if there is a win condition in the diagonal ascending from bottom left to top right.
+     */
     private static int dexterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = 11;
 
@@ -178,7 +221,18 @@ public class GameOverLogic {
         return gameIsOver;
     }
 
-    private static int sinisterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit){
+    /**
+     * Checks if there is a win condition in the diagonal ascending from top left to bottom right (ascending sinister).
+     * Only called in the event that the game board is not square
+     *
+     * @param logicalBoard The logical representation of the Tic Tac Toe board.
+     * @param searchValue  The value to search for (either 1 for X or -1 for O).
+     * @param loopLimit    The limit for the loop iteration.
+     * @return An integer representing the game state:
+     * - 1 if no win condition is found.
+     * - 13 if there is a win condition in the diagonal ascending from top left to bottom right.
+     */
+    private static int sinisterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = 13;
 
         //should count until either the rows or columns run out

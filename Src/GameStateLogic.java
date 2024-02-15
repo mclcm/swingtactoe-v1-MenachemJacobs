@@ -5,7 +5,7 @@ import javax.swing.*;
  */
 public class GameStateLogic {
     //0 is an ongoing game. 2 is a rank win, 3 a file win. 5 is a dexter win, and 7 is sinister.
-    // The special diagonals are 11 for DexterAscendant and 13 for SinisterAscendant.
+    // The special diagonals (for game with non-square boards) are 11 for DexterAscendant and 13 for SinisterAscendant.
     // -1 is a cats eye.
     private int gameState = 0;
 
@@ -25,6 +25,8 @@ public class GameStateLogic {
      * @param length The length of the game board.
      */
     GameStateLogic(int height, int length) {
+        if(height < 1 || length < 1) throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
+
         logicalBoard = new int[height][length];
     }
 
