@@ -23,7 +23,7 @@ class TicTacToeTest {
 
     @Test
     void turnTracker_Edge_doubleClick(){
-        GameStateLogic.MyButton testingButton = new GameStateLogic.MyButton(0, 0);
+        TicTacToe.MyButton testingButton = new TicTacToe.MyButton(0, 0);
 
         testingGame.btnMouseClicked(testingButton);
         testingGame.btnMouseClicked(testingButton);
@@ -43,7 +43,7 @@ class TicTacToeTest {
     void rankWin() {
         state = 2;
         setBoard(state);
-        testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
+        testingGame.gameOverHandler(new TicTacToe.MyButton(1, 1));
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A rank win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Rank win isn't reflected properly in the lblUpdater");
@@ -53,7 +53,7 @@ class TicTacToeTest {
     void fileWin() {
         state = 3;
         setBoard(state);
-        testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
+        testingGame.gameOverHandler(new TicTacToe.MyButton(1, 1));
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A file win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "File win isn't reflected properly in the lblUpdater");
@@ -63,7 +63,7 @@ class TicTacToeTest {
     void dexterWin() {
         state = 5;
         setBoard(state);
-        testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
+        testingGame.gameOverHandler(new TicTacToe.MyButton(1, 1));
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A dexter win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Dexter win isn't reflected properly in the lblUpdater");
@@ -73,7 +73,7 @@ class TicTacToeTest {
     void sinisterWin() {
         state = 7;
         setBoard(state);
-        testingGame.gameOverHandler(new GameStateLogic.MyButton(1, 1));
+        testingGame.gameOverHandler(new TicTacToe.MyButton(1, 1));
 
         Assertions.assertEquals(state, testingGame.getGameState(), "A sinister win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Sinister win isn't reflected properly in the lblUpdater");
@@ -89,7 +89,6 @@ class TicTacToeTest {
     }
 
     void setBoard(int choice) {
-        int[][] passingBoard = new int[3][3];
 
         switch (choice) {
             //game not over case
@@ -178,12 +177,11 @@ class TicTacToeTest {
                 turnTaker(2,0);
                 break;
             default:
-                System.out.println("Invalid choice");
-                break;
+                throw new IllegalStateException("passed value not one of the possible game states");
         }
     }
 
     void turnTaker(int x, int y){
-        testingGame.btnMouseClicked(new GameStateLogic.MyButton(x, y));
+        testingGame.btnMouseClicked(new TicTacToe.MyButton(x, y));
     }
 }

@@ -26,8 +26,6 @@ public class TicTacToe extends JFrame {
     static final int SINISTER_ASCENDANT__WIN = 13;
 
 
-
-
     /**
      * Constructs a new TicTacToe game.
      */
@@ -60,6 +58,52 @@ public class TicTacToe extends JFrame {
         });
 
         gameState = new GameStateLogic(HEIGHT, LENGTH);
+    }
+
+
+    /**
+     * Custom JButton class with additional properties.
+     */
+    public static class MyButton extends JButton {
+        //TODO: put back in GUI
+
+        //xPos of this button. Analogous to this button's Length position in the board
+        private final int xPos;
+        //xPos of this button. Analogous to this button's Height position in the board
+        private final int yPos;
+        //Bool value tracking if this button has been pressed already
+        public boolean isPressed;
+
+        /**
+         * Constructs a new MyButton.
+         *
+         * @param xPos The x position of the button.
+         * @param yPos The y position of the button.
+         */
+        public MyButton(int xPos, int yPos) {
+            this.xPos = xPos;
+            this.yPos = yPos;
+
+            isPressed = false;
+        }
+
+        /**
+         * Get the x position of the button.
+         *
+         * @return The x position.
+         */
+        public int getXPos() {
+            return xPos;
+        }
+
+        /**
+         * Get the y position of the button.
+         *
+         * @return The y position.
+         */
+        public int getYPos() {
+            return yPos;
+        }
     }
 
     /**
@@ -96,7 +140,7 @@ public class TicTacToe extends JFrame {
         // Initialize buttons and add ActionListener
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < LENGTH; j++) {
-                buttons[i][j] = new GameStateLogic.MyButton(j, i);
+                buttons[i][j] = new MyButton(j, i);
                 buttons[i][j].addActionListener(this::mouseClickHandler);
                 buttonPanel.add(buttons[i][j]);
             }
@@ -109,7 +153,7 @@ public class TicTacToe extends JFrame {
      * @param ae The MouseEvent object representing the click event.
      */
     private void mouseClickHandler(ActionEvent ae) {
-        GameStateLogic.MyButton clickedButton = (GameStateLogic.MyButton) ae.getSource();
+        MyButton clickedButton = (MyButton) ae.getSource();
 
         //if game is not over and the current button has not been clicked before, update text and label
         if (gameState.getGameState() == 0 && !clickedButton.isPressed) {
@@ -126,7 +170,7 @@ public class TicTacToe extends JFrame {
         }
     }
 
-    private void buttonEndGameRepaint(GameStateLogic.MyButton clickedButton, int endGameCondition) {
+    private void buttonEndGameRepaint(MyButton clickedButton, int endGameCondition) {
         int loopLimit = Math.min(HEIGHT, LENGTH);
 
         //2 is a rank win.

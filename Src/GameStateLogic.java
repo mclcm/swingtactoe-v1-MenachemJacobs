@@ -29,57 +29,13 @@ public class GameStateLogic {
     }
 
     /**
-     * Custom JButton class with additional properties.
-     */
-    public static class MyButton extends JButton {
-
-        //xPos of this button. Analogous to this button's Length position in the board
-        private final int xPos;
-        //xPos of this button. Analogous to this button's Height position in the board
-        private final int yPos;
-        //Bool value tracking if this button has been pressed already
-        public boolean isPressed;
-
-        /**
-         * Constructs a new MyButton.
-         *
-         * @param xPos The x position of the button.
-         * @param yPos The y position of the button.
-         */
-        public MyButton(int xPos, int yPos) {
-            this.xPos = xPos;
-            this.yPos = yPos;
-
-            isPressed = false;
-        }
-
-        /**
-         * Get the x position of the button.
-         *
-         * @return The x position.
-         */
-        public int getXPos() {
-            return xPos;
-        }
-
-        /**
-         * Get the y position of the button.
-         *
-         * @return The y position.
-         */
-        public int getYPos() {
-            return yPos;
-        }
-    }
-
-    /**
      * Handles the logic when a button is clicked. Cannot be called while the game is over.
      * More formally, this method will never be called while isGame over is true.
      *
      * @param clickedButton The button that was clicked.
      * @return The text to be displayed on the clicked button.
      */
-    public String btnMouseClicked(MyButton clickedButton) {
+    public String btnMouseClicked(TicTacToe.MyButton clickedButton) {
 
         //One would hope that the GUI implementing this class would have run the check on its end, but there is no way to know
         if (!clickedButton.isPressed && gameState == 0) {
@@ -108,7 +64,7 @@ public class GameStateLogic {
      *
      * @param clickedButton The button that was clicked.
      */
-    public void gameOverHandler(MyButton clickedButton) {
+    public void gameOverHandler(TicTacToe.MyButton clickedButton) {
         //check if someone has a win condition. Checks should only begin after turn five, which is the minimum need to win the game.
         if (turnCounter >= 4)
             gameState = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
