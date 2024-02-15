@@ -60,7 +60,7 @@ public class TicTacToe extends JFrame {
         setTitle("Tic Tac Toe");
 
         labelPanel = new JPanel();
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,0));
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
 
         lbl = new JLabel("It is player X turn");
         restartButton = new JButton("Start over?");
@@ -96,68 +96,68 @@ public class TicTacToe extends JFrame {
 
     /**
      * Handles the mouse click event on buttons.
+     *
      * @param ae The MouseEvent object representing the click event.
      */
-    private void mouseClickHandler(ActionEvent ae){
+    private void mouseClickHandler(ActionEvent ae) {
         GameStateLogic.MyButton clickedButton = (GameStateLogic.MyButton) ae.getSource();
 
         //if game is not over and the current button has not been clicked before, update text and label
-        if(gameState.getGameState() == 0 && !clickedButton.isPressed) {
+        if (gameState.getGameState() == 0 && !clickedButton.isPressed) {
             clickedButton.setEnabled(false);
             clickedButton.setText(gameState.btnMouseClicked(clickedButton));
 
             //update lbl, game may be over and need to reflect that
             lbl.setText(gameState.lblUpdater());
 
-            //game has ended by means other than cats eye
-            if(gameState.getGameState() > 0){
+            //check if game has ended by means other than cats eye
+            if (gameState.getGameState() > 0) {
                 buttonEndGameRepaint(clickedButton, gameState.getGameState());
             }
         }
     }
 
-    private void buttonEndGameRepaint(GameStateLogic.MyButton clickedButton, int endGameCondition){
+    private void buttonEndGameRepaint(GameStateLogic.MyButton clickedButton, int endGameCondition) {
         int loopLimit = Math.min(buttons.length, buttons[0].length);
-        switch (endGameCondition){
-            //1 is a rank win.
-            case 1:
-                for (int i = 0; i < buttons[0].length; i++) {
-                    JButton btnToSet = buttons[clickedButton.getYPos()][i];
-                    btnToSet.setEnabled(true);
-                    btnToSet.setBackground(Color.orange);
-                }
-                break;
-            //2 a file win.
-            case 2:
-                for (JButton[] button : buttons) {
-                    JButton btnToSet = button[clickedButton.getXPos()];
-                    btnToSet.setEnabled(true);
-                    btnToSet.setBackground(Color.orange);
-                }
-                break;
-            //3 is a dexter win.
-            case 3:
-                for (int i = 0; i < loopLimit; i++) {
-                    JButton btnToSet = buttons[i][i];
-                    btnToSet.setEnabled(true);
-                    btnToSet.setBackground(Color.orange);
-                }
-                break;
-            //4 is sinister.
-            case 4:
-                for (int i = 0; i < loopLimit; i++) {
-                    JButton btnToSet = buttons[i][buttons[0].length - 1 - i];
-                    btnToSet.setEnabled(true);
-                    btnToSet.setBackground(Color.orange);
-                }
-                break;
+
+        //2 is a rank win.
+        if (endGameCondition % 2 == 0) {
+            for (int i = 0; i < buttons[0].length; i++) {
+                dryPaintBtn(buttons[clickedButton.getYPos()][i]);
+            }
         }
+
+        //3 a file win.
+        if (endGameCondition % 3 == 0) {
+            for (JButton[] button : buttons) {
+                dryPaintBtn(button[clickedButton.getXPos()]);
+            }
+        }
+
+        //5 is a dexter win.
+        if (endGameCondition % 5 == 0) {
+            for (int i = 0; i < loopLimit; i++) {
+                dryPaintBtn(buttons[i][i]);
+            }
+        }
+
+        //7 is sinister.
+        if (endGameCondition % 7 == 0) {
+            for (int i = 0; i < loopLimit; i++) {
+                dryPaintBtn(buttons[i][buttons[0].length - 1 - i]);
+            }
+        }
+    }
+
+    private void dryPaintBtn(JButton btnToPaint){
+        btnToPaint.setEnabled(true);
+        btnToPaint.setBackground(Color.orange);
     }
 
     /**
      * Restarts the game by...
      */
-    private void restartGame(){
+    private void restartGame() {
         buttonPanel.removeAll();
 
         initButtons();
@@ -188,6 +188,7 @@ public class TicTacToe extends JFrame {
 
     /**
      * Main method to launch the application.
+     *
      * @param args Command-line arguments (unused).
      */
     public static void main(String[] args) {

@@ -16,20 +16,19 @@ public class GameOverLogic {
      * @throws IllegalArgumentException If the clicked value remains 0, indicating it has not been set properly.
      */
     public static int isGameOver(int[][] logicalBoard, int xPos, int yPos) {
-        int returnVal;
+        int returnVal = 1;
 
         int searchValue = logicalBoard[yPos][xPos];
         if (searchValue == 0)
             throw new IllegalArgumentException("If the clicked value remains 0, it has not been set properly");
 
-        returnVal = rankCheck(logicalBoard, yPos, searchValue);
+        returnVal *= rankCheck(logicalBoard, yPos, searchValue);
 
-        if(returnVal == 0) returnVal = fileCheck(logicalBoard, xPos, searchValue);
+        returnVal *= fileCheck(logicalBoard, xPos, searchValue);
 
-        //check diagonal cases if none of the other cases have scored;
-        if(returnVal == 0) returnVal = diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
+        returnVal *= diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
 
-        return returnVal;
+        return returnVal == 1 ? 0 : returnVal;
     }
 
     /**
@@ -42,18 +41,17 @@ public class GameOverLogic {
      * @return int returnVal representing the game state.
      */
     private static int diagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue){
-        int returnVal = 0;
+        int returnVal = 1;
 
         //diagonal check loops should only check until the smaller of the two values
         int loopLimit = Math.min(logicalBoard.length, logicalBoard[0].length);
 
-        if (xPos == yPos) returnVal = dexterCheck(logicalBoard, searchValue, loopLimit);
+        if (xPos == yPos) returnVal *= dexterCheck(logicalBoard, searchValue, loopLimit);
 
-        if (returnVal == 0 && (xPos + yPos == logicalBoard[0].length - 1))
-            returnVal = sinisterCheck(logicalBoard, searchValue, loopLimit);
+        if (xPos + yPos == logicalBoard[0].length - 1) returnVal *= sinisterCheck(logicalBoard, searchValue, loopLimit);
 
         //if nothing has yet been found, and the board is not square, the last resort is to check the more obscure diagonals
-        if (logicalBoard.length != logicalBoard[0].length)  returnVal = obscureDiagonalsChecker(logicalBoard, xPos, yPos, searchValue, loopLimit);
+        if (logicalBoard.length != logicalBoard[0].length)  returnVal *= obscureDiagonalsChecker(logicalBoard, xPos, yPos, searchValue, loopLimit);
 
         return returnVal;
     }
@@ -69,11 +67,11 @@ public class GameOverLogic {
      * @return int returnVal representing the game state.
      */
     private static int obscureDiagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue, int loopLimit){
-        int returnVal = 0;
+        int returnVal = 1;
 
-        if((xPos + yPos == logicalBoard.length - 1)) returnVal = dexterAscendantCheck(logicalBoard, searchValue, loopLimit);
+        if((xPos + yPos == logicalBoard.length - 1)) returnVal *= dexterAscendantCheck(logicalBoard, searchValue, loopLimit);
 
-        if(returnVal == 0 && (xPos - yPos == logicalBoard[0].length - logicalBoard.length)) returnVal = sinisterAscendantCheck(logicalBoard, searchValue, loopLimit);
+        if(xPos - yPos == logicalBoard[0].length - logicalBoard.length) returnVal *= sinisterAscendantCheck(logicalBoard, searchValue, loopLimit);
 
         return returnVal;
     }
@@ -87,11 +85,11 @@ public class GameOverLogic {
      * @return True if there is a win condition in the same row, false otherwise.
      */
     private static int rankCheck(int[][] logicalBoard, int yPos, int searchValue) {
-        int gameIsOver = 1;
+        int gameIsOver = 2;
 
         for (int i = 0; i < logicalBoard[0].length; i++) {
             if (logicalBoard[yPos][i] != searchValue) {
-                gameIsOver = 0;
+                gameIsOver = 1;
                 break;
             }
         }
@@ -108,11 +106,11 @@ public class GameOverLogic {
      * @return True if there is a win condition in the same column, false otherwise.
      */
     private static int fileCheck(int[][] logicalBoard, int xPos, int searchValue) {
-        int gameIsOver = 2;
+        int gameIsOver = 3;
 
         for (int[] row : logicalBoard) {
             if (row[xPos] != searchValue) {
-                gameIsOver = 0;
+                gameIsOver = 1;
                 break;
             }
         }
@@ -129,12 +127,12 @@ public class GameOverLogic {
      * @return True if there is a win condition in the main diagonal, false otherwise.
      */
     private static int dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = 3;
+        int gameIsOver = 5;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
             if (logicalBoard[i][i] != searchValue) {
-                gameIsOver = 0;
+                gameIsOver = 1;
                 break;
             }
         }
@@ -151,13 +149,13 @@ public class GameOverLogic {
      * @return True if there is a win condition in the secondary diagonal, false otherwise.
      */
     private static int sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = 4;
+        int gameIsOver = 5;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
             //checks from top down, that is, from top left back and down.
             if (logicalBoard[i][logicalBoard[0].length - 1 - i] != searchValue) {
-                gameIsOver = 0;
+                gameIsOver = 1;
                 break;
             }
         }

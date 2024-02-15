@@ -4,7 +4,7 @@ import javax.swing.*;
  * This class manages the game state logic of the Tic Tac Toe game.
  */
 public class GameStateLogic {
-    //0 is an ongoing game. 1 is a rank win, 2 a file win. 3 is a dexter win, and 4 is sinister. -1 is a cats eye.
+    //0 is an ongoing game. 2 is a rank win, 3 a file win. 5 is a dexter win, and 7 is sinister. -1 is a cats eye.
     private int gameState = 0;
 
     //Track which player's turn it currently is
@@ -124,9 +124,8 @@ public class GameStateLogic {
      */
     public String lblUpdater() {
         if (gameState == -1) return "Game is over, cat's eye";
-        else if (gameState != 0) {
-            return "Game is over, " + (!isXTurn ? "X" : "O") + " won";
-        }
+        else if (gameState != 0) return "Game is over, " + (!isXTurn ? "X" : "O") + " won";
+
         return "It is player " + (isXTurn ? "X's" : "O's") + " turn";
     }
 
