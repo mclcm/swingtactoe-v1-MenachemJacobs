@@ -1,13 +1,12 @@
 import javax.swing.*;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 
 public class ScoreKeeper {
     private Properties scores;
-    private static final String fileName = "scores.properties";
+    private static final String directoryName = "Properties Folder";
+    //This is some dark magiks. String manipulations. Spooky.
+    private static final String fileName = directoryName + File.separator + "scores.properties";
 
     public ScoreKeeper(){
         scores = new Properties();
@@ -19,6 +18,8 @@ public class ScoreKeeper {
         try(FileInputStream fis = new FileInputStream(fileName)){
             System.out.println("File has been found to exist");
             scores.load(fis);
+
+            //prompt user for name after opening file
             promptUserForName();
         }
         catch (FileNotFoundException e){
@@ -34,6 +35,11 @@ public class ScoreKeeper {
 
     private void createNewScoresFile(){
         System.out.println("createNewScoresFile() reached");
+        File directory = new File(directoryName);
+        if(!directory.exists()){
+            directory.mkdirs();
+        }
+
         //define an output stream
         try(FileOutputStream fos = new FileOutputStream(fileName)){
             //Create new properties file
@@ -51,14 +57,22 @@ public class ScoreKeeper {
         }
     }
 
-    public void promptUserForName(){
+    private void promptUserForName(){
         String name = JOptionPane.showInputDialog("Enter Your Name");
+
         if(name != null && !name.isEmpty()){
-            System.out.println("well done");
-        }
-        else{
+            handleName(name);
+        } else if (name != null) {
             System.out.println("we need a real name");
             promptUserForName();
+        } else{
+            // If the user cancels or closes the window, do nothing
+            System.out.println("Window closed or cancelled");
         }
+    }
+
+    private void handleName(String passedName){
+        System.out.println("handleName() reached");
+     //new code here?
     }
 }
