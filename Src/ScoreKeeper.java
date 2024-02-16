@@ -73,19 +73,28 @@ public class ScoreKeeper {
 
     private void handleName(String passedName){
         System.out.println("handleName() reached");
-        if(scores.contains(passedName)){
+        //if this is not the first time seeing this name as winner
+        if(scores.getProperty(passedName) != null){
             int currentScore = Integer.parseInt(scores.getProperty(passedName));
-            scores.setProperty(passedName, String.valueOf(currentScore + 1));
-            System.out.println(passedName + " has won " + currentScore++ + " times");
-        } else {
+            scores.setProperty(passedName, String.valueOf(++currentScore));
+            System.out.println(passedName + " has won " + currentScore + " times");
+        }
+        //If this name has never won before
+        else {
             scores.setProperty(passedName, "1");
             System.out.println(passedName + " has never won before");
         }
 
-        saveScore();
+        saveScores();
     }
 
-    private void saveScore(){
-        return;
+    private void saveScores(){
+        //Updated info is already in scores, it is now necessary to save them to the file
+        try(FileOutputStream fos = new FileOutputStream(fileName)){
+            scores.store(fos, "Scores Updated");
+        } catch (IOException ex){
+            System.out.println("Error occurred while saving scores: " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 }
