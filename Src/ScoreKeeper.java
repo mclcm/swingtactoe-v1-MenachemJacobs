@@ -73,6 +73,19 @@ public class ScoreKeeper {
 
     private void handleName(String passedName){
         System.out.println("handleName() reached");
-     //new code here?
+        if(scores.contains(passedName)){
+            int currentScore = Integer.parseInt(scores.getProperty(passedName));
+            scores.setProperty(passedName, String.valueOf(currentScore + 1));
+            System.out.println(passedName + " has won " + currentScore++ + " times");
+        } else {
+            scores.setProperty(passedName, "1");
+            System.out.println(passedName + " has never won before");
+        }
+
+        saveScore();
+    }
+
+    private void saveScore(){
+        return;
     }
 }
