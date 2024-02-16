@@ -30,13 +30,13 @@ public class TicTacToe extends JFrame {
      * Constructs a new TicTacToe game.
      */
     public TicTacToe() {
-        if(HEIGHT < 1 || LENGTH < 1) throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
+        if (HEIGHT < 1 || LENGTH < 1)
+            throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
         initGUI();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // Set layout to BorderLayout
         setLayout(new BorderLayout());
 
         JPanel header = new JPanel();
@@ -170,6 +170,7 @@ public class TicTacToe extends JFrame {
             if (gameState.getGameState() > 0) {
                 // Repaint buttons based on the end game condition
                 buttonEndGameRepaint(clickedButton, gameState.getGameState());
+                new ScoreKeeper();
             }
         }
     }

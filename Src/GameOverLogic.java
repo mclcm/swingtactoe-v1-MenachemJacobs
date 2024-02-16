@@ -20,7 +20,7 @@ public class GameOverLogic {
      * - 7 for a secondary diagonal win.
      * - 11 for a diagonal win ascending from bottom left to top right.
      * - 13 for a diagonal win ascending from top left to bottom right.
-     * or some product their of if more than one condition is met
+     * or some product there of if more than one condition is met
      * @throws IllegalArgumentException If the clicked value remains 0, indicating it has not been set properly.
      */
     public static int isGameOver(int[][] logicalBoard, int xPos, int yPos) {
@@ -53,7 +53,7 @@ public class GameOverLogic {
      * - 7 for a secondary diagonal win.
      * - 11 for a diagonal win ascending from bottom left to top right.
      * - 13 for a diagonal win ascending from top left to bottom right.
-     * or some product their of if more than one condition is met
+     * or some product there of if more than one condition is met
      */
     private static int diagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
         int returnVal = 1;
