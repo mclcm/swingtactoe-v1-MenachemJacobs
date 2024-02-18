@@ -80,6 +80,16 @@ class TicTacToeTest {
     }
 
     @Test
+    void crossWin(){
+        state = 35;
+        setBoard(state);
+        testingGame.gameOverHandler(new TicTacToe.MyButton(1, 1));
+
+        Assertions.assertEquals(state, testingGame.getGameState(), "A sinister win is not being scored correctly by the game over handler");
+        Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Cross win isn't reflected properly in the lblUpdater");
+    }
+
+    @Test
     void catsEye() {
         state = -1;
         setBoard(state);
@@ -152,6 +162,27 @@ class TicTacToeTest {
                 turnTaker(0,2);
                 //y
                 turnTaker(2,1);
+                //x
+                turnTaker(1,1);
+                break;
+            //Cross win case
+            case 35:
+                //x
+                turnTaker(0,0);
+                //y
+                turnTaker(1,0);
+                //x
+                turnTaker(2,0);
+                //y
+                turnTaker(2,1);
+                //x
+                turnTaker(2,2);
+                //y
+                turnTaker(1,2);
+                //x
+                turnTaker(0,2);
+                //y
+                turnTaker(0,1);
                 //x
                 turnTaker(1,1);
                 break;

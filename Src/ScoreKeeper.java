@@ -8,9 +8,13 @@ public class ScoreKeeper {
     //This is some dark magiks. String manipulations. Spooky.
     private static final String fileName = directoryName + File.separator + "scores.properties";
 
+    String xPlayer = "Player X Default Name";
+    String oPlayer= "Player O Default Name";
+
     public ScoreKeeper(){
         scores = new Properties();
         loadScores();
+        newPopUp();
     }
 
     private void loadScores() {
@@ -18,9 +22,6 @@ public class ScoreKeeper {
         try(FileInputStream fis = new FileInputStream(fileName)){
             System.out.println("File has been found to exist");
             scores.load(fis);
-
-            //prompt user for name after opening file
-            promptUserForName();
         }
         catch (FileNotFoundException e){
             // If the file doesn't exist, create a new one
@@ -47,9 +48,6 @@ public class ScoreKeeper {
             //save all values from score to the output stream, which will write them to the new file
             scores.store(fos, "Scores");
             System.out.println("New scores.properties file created successfully.");
-
-            //prompt user for name after creating the file
-            promptUserForName();
         }
         catch (IOException ex){
             System.out.println("connection seems to have been interrupted");
@@ -57,33 +55,58 @@ public class ScoreKeeper {
         }
     }
 
-    private void promptUserForName(){
-        String name = JOptionPane.showInputDialog("Enter Your Name");
+    private void newPopUp(){
+        // Check if the scores file is not blank
+        if (!scores.isEmpty()) {
+            // Find the key with the highest value
+            String returnMessage = findHighestKey();
+            JOptionPane.showMessageDialog(null, returnMessage);
+        }
 
-        if(name != null && !name.isEmpty()){
-            handleName(name);
-        } else if (name != null) {
-            System.out.println("we need a real name");
-            promptUserForName();
+        xPlayer = JOptionPane.showInputDialog("Enter name for X player:");
+        oPlayer = JOptionPane.showInputDialog("Enter name for O player:");
+
+        if(xPlayer != null && !xPlayer.isEmpty() && oPlayer != null && !oPlayer.isEmpty()){
+            handleNames(xPlayer, oPlayer);
+        } else if (xPlayer != null || oPlayer != null) {
+            System.out.println("we need a real names, the both of yous");
+            newPopUp();
         } else{
             // If the user cancels or closes the window, do nothing
             System.out.println("Window closed or cancelled");
         }
     }
 
-    private void handleName(String passedName){
-        System.out.println("handleName() reached");
-        //if this is not the first time seeing this name as winner
-        if(scores.getProperty(passedName) != null){
-            int currentScore = Integer.parseInt(scores.getProperty(passedName));
-            scores.setProperty(passedName, String.valueOf(++currentScore));
-            System.out.println(passedName + " has won " + currentScore + " times");
-        }
-        //If this name has never won before
-        else {
-            scores.setProperty(passedName, "1");
-            System.out.println(passedName + " has never won before");
-        }
+    private void handleNames(String playerX, String playerO){
+        System.out.println("handleNames() reached");
+
+        scores.clear();
+
+        scores.setProperty(playerX, "0");
+        scores.setProperty(playerO, "0");
+
+        saveScores();
+    }
+
+    private String findHighestKey() {
+        int xScore = Integer.parseInt(scores.getProperty(xPlayer));
+        int oScore = Integer.parseInt(scores.getProperty(oPlayer));
+
+        String returnMessage = "As of last session, the scores were tied.";
+
+        if(xScore > oScore)
+            returnMessage = "As of last session, " + xPlayer + "had the most wins.";
+
+        if(oScore > xScore)
+            returnMessage = "As of last session, " + oPlayer + "had the most wins.";
+
+        return returnMessage;
+    }
+
+    public void incrementScore(Boolean xTurn) {
+        String currentPlayer = xTurn ? xPlayer : oPlayer;
+        int currentScore = Integer.parseInt(scores.getProperty(currentPlayer));
+        scores.setProperty(currentPlayer, String.valueOf(++currentScore));
 
         saveScores();
     }

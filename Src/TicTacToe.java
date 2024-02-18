@@ -9,6 +9,7 @@ import java.awt.event.ComponentEvent;
  */
 public class TicTacToe extends JFrame {
     GameStateLogic gameState;
+    ScoreKeeper scoreTracker = new ScoreKeeper();
     JLabel lbl;
     JPanel labelPanel;
     JPanel buttonPanel;
@@ -30,6 +31,8 @@ public class TicTacToe extends JFrame {
      * Constructs a new TicTacToe game.
      */
     public TicTacToe() {
+        scoreTracker.newPopUp();
+
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
@@ -170,7 +173,7 @@ public class TicTacToe extends JFrame {
             if (gameState.getGameState() > 0) {
                 // Repaint buttons based on the end game condition
                 buttonEndGameRepaint(clickedButton, gameState.getGameState());
-                new ScoreKeeper();
+                scoreTracker.incrementScore(gameState.getXTurn());
             }
         }
     }
