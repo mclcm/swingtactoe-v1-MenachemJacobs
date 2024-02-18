@@ -31,8 +31,6 @@ public class TicTacToe extends JFrame {
      * Constructs a new TicTacToe game.
      */
     public TicTacToe() {
-        scoreTracker.newPopUp();
-
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
@@ -173,6 +171,7 @@ public class TicTacToe extends JFrame {
             if (gameState.getGameState() > 0) {
                 // Repaint buttons based on the end game condition
                 buttonEndGameRepaint(clickedButton, gameState.getGameState());
+                //win record only increase if game ended for reason other than cats eye
                 scoreTracker.incrementScore(gameState.getXTurn());
             }
         }

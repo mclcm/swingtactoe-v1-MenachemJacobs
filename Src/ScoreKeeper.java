@@ -1,11 +1,11 @@
 import javax.swing.*;
 import java.io.*;
+import java.sql.SQLOutput;
 import java.util.Properties;
 
 public class ScoreKeeper {
     private Properties scores;
     private static final String directoryName = "Properties Folder";
-    //This is some dark magiks. String manipulations. Spooky.
     private static final String fileName = directoryName + File.separator + "scores.properties";
 
     String xPlayer = "Player X Default Name";
@@ -18,6 +18,7 @@ public class ScoreKeeper {
     }
 
     private void loadScores() {
+        System.out.println("loadScores() reached");
         //declaring and initializing the fileInputStream in the try assures that the file will be closed when the try resolves
         try(FileInputStream fis = new FileInputStream(fileName)){
             System.out.println("File has been found to exist");
@@ -56,6 +57,8 @@ public class ScoreKeeper {
     }
 
     private void newPopUp(){
+        System.out.println("newPopUpReached");
+
         // Check if the scores file is not blank
         if (!scores.isEmpty()) {
             // Find the key with the highest value
@@ -89,16 +92,28 @@ public class ScoreKeeper {
     }
 
     private String findHighestKey() {
-        int xScore = Integer.parseInt(scores.getProperty(xPlayer));
-        int oScore = Integer.parseInt(scores.getProperty(oPlayer));
+        System.out.println("findHighestKeyReached()");
 
         String returnMessage = "As of last session, the scores were tied.";
 
-        if(xScore > oScore)
-            returnMessage = "As of last session, " + xPlayer + "had the most wins.";
+        int highestFound = -1;
+        int currentScore;
+        String returnKey = null;
 
-        if(oScore > xScore)
-            returnMessage = "As of last session, " + oPlayer + "had the most wins.";
+        for(String key: scores.stringPropertyNames()){
+            currentScore = Integer.parseInt(scores.getProperty(key));
+
+            if(currentScore == highestFound)
+                return key = null;
+
+            if(currentScore > highestFound) {
+                highestFound = currentScore;
+                returnKey = key;
+            }
+        }
+
+        if(returnKey != null)
+            returnMessage = "As of last session, " + returnKey + " had the most wins.";
 
         return returnMessage;
     }
