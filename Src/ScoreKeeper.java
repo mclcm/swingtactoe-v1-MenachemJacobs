@@ -91,6 +91,9 @@ public class ScoreKeeper {
 
         //Where both names are legal, handle them. If one or more is illegal, prompt again. If nothing is done, the default names will be used
         if (input1 != null && !input1.trim().isEmpty() && input2 != null && !input2.trim().isEmpty()) {
+            xPlayer = input1;
+            oPlayer = input2;
+
             handleNames(input1, input2);
         } else if (input1 != null || input2 != null) {
             JOptionPane.showMessageDialog(null, "If you are going to use names, they need to not be blank");
