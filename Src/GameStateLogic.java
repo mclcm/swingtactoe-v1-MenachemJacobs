@@ -18,6 +18,9 @@ public class GameStateLogic {
     //Logical analogue of the GUI board
     private final int[][] logicalBoard;
 
+    //minimum number of turns need to win the game
+    private final int minimumNumOfTurns;
+
     /**
      * Constructs a new game state logic object.
      *
@@ -28,6 +31,9 @@ public class GameStateLogic {
         if(height < 1 || length < 1) throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
         logicalBoard = new int[height][length];
+
+        //for x to win, he needs to fill either a row or columns worth of spaces. To take that many turns, o has to have gone at least one less than that number of times.
+        minimumNumOfTurns = Math.min(logicalBoard.length, logicalBoard[0].length) * 2 - 1;
     }
 
     /**
@@ -67,8 +73,8 @@ public class GameStateLogic {
      * @param clickedButton The button that was clicked.
      */
     public void gameOverHandler(TicTacToe.MyButton clickedButton) {
-        //check if someone has a win condition. Checks should only begin after turn five, which is the minimum need to win the game.
-        if (turnCounter >= 4)
+        //check if someone has a win condition. Checks should only begin after the minimum number of turns needed to win the game.
+        if (turnCounter >= minimumNumOfTurns - 1)
             gameState = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
 
         //if no one won but the board is full call a cats eye

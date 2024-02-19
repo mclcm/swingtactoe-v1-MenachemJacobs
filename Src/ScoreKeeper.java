@@ -79,15 +79,24 @@ public class ScoreKeeper {
             JOptionPane.showMessageDialog(null, returnMessage);
         }
 
-        xPlayer = JOptionPane.showInputDialog("Enter name for X player:");
-        oPlayer = JOptionPane.showInputDialog("Enter name for O player:");
+        miniPopUpLooper();
+    }
+
+    /**
+     * Prompts for player names and handles them recursively until valid names are provided.
+     */
+    private void miniPopUpLooper(){
+        String input1 = JOptionPane.showInputDialog("Enter name for X player:");
+        String input2 = JOptionPane.showInputDialog("Enter name for O player:");
 
         //Where both names are legal, handle them. If one or more is illegal, prompt again. If nothing is done, the default names will be used
-        if (xPlayer != null && !xPlayer.trim().isEmpty() && oPlayer != null && !oPlayer.trim().isEmpty()) {
-            handleNames(xPlayer, oPlayer);
-        } else if (xPlayer != null || oPlayer != null) {
+        if (input1 != null && !input1.trim().isEmpty() && input2 != null && !input2.trim().isEmpty()) {
+            handleNames(input1, input2);
+        } else if (input1 != null || input2 != null) {
             JOptionPane.showMessageDialog(null, "If you are going to use names, they need to not be blank");
-            newPopUp();
+            miniPopUpLooper();
+        } else{
+            handleNames(xPlayer, oPlayer);
         }
     }
 
@@ -142,7 +151,7 @@ public class ScoreKeeper {
      * @param xTurn A boolean indicating if it's Player X's turn.
      */
     public void incrementScore(Boolean xTurn) {
-        String currentPlayer = xTurn ? xPlayer : oPlayer;
+        String currentPlayer = !xTurn ? xPlayer : oPlayer;
         int currentScore = Integer.parseInt(scores.getProperty(currentPlayer));
         scores.setProperty(currentPlayer, String.valueOf(++currentScore));
 

@@ -34,14 +34,14 @@ public class GameOverLogic {
 
         returnVal *= fileCheck(logicalBoard, xPos, searchValue);
 
-        //diagonals only run on every other button, resulting in a simple check for tiles that should trigger the diagonal checker
-        if ((xPos + yPos) % 2 == 0) returnVal *= diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
+        returnVal *= diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
 
+        //The code on the outside interprets 0 as being the 'no win' value, will the code on the inside uses 1, meaning that the values need to be exchanged before heading out
         return returnVal == 1 ? 0 : returnVal;
     }
 
     /**
-     * Checks the main and secondary diagonals for a win condition.
+     * Checks all four possible diagonals for a win condition.
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param xPos         The x position of the last move.
@@ -153,7 +153,6 @@ public class GameOverLogic {
      * @return An integer representing the game state:
      * - 1 if no win condition is found.
      * - 5 if there is a win condition in the main diagonal.
-
      */
     private static int dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = 5;
@@ -178,7 +177,6 @@ public class GameOverLogic {
      * @return An integer representing the game state:
      * - 1 if no win condition is found.
      * - 7 if there is a win condition in the secondary diagonal.
-
      */
     private static int sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = 7;
