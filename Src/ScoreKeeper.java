@@ -114,7 +114,7 @@ public class ScoreKeeper {
      * @return A message indicating the player with the greatest score.
      */
     private String findHighestKey() {
-        String returnMessage = "As of last session, the scores were tied.";
+        String returnMessage = "In the last session, the scores were tied.";
 
         int highestFound = -1;
         int currentScore;
