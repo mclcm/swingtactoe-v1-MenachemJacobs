@@ -143,7 +143,7 @@ public class ScoreKeeper {
             }
         }
 
-        if (returnKey != null) returnMessage = "As of last session, " + returnKey + " had the most wins.";
+        if (returnKey != null) returnMessage = "In the last session, " + returnKey + " had the most wins.";
 
         return returnMessage;
     }

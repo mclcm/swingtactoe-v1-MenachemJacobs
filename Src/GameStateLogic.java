@@ -43,17 +43,16 @@ public class GameStateLogic {
      * @param clickedButton The button that was clicked.
      * @return The text to be displayed on the clicked button.
      */
-    public String btnMouseClicked(TicTacToe.MyButton clickedButton) {
+    public String btnMouseClicked(JButton clickedButton, int xPos, int yPos) {
 
         //One would hope that the GUI implementing this class would have run the check on its end, but there is no way to know
-        if (!clickedButton.isPressed && gameState == 0) {
-            clickedButton.isPressed = true;
+        if ((logicalBoard[yPos][xPos] == 0) && gameState == 0) {
 
             //set the value on the logicalBoard
-            logicalBoard[clickedButton.getYPos()][clickedButton.getXPos()] = isXTurn ? 1 : -1;
+            logicalBoard[yPos][xPos] = isXTurn ? 1 : -1;
 
             //check if game is over and update the relevant state if so
-            gameOverHandler(clickedButton);
+            gameOverHandler(xPos, yPos);
 
             //update turn state
             turnCounter++;
@@ -69,13 +68,11 @@ public class GameStateLogic {
 
     /**
      * Handles the logic when the game is over.
-     *
-     * @param clickedButton The button that was clicked.
      */
-    public void gameOverHandler(TicTacToe.MyButton clickedButton) {
+    public void gameOverHandler(int xPos, int yPos) {
         //check if someone has a win condition. Checks should only begin after the minimum number of turns needed to win the game.
         if (turnCounter >= minimumNumOfTurns - 1)
-            gameState = GameOverLogic.isGameOver(logicalBoard, clickedButton.getXPos(), clickedButton.getYPos());
+            gameState = GameOverLogic.isGameOver(logicalBoard, xPos, yPos);
 
         //if no one won but the board is full call a cats eye
         if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1 && gameState == 0)

@@ -162,7 +162,7 @@ public class TicTacToe extends JFrame {
             clickedButton.setEnabled(false);
 
             // Update text on the clicked button and handle game state logic
-            clickedButton.setText(gameState.btnMouseClicked(clickedButton));
+            clickedButton.setText(gameState.btnMouseClicked(clickedButton, clickedButton.getXPos(), clickedButton.getYPos()));
 
             // Update label text to reflect the current game state
             lbl.setText(gameState.lblUpdater());
