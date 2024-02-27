@@ -92,6 +92,10 @@ public class GameStateLogic {
         return "It is player " + (isXTurn ? "X's" : "O's") + " turn";
     }
 
+    public int getValAtPos(int x, int y){
+        return logicalBoard[y][x];
+    }
+
     /**
      * Checks if the game is over.
      *

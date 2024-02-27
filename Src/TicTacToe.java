@@ -73,8 +73,6 @@ public class TicTacToe extends JFrame {
         private final int xPos;
         //xPos of this button. Analogous to this button's Height position in the board
         private final int yPos;
-        //Bool value tracking if this button has been pressed already
-        public boolean isPressed;
 
         /**
          * Constructs a new MyButton.
@@ -85,8 +83,6 @@ public class TicTacToe extends JFrame {
         public MyButton(int xPos, int yPos) {
             this.xPos = xPos;
             this.yPos = yPos;
-
-            isPressed = false;
         }
 
         /**
@@ -158,7 +154,7 @@ public class TicTacToe extends JFrame {
         MyButton clickedButton = (MyButton) ae.getSource();
 
         //if game is not over and the current button has not been clicked before, update text and label
-        if (gameState.getGameState() == 0 && !clickedButton.isPressed) {
+        if (gameState.getGameState() == 0 && gameState.getValAtPos(clickedButton.getXPos(), clickedButton.getYPos()) == 0) {
             clickedButton.setEnabled(false);
 
             // Update text on the clicked button and handle game state logic
