@@ -37,13 +37,14 @@ public class GameStateLogic {
     }
 
     /**
-     * Handles the logic when a button is clicked. Cannot be called while the game is over.
-     * More formally, this method will never be called while isGame over is true.
+     * Handles the logic when a button is clicked.
      *
      * @param clickedButton The button that was clicked.
-     * @return The text to be displayed on the clicked button.
+     * @param xPos          The x-coordinate of the clicked button on the game board.
+     * @param yPos          The y-coordinate of the clicked button on the game board.
+     * @return The text to be displayed on the clicked button after handling the click event.
      */
-    public String btnMouseClicked(JButton clickedButton, int xPos, int yPos) {
+    public String btnClicked(JButton clickedButton, int xPos, int yPos) {
 
         //One would hope that the GUI implementing this class would have run the check on its end, but there is no way to know
         if ((logicalBoard[yPos][xPos] == 0) && gameState == 0) {
@@ -67,7 +68,11 @@ public class GameStateLogic {
     }
 
     /**
-     * Handles the logic when the game is over.
+     * Handles the logic when the game is over. Checks for win conditions or a tie
+     * based on the current game state and updates the {@code gameState} accordingly.
+     *
+     * @param xPos The x-coordinate of the last played move.
+     * @param yPos The y-coordinate of the last played move.
      */
     public void gameOverHandler(int xPos, int yPos) {
         //check if someone has a win condition. Checks should only begin after the minimum number of turns needed to win the game.
@@ -80,8 +85,8 @@ public class GameStateLogic {
     }
 
     /**
-     * Updates the label text based on the current turn, unless the game has ended
-     * in which case the gameOverLegend is returned instead.
+     * Updates the label text based on the current turn or game state.
+     * If the game is over, returns the appropriate game over message.
      *
      * @return The text to be displayed on the information label.
      */
@@ -92,6 +97,13 @@ public class GameStateLogic {
         return "It is player " + (isXTurn ? "X's" : "O's") + " turn";
     }
 
+    /**
+     * Retrieves the value at the specified position on the logical game board.
+     *
+     * @param x The x-coordinate of the position.
+     * @param y The y-coordinate of the position.
+     * @return The value at the specified position on the game board.
+     */
     public int getValAtPos(int x, int y){
         return logicalBoard[y][x];
     }
@@ -99,16 +111,31 @@ public class GameStateLogic {
     /**
      * Checks if the game is over.
      *
-     * @return True if the game is over, false otherwise.
+     * @return {@code true} if the game is over, {@code false} otherwise.
      */
     public boolean getGameIsOver() {
         return gameState != 0;
     }
 
+    /**
+     * Retrieves the current turn indicator, indicating whether it's X's turn.
+     *
+     * @return {@code true} if it's currently X's turn, {@code false} otherwise.
+     */
     Boolean getXTurn() {
         return isXTurn;
     }
 
+    /**
+     * Retrieves the current state of the game.
+     *
+     * @return An integer representing the current state of the game:
+     *         - 0 for an ongoing game,
+     *         - 2 for a row win, 3 for a column win,
+     *         - 5 for a diagonal win (Dexter), 7 for a diagonal win (Sinister),
+     *         - 11 for a diagonal win (DexterAscendant), 13 for a diagonal win (SinisterAscendant),
+     *         - (-1) for a tie game (cat's eye).
+     */
     int getGameState() {
         return gameState;
     }

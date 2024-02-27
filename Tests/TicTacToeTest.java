@@ -28,8 +28,8 @@ class TicTacToeTest {
         JButton dummyButton = new JButton();
         dummyButton.setText("E");
 
-        testingGame.btnMouseClicked(dummyButton, 0,0);
-        testingGame.btnMouseClicked(dummyButton, 0,0);
+        testingGame.btnClicked(dummyButton, 0,0);
+        testingGame.btnClicked(dummyButton, 0,0);
         Assertions.assertFalse(testingGame.getXTurn(), "clicking the same button twice is updating the state. It should not.");
         Assertions.assertEquals("It is player O's turn", testingGame.lblUpdater(), "lblUpdater is changing the lbl despite game not ending");
     }
@@ -219,6 +219,6 @@ class TicTacToeTest {
         JButton dummyButton =  new JButton();
         dummyButton.setText("E");
 
-        testingGame.btnMouseClicked(dummyButton, x,y);
+        testingGame.btnClicked(dummyButton, x,y);
     }
 }
