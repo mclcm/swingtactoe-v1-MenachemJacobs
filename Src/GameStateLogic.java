@@ -1,9 +1,10 @@
 import javax.swing.*;
+import java.io.Serializable;
 
 /**
  * This class manages the game state logic of the Tic Tac Toe game.
  */
-public class GameStateLogic {
+public class GameStateLogic implements Serializable {
     //0 is an ongoing game. 2 is a rank win, 3 a file win. 5 is a dexter win, and 7 is sinister.
     // The special diagonals (for game with non-square boards) are 11 for DexterAscendant and 13 for SinisterAscendant.
     // -1 is a cats eye.
@@ -28,7 +29,8 @@ public class GameStateLogic {
      * @param length The length of the game board.
      */
     GameStateLogic(int height, int length) {
-        if(height < 1 || length < 1) throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
+        if (height < 1 || length < 1)
+            throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
         logicalBoard = new int[height][length];
 
@@ -104,7 +106,7 @@ public class GameStateLogic {
      * @param y The y-coordinate of the position.
      * @return The value at the specified position on the game board.
      */
-    public int getValAtPos(int x, int y){
+    public int getValAtPos(int x, int y) {
         return logicalBoard[y][x];
     }
 
@@ -130,11 +132,11 @@ public class GameStateLogic {
      * Retrieves the current state of the game.
      *
      * @return An integer representing the current state of the game:
-     *         - 0 for an ongoing game,
-     *         - 2 for a row win, 3 for a column win,
-     *         - 5 for a diagonal win (Dexter), 7 for a diagonal win (Sinister),
-     *         - 11 for a diagonal win (DexterAscendant), 13 for a diagonal win (SinisterAscendant),
-     *         - (-1) for a tie game (cat's eye).
+     * - 0 for an ongoing game,
+     * - 2 for a row win, 3 for a column win,
+     * - 5 for a diagonal win (Dexter), 7 for a diagonal win (Sinister),
+     * - 11 for a diagonal win (DexterAscendant), 13 for a diagonal win (SinisterAscendant),
+     * - (-1) for a tie game (cat's eye).
      */
     int getGameState() {
         return gameState;

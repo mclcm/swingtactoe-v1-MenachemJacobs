@@ -254,7 +254,7 @@ public class TicTacToe extends JFrame {
         initButtons();
         handleResize();
 
-        // Reset game state
+        //Reset game state
         gameState = new GameStateLogic(HEIGHT, LENGTH);
     }
 
@@ -276,6 +276,13 @@ public class TicTacToe extends JFrame {
         // Refresh button panel
         buttonPanel.revalidate();
         buttonPanel.repaint();
+    }
+
+    /**
+     * Serializes the current game state and view.
+     */
+    private void serializeGame() {
+        SerializeGame.serialize(this, gameState);
     }
 
     /**
