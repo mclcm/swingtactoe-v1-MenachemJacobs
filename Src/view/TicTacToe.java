@@ -13,17 +13,15 @@ import Serialization.*;
  * This class represents a Tic Tac Toe game application.
  */
 public class TicTacToe extends JFrame {
-    GameStateLogic gameState;
-    ScoreKeeper scoreTracker = new ScoreKeeper();
-    JLabel lbl;
-    JPanel labelPanel;
-    JButton[][] gameButtons;
-    JPanel buttonPanel;
-    JPanel headerPanel;
-    JButton restartButton;
-
     private final int LENGTH = 3;
     private final int HEIGHT = 3;
+
+    GameStateLogic gameState = new GameStateLogic(HEIGHT, LENGTH);
+    ScoreKeeper scoreTracker = new ScoreKeeper();
+
+    JLabel lbl;
+    JButton[][] gameButtons;
+    JPanel buttonPanel;
 
 
     /**
@@ -33,15 +31,14 @@ public class TicTacToe extends JFrame {
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
-        initGUI();
-
+        setTitle("Tic Tac Toe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         setLayout(new BorderLayout());
 
-        add(headerPanel, BorderLayout.NORTH);
-        add(buttonPanel, BorderLayout.CENTER);
-        add(labelPanel, BorderLayout.SOUTH);
+        add(arrangeHeadPanel(), BorderLayout.NORTH);
+        add(arrangeButtonPanel(), BorderLayout.CENTER);
+        add(arrangeLabelPanel(), BorderLayout.SOUTH);
+
         setLocationRelativeTo(null);
 
         setSize(500, 300);
@@ -55,8 +52,6 @@ public class TicTacToe extends JFrame {
                 handleResize();
             }
         });
-
-        gameState = new GameStateLogic(HEIGHT, LENGTH);
     }
 
 
@@ -99,20 +94,9 @@ public class TicTacToe extends JFrame {
             return yPos;
         }
     }
-
-    /**
-     * Initializes the GUI components.
-     */
-    private void initGUI() {
-        setTitle("Tic Tac Toe");
-
-        arrangeHeadPanel();
-        arrangeButtonPanel();
-        arrangeLabelPanel();
-    }
-
-    private void arrangeHeadPanel(){
-        headerPanel = new JPanel();
+    
+    private JPanel arrangeHeadPanel(){
+        JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BorderLayout());
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -130,26 +114,33 @@ public class TicTacToe extends JFrame {
 
         headerPanel.add(headerButtons, BorderLayout.LINE_START);
         headerPanel.add(title, BorderLayout.CENTER);
+
+        return headerPanel;
     }
 
-    private void arrangeButtonPanel(){
+    private JPanel arrangeButtonPanel(){
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         buttonPanel.setPreferredSize(new Dimension(500, 200));
 
         //This line takes the buttonPanel and attaches the game buttons to it.
         gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+
+        return buttonPanel;
     }
 
-    private void arrangeLabelPanel() {
-        labelPanel = new JPanel();
+    private JPanel arrangeLabelPanel() {
         lbl = new JLabel("It is player X turn");
-        restartButton = new JButton("Start over?");
+
+        JPanel labelPanel = new JPanel();
+        JButton restartButton = new JButton("Start over?");
 
         labelPanel.setPreferredSize(new Dimension(500, 50));
 
         labelPanel.add(lbl);
         restartButton.addActionListener(e -> restartGame());
         labelPanel.add(restartButton);
+
+        return labelPanel;
     }
 
     /**
