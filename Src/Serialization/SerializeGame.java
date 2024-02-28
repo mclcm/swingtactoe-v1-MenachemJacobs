@@ -2,6 +2,7 @@ package Serialization;
 
 import model.GameStateLogic;
 import view.ScoreKeeper;
+import view.TicTacViewParent;
 
 import javax.swing.*;
 import java.io.*;
@@ -13,7 +14,7 @@ public class SerializeGame implements Serializable {
     //Uses string manipulation wizardry to put file in the correct folder
     private static final String fileName = directoryName + File.separator + "savedGame.ser";
 
-    public static void serialize(JFrame view, GameStateLogic gameState, ScoreKeeper winsRecord) {
+    public static void serialize(TicTacViewParent view, GameStateLogic gameState, ScoreKeeper winsRecord) {
         directoryManagement();
 
         //add code here to serialize object
@@ -45,9 +46,12 @@ public class SerializeGame implements Serializable {
         }
         else{
             try(ObjectInputStream objInStream = new ObjectInputStream(new FileInputStream(fileName))){
-                JFrame view = (JFrame) objInStream.readObject();
+                TicTacViewParent view = (TicTacViewParent) objInStream.readObject();
                 GameStateLogic model = (GameStateLogic) objInStream.readObject();
                 ScoreKeeper scoreKeeper = (ScoreKeeper) objInStream.readObject();
+
+                view.deSerializeGame(model, scoreKeeper);
+                view.setVisible(true);
 
                 System.out.println("Deserialized success");
             }

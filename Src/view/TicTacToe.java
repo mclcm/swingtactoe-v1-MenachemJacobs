@@ -7,12 +7,11 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import model.*;
-import Serialization.*;
 
 /**
  * This class represents a Tic Tac Toe game application.
  */
-public class TicTacToe extends JFrame {
+public class TicTacToe extends TicTacViewParent {
     private final int LENGTH = 3;
     private final int HEIGHT = 3;
 
