@@ -12,7 +12,7 @@ import Serialization.*;
 /**
  * This class represents a Tic Tac Toe game application.
  */
-public class TicTacToe extends JFrame{
+public class TicTacToe extends JFrame {
     GameStateLogic gameState;
     ScoreKeeper scoreTracker = new ScoreKeeper();
     JLabel lbl;
@@ -33,7 +33,7 @@ public class TicTacToe extends JFrame{
 
 
     /**
-     * Constructs a new view.TicTacToe game.
+     * Constructs a new TicTacToe game.
      */
     public TicTacToe() {
         if (HEIGHT < 1 || LENGTH < 1)
@@ -46,7 +46,7 @@ public class TicTacToe extends JFrame{
         setLayout(new BorderLayout());
 
         JPanel header = new JPanel();
-        header.add(new JLabel("view.TicTacToe"));
+        header.add(new JLabel("TicTacToe"));
         add(header, BorderLayout.NORTH);
 
         add(buttonPanel, BorderLayout.CENTER);
@@ -125,7 +125,8 @@ public class TicTacToe extends JFrame{
         labelPanel.setPreferredSize(new Dimension(500, 50));
         buttonPanel.setPreferredSize(new Dimension(500, 200));
 
-        initButtons();
+
+        buttons = new ButtonBuilder().initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
 
         labelPanel.add(lbl);
 
@@ -256,7 +257,7 @@ public class TicTacToe extends JFrame{
     private void restartGame() {
         buttonPanel.removeAll();
 
-        initButtons();
+        buttons = new ButtonBuilder().initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
         handleResize();
 
         //Reset game state
@@ -293,7 +294,7 @@ public class TicTacToe extends JFrame{
     /**
      * restore the deserialized the elements of the current game.
      */
-    public void deSerializeGame(GameStateLogic gameState, ScoreKeeper scoreTracker){
+    public void deSerializeGame(GameStateLogic gameState, ScoreKeeper scoreTracker) {
         this.scoreTracker = scoreTracker;
         this.gameState = gameState;
     }
