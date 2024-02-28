@@ -1,9 +1,11 @@
+package view;
+
 import javax.swing.*;
 import java.io.*;
 import java.util.Properties;
 
 /**
- * The ScoreKeeper class manages player scores in a Tic Tac Toe game.
+ * The view.ScoreKeeper class manages player scores in a Tic Tac Toe game.
  */
 public class ScoreKeeper implements Serializable{
     private Properties scores; // Properties object to store player wins for this session
@@ -16,7 +18,7 @@ public class ScoreKeeper implements Serializable{
     String oPlayer = "Player O Default Name"; // Default name for Player O
 
     /**
-     * Constructs a new ScoreKeeper object.
+     * Constructs a new view.ScoreKeeper object.
      * Loads scores from the properties file and displays a popup message.
      */
     public ScoreKeeper() {

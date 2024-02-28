@@ -1,5 +1,7 @@
+package model;
+
 /**
- * The GameOverLogic class provides static methods to determine if the game is over
+ * The model.GameOverLogic class provides static methods to determine if the game is over
  * based on the current state of the Tic Tac Toe board.
  */
 public class GameOverLogic {

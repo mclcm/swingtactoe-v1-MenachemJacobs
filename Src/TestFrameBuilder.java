@@ -1,3 +1,5 @@
+import view.ScoreKeeper;
+
 import javax.swing.*;
 
 public class TestFrameBuilder {

@@ -1,3 +1,5 @@
+import model.GameOverLogic;
+
 import javax.swing.*;
 import java.io.Serializable;
 
