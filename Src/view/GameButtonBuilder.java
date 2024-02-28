@@ -1,6 +1,10 @@
 package view;
 
+import Serialization.SerializeGame;
+import model.GameStateLogic;
+
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class GameButtonBuilder {
@@ -19,5 +23,31 @@ public class GameButtonBuilder {
         }
 
         return buttons;
+    }
+
+    public static JButton buildSaveButton(TicTacToe view, GameStateLogic gameState, ScoreKeeper winsRecord){
+        JButton saveButton = new JButton("Save");
+
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SerializeGame.serialize(view, gameState, winsRecord);
+            }
+        });
+
+        return saveButton;
+    }
+
+    public static JButton buildLoadButton(TicTacToe view){
+        JButton loadButton = new JButton("Load");
+
+        loadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SerializeGame.deserialize();
+            }
+        });
+
+        return loadButton;
     }
 }

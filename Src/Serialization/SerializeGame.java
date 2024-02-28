@@ -10,7 +10,7 @@ public class SerializeGame implements Serializable {
     private static final String directoryName = "SavedGames"; // Directory name for properties file.
 
     //Uses string manipulation wizardry to put file in the correct folder
-    private static final String fileName = directoryName + File.separator + "gameState.ser";
+    private static final String fileName = directoryName + File.separator + "savedGame.ser";
 
     public static void serialize(JFrame view, GameStateLogic gameState, ScoreKeeper winsRecord) {
         directoryManagement();
@@ -36,6 +36,17 @@ public class SerializeGame implements Serializable {
         }
     }
 
+    public static void deserialize(){
+        File savedGame = new File(fileName);
+
+        if(!savedGame.exists()){
+            System.out.println("File not found");
+            return;
+        }
+        else{
+            System.out.println("File located");
+        }
+    }
     private static void directoryManagement() {
         File directory = new File(directoryName);
         if (!directory.exists()) {

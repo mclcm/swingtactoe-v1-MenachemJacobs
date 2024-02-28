@@ -94,14 +94,14 @@ public class TicTacToe extends JFrame {
             return yPos;
         }
     }
-    
+
     private JPanel arrangeHeadPanel(){
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BorderLayout());
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton saveButton = new JButton("Save");
-        JButton loadButton = new JButton("Load");
+        JButton saveButton = GameButtonBuilder.buildSaveButton(this, gameState, scoreTracker);
+        JButton loadButton = GameButtonBuilder.buildLoadButton(this);
 
         headerButtons.add(saveButton);
         headerButtons.add(loadButton);
@@ -133,11 +133,11 @@ public class TicTacToe extends JFrame {
 
         JPanel labelPanel = new JPanel();
         JButton restartButton = new JButton("Start over?");
+        restartButton.addActionListener(e -> restartGame());
 
         labelPanel.setPreferredSize(new Dimension(500, 50));
 
         labelPanel.add(lbl);
-        restartButton.addActionListener(e -> restartGame());
         labelPanel.add(restartButton);
 
         return labelPanel;
@@ -176,7 +176,7 @@ public class TicTacToe extends JFrame {
      * initializing new buttons, handling resize,
      * and resetting the game state.
      */
-    private void restartGame() {
+    void restartGame() {
         buttonPanel.removeAll();
 
         gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
