@@ -5,7 +5,7 @@ import java.util.Properties;
 /**
  * The ScoreKeeper class manages player scores in a Tic Tac Toe game.
  */
-public class ScoreKeeper {
+public class ScoreKeeper implements Serializable{
     private Properties scores; // Properties object to store player wins for this session
     private static final String directoryName = "Properties Folder"; // Directory name for properties file.
 

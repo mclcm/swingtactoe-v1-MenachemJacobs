@@ -282,7 +282,15 @@ public class TicTacToe extends JFrame {
      * Serializes the current game state and view.
      */
     private void serializeGame() {
-        SerializeGame.serialize(this, gameState);
+        SerializeGame.serialize(this, gameState, scoreTracker);
+    }
+
+    /**
+     * restore the deserialized the elements of the current game.
+     */
+    private void deSerializeGame(GameStateLogic gameState, ScoreKeeper scoreTracker){
+        this.scoreTracker = scoreTracker;
+        this.gameState = gameState;
     }
 
     /**
