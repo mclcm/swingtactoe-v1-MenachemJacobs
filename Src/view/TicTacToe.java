@@ -113,20 +113,23 @@ public class TicTacToe extends JFrame {
 
     private void arrangeHeadPanel(){
         headerPanel = new JPanel();
-        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.X_AXIS));
+        headerPanel.setLayout(new BorderLayout());
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
         JButton saveButton = new JButton("Save");
         JButton loadButton = new JButton("Load");
 
         headerButtons.add(saveButton);
         headerButtons.add(loadButton);
 
+        //JPanel centerPanel = new JPanel(new BorderLayout());
+        JLabel title = new JLabel("TicTacToe");
+        title.setHorizontalAlignment(SwingConstants.CENTER);
 
+        //centerPanel.add(title);
 
-        headerPanel.add(headerButtons);
-        headerPanel.add(new JLabel("TicTacToe"));
+        headerPanel.add(headerButtons, BorderLayout.LINE_START);
+        headerPanel.add(title, BorderLayout.CENTER);
     }
 
     private void arrangeButtonPanel(){
