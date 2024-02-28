@@ -1,7 +1,5 @@
 package model;
 
-import model.GameOverLogic;
-
 import javax.swing.*;
 import java.io.Serializable;
 
@@ -25,6 +23,13 @@ public class GameStateLogic implements Serializable {
 
     //minimum number of turns need to win the game
     private final int minimumNumOfTurns;
+
+    static final int RANK_WIN = 2;
+    static final int FILE_WIN = 3;
+    static final int DEXTER_WIN = 5;
+    static final int SINISTER_WIN = 7;
+    static final int DEXTER_ASCENDANT_WIN = 11;
+    static final int SINISTER_ASCENDANT_WIN = 13;
 
     /**
      * Constructs a new game state logic object.
@@ -144,5 +149,19 @@ public class GameStateLogic implements Serializable {
      */
     public int getGameState() {
         return gameState;
+    }
+
+    public int getWinCode(String code){
+
+        return switch (code) {
+            case "rank" -> RANK_WIN;
+            case "file" -> FILE_WIN;
+            case "dexter" -> DEXTER_WIN;
+            case "sinister" -> SINISTER_WIN;
+            case "aDexter" -> DEXTER_ASCENDANT_WIN;
+            case "aSinister" -> SINISTER_ASCENDANT_WIN;
+
+            default -> throw new IllegalStateException("Illegal win code passed into getGameState");
+        };
     }
 }

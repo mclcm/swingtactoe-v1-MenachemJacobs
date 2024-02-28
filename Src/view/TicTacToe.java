@@ -17,19 +17,15 @@ public class TicTacToe extends JFrame {
     ScoreKeeper scoreTracker = new ScoreKeeper();
     JLabel lbl;
     JPanel labelPanel;
-    JPanel buttonPanel;
     JButton[][] buttons;
+    JPanel buttonPanel;
+    JButton saveButton;
+    JButton loadButton;
+    JPanel headerPanel;
     JButton restartButton;
 
     private final int LENGTH = 3;
     private final int HEIGHT = 3;
-
-    static final int RANK_WIN = 2;
-    static final int FILE_WIN = 3;
-    static final int DEXTER_WIN = 5;
-    static final int SINISTER_WIN = 7;
-    static final int DEXTER_ASCENDANT_WIN = 11;
-    static final int SINISTER_ASCENDANT__WIN = 13;
 
 
     /**
@@ -125,7 +121,7 @@ public class TicTacToe extends JFrame {
         labelPanel.setPreferredSize(new Dimension(500, 50));
         buttonPanel.setPreferredSize(new Dimension(500, 200));
 
-
+        //This line takes the buttonPanel and attaches the buttons to it.
         buttons = ButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
 
         labelPanel.add(lbl);
@@ -173,7 +169,7 @@ public class TicTacToe extends JFrame {
         int loopLimit = Math.min(HEIGHT, LENGTH);
 
         //2 is the code for a rank win.
-        if (endGameCondition % RANK_WIN == 0) {
+        if (endGameCondition % gameState.getWinCode("rank") == 0) {
             // Rank win: repaint buttons in the same row
             for (int i = 0; i < LENGTH; i++) {
                 dryPaintBtn(buttons[clickedButton.getYPos()][i]);
@@ -181,7 +177,7 @@ public class TicTacToe extends JFrame {
         }
 
         //3 a file win.
-        if (endGameCondition % FILE_WIN == 0) {
+        if (endGameCondition % gameState.getWinCode("file") == 0) {
             // File win: repaint buttons in the same column
             for (JButton[] button : buttons) {
                 dryPaintBtn(button[clickedButton.getXPos()]);
@@ -189,7 +185,7 @@ public class TicTacToe extends JFrame {
         }
 
         //5 is the code for a dexter win.
-        if (endGameCondition % DEXTER_WIN == 0) {
+        if (endGameCondition % gameState.getWinCode("dexter") == 0) {
             // Dexter win: repaint buttons in the main diagonal
             for (int i = 0; i < loopLimit; i++) {
                 dryPaintBtn(buttons[i][i]);
@@ -197,7 +193,7 @@ public class TicTacToe extends JFrame {
         }
 
         //7 is the code for a sinister win.
-        if (endGameCondition % SINISTER_WIN == 0) {
+        if (endGameCondition % gameState.getWinCode("sinister") == 0) {
             // Sinister win: repaint buttons in the secondary diagonal
             for (int i = 0; i < loopLimit; i++) {
                 dryPaintBtn(buttons[i][LENGTH - 1 - i]);
@@ -206,7 +202,7 @@ public class TicTacToe extends JFrame {
 
         if (HEIGHT != LENGTH) {
             //11 is the code for a dexterAscendant win.
-            if (endGameCondition % DEXTER_ASCENDANT_WIN == 0) {
+            if (endGameCondition % gameState.getWinCode("aDexter") == 0) {
                 // Dexter Ascendant win: repaint buttons in the ascending diagonal from bottom left to top right
                 for (int i = 0; i < loopLimit; i++) {
                     dryPaintBtn(buttons[HEIGHT - 1 - i][i]);
@@ -214,7 +210,7 @@ public class TicTacToe extends JFrame {
             }
 
             //13 is the code for a sinisterAscendant win.
-            if (endGameCondition % SINISTER_ASCENDANT__WIN == 0) {
+            if (endGameCondition % gameState.getWinCode("aSinister") == 0) {
                 // Sinister Ascendant win: repaint buttons in the ascending diagonal from top left to bottom right
                 for (int i = 0; i < loopLimit; i++) {
                     dryPaintBtn(buttons[HEIGHT - 1 - i][LENGTH - 1 - i]);
