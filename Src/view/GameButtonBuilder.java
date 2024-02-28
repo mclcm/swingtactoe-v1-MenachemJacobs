@@ -38,6 +38,7 @@ public class GameButtonBuilder {
         return saveButton;
     }
 
+    //TODO this takes the wrong param, should instead take a file name, or something like that, to identify which game to load
     public static JButton buildLoadButton(TicTacToe view){
         JButton loadButton = new JButton("Load");
 

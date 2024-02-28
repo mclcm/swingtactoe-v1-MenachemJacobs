@@ -5,6 +5,7 @@ import view.ScoreKeeper;
 
 import javax.swing.*;
 import java.io.*;
+import java.nio.channels.ScatteringByteChannel;
 
 public class SerializeGame implements Serializable {
     private static final String directoryName = "SavedGames"; // Directory name for properties file.
@@ -41,10 +42,19 @@ public class SerializeGame implements Serializable {
 
         if(!savedGame.exists()){
             System.out.println("File not found");
-            return;
         }
         else{
-            System.out.println("File located");
+            try(ObjectInputStream objInStream = new ObjectInputStream(new FileInputStream(fileName))){
+                JFrame view = (JFrame) objInStream.readObject();
+                GameStateLogic model = (GameStateLogic) objInStream.readObject();
+                ScoreKeeper scoreKeeper = (ScoreKeeper) objInStream.readObject();
+
+                System.out.println("Deserialized success");
+            }
+            catch (IOException | ClassNotFoundException e){
+                e.printStackTrace();
+            }
+
         }
     }
     private static void directoryManagement() {
