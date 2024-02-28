@@ -151,7 +151,7 @@ public class GameStateLogic implements Serializable {
         return gameState;
     }
 
-    public int getWinCode(String code){
+    public static int getWinCode(String code){
 
         return switch (code) {
             case "rank" -> RANK_WIN;

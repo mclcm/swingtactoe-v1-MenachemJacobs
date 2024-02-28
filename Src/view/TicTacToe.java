@@ -152,81 +152,11 @@ public class TicTacToe extends JFrame {
             //check if game has ended by means other than cats eye
             if (gameState.getGameState() > 0) {
                 // Repaint buttons based on the end game condition
-                buttonEndGameRepaint(clickedButton, gameState.getGameState());
+                ButtonPainter.victoryPainter(buttons, clickedButton, gameState.getGameState(), HEIGHT, LENGTH);
                 //win record only increase if game ended for reason other than cats eye
                 scoreTracker.incrementScore(gameState.getXTurn());
             }
         }
-    }
-
-    /**
-     * Repaints the buttons involved in the end game based on the given end game condition.
-     *
-     * @param clickedButton    The button that was clicked to trigger the end game condition.
-     * @param endGameCondition The condition indicating the type of win (rank, file, diagonal, and/or the ascendants).
-     */
-    private void buttonEndGameRepaint(MyButton clickedButton, int endGameCondition) {
-        int loopLimit = Math.min(HEIGHT, LENGTH);
-
-        //2 is the code for a rank win.
-        if (endGameCondition % gameState.getWinCode("rank") == 0) {
-            // Rank win: repaint buttons in the same row
-            for (int i = 0; i < LENGTH; i++) {
-                dryPaintBtn(buttons[clickedButton.getYPos()][i]);
-            }
-        }
-
-        //3 a file win.
-        if (endGameCondition % gameState.getWinCode("file") == 0) {
-            // File win: repaint buttons in the same column
-            for (JButton[] button : buttons) {
-                dryPaintBtn(button[clickedButton.getXPos()]);
-            }
-        }
-
-        //5 is the code for a dexter win.
-        if (endGameCondition % gameState.getWinCode("dexter") == 0) {
-            // Dexter win: repaint buttons in the main diagonal
-            for (int i = 0; i < loopLimit; i++) {
-                dryPaintBtn(buttons[i][i]);
-            }
-        }
-
-        //7 is the code for a sinister win.
-        if (endGameCondition % gameState.getWinCode("sinister") == 0) {
-            // Sinister win: repaint buttons in the secondary diagonal
-            for (int i = 0; i < loopLimit; i++) {
-                dryPaintBtn(buttons[i][LENGTH - 1 - i]);
-            }
-        }
-
-        if (HEIGHT != LENGTH) {
-            //11 is the code for a dexterAscendant win.
-            if (endGameCondition % gameState.getWinCode("aDexter") == 0) {
-                // Dexter Ascendant win: repaint buttons in the ascending diagonal from bottom left to top right
-                for (int i = 0; i < loopLimit; i++) {
-                    dryPaintBtn(buttons[HEIGHT - 1 - i][i]);
-                }
-            }
-
-            //13 is the code for a sinisterAscendant win.
-            if (endGameCondition % gameState.getWinCode("aSinister") == 0) {
-                // Sinister Ascendant win: repaint buttons in the ascending diagonal from top left to bottom right
-                for (int i = 0; i < loopLimit; i++) {
-                    dryPaintBtn(buttons[HEIGHT - 1 - i][LENGTH - 1 - i]);
-                }
-            }
-        }
-    }
-
-    /**
-     * Repaints the given button to indicate its state during the end game.
-     *
-     * @param btnToPaint The button to repaint.
-     */
-    private void dryPaintBtn(JButton btnToPaint) {
-        btnToPaint.setEnabled(true);
-        btnToPaint.setBackground(Color.orange);
     }
 
     /**
