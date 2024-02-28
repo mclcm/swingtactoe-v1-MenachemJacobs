@@ -1,4 +1,4 @@
-import view.ScoreKeeper;
+package view;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,10 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import model.*;
+import Serialization.*;
+
 /**
  * This class represents a Tic Tac Toe game application.
  */
-public class TicTacToe extends JFrame {
+public class TicTacToe extends JFrame{
     GameStateLogic gameState;
     ScoreKeeper scoreTracker = new ScoreKeeper();
     JLabel lbl;
@@ -30,7 +33,7 @@ public class TicTacToe extends JFrame {
 
 
     /**
-     * Constructs a new TicTacToe game.
+     * Constructs a new view.TicTacToe game.
      */
     public TicTacToe() {
         if (HEIGHT < 1 || LENGTH < 1)
@@ -43,7 +46,7 @@ public class TicTacToe extends JFrame {
         setLayout(new BorderLayout());
 
         JPanel header = new JPanel();
-        header.add(new JLabel("TicTacToe"));
+        header.add(new JLabel("view.TicTacToe"));
         add(header, BorderLayout.NORTH);
 
         add(buttonPanel, BorderLayout.CENTER);
@@ -283,14 +286,14 @@ public class TicTacToe extends JFrame {
     /**
      * Serializes the current game state and view.
      */
-    private void serializeGame() {
+    public void serializeGame() {
         SerializeGame.serialize(this, gameState, scoreTracker);
     }
 
     /**
      * restore the deserialized the elements of the current game.
      */
-    private void deSerializeGame(GameStateLogic gameState, ScoreKeeper scoreTracker){
+    public void deSerializeGame(GameStateLogic gameState, ScoreKeeper scoreTracker){
         this.scoreTracker = scoreTracker;
         this.gameState = gameState;
     }

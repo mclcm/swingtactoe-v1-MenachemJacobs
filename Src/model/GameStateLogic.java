@@ -1,3 +1,5 @@
+package model;
+
 import model.GameOverLogic;
 
 import javax.swing.*;
@@ -30,7 +32,7 @@ public class GameStateLogic implements Serializable {
      * @param height The height of the game board.
      * @param length The length of the game board.
      */
-    GameStateLogic(int height, int length) {
+    public GameStateLogic(int height, int length) {
         if (height < 1 || length < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
@@ -126,7 +128,7 @@ public class GameStateLogic implements Serializable {
      *
      * @return {@code true} if it's currently X's turn, {@code false} otherwise.
      */
-    Boolean getXTurn() {
+    public Boolean getXTurn() {
         return isXTurn;
     }
 
@@ -140,7 +142,7 @@ public class GameStateLogic implements Serializable {
      * - 11 for a diagonal win (DexterAscendant), 13 for a diagonal win (SinisterAscendant),
      * - (-1) for a tie game (cat's eye).
      */
-    int getGameState() {
+    public int getGameState() {
         return gameState;
     }
 }

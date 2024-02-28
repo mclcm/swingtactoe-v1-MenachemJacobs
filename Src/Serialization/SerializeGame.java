@@ -1,3 +1,6 @@
+package Serialization;
+
+import model.GameStateLogic;
 import view.ScoreKeeper;
 
 import javax.swing.*;
