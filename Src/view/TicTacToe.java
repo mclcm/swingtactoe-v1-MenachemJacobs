@@ -17,10 +17,8 @@ public class TicTacToe extends JFrame {
     ScoreKeeper scoreTracker = new ScoreKeeper();
     JLabel lbl;
     JPanel labelPanel;
-    JButton[][] buttons;
+    JButton[][] gameButtons;
     JPanel buttonPanel;
-    JButton saveButton;
-    JButton loadButton;
     JPanel headerPanel;
     JButton restartButton;
 
@@ -41,10 +39,7 @@ public class TicTacToe extends JFrame {
 
         setLayout(new BorderLayout());
 
-        JPanel header = new JPanel();
-        header.add(new JLabel("TicTacToe"));
-        add(header, BorderLayout.NORTH);
-
+        add(headerPanel, BorderLayout.NORTH);
         add(buttonPanel, BorderLayout.CENTER);
         add(labelPanel, BorderLayout.SOUTH);
         setLocationRelativeTo(null);
@@ -111,23 +106,46 @@ public class TicTacToe extends JFrame {
     private void initGUI() {
         setTitle("Tic Tac Toe");
 
-        labelPanel = new JPanel();
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        arrangeHeadPanel();
+        arrangeButtonPanel();
+        arrangeLabelPanel();
+    }
 
+    private void arrangeHeadPanel(){
+        headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.X_AXIS));
+
+        JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        JButton saveButton = new JButton("Save");
+        JButton loadButton = new JButton("Load");
+
+        headerButtons.add(saveButton);
+        headerButtons.add(loadButton);
+
+
+
+        headerPanel.add(headerButtons);
+        headerPanel.add(new JLabel("TicTacToe"));
+    }
+
+    private void arrangeButtonPanel(){
+        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        buttonPanel.setPreferredSize(new Dimension(500, 200));
+
+        //This line takes the buttonPanel and attaches the game buttons to it.
+        gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+    }
+
+    private void arrangeLabelPanel() {
+        labelPanel = new JPanel();
         lbl = new JLabel("It is player X turn");
         restartButton = new JButton("Start over?");
 
-        // Set the preferred size for the labelPanel and buttonPanel
         labelPanel.setPreferredSize(new Dimension(500, 50));
-        buttonPanel.setPreferredSize(new Dimension(500, 200));
-
-        //This line takes the buttonPanel and attaches the buttons to it.
-        buttons = ButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
 
         labelPanel.add(lbl);
-
         restartButton.addActionListener(e -> restartGame());
-
         labelPanel.add(restartButton);
     }
 
@@ -152,7 +170,7 @@ public class TicTacToe extends JFrame {
             //check if game has ended by means other than cats eye
             if (gameState.getGameState() > 0) {
                 // Repaint buttons based on the end game condition
-                ButtonPainter.victoryPainter(buttons, clickedButton, gameState.getGameState(), HEIGHT, LENGTH);
+                ButtonPainter.victoryPainter(gameButtons, clickedButton, gameState.getGameState(), HEIGHT, LENGTH);
                 //win record only increase if game ended for reason other than cats eye
                 scoreTracker.incrementScore(gameState.getXTurn());
             }
@@ -167,8 +185,9 @@ public class TicTacToe extends JFrame {
     private void restartGame() {
         buttonPanel.removeAll();
 
-        buttons = ButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+        gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
         handleResize();
+        lbl.setText("It is player X turn");
 
         //Reset game state
         gameState = new GameStateLogic(HEIGHT, LENGTH);
@@ -185,7 +204,7 @@ public class TicTacToe extends JFrame {
         // Resize each button accordingly
         for (int i = 0; i < HEIGHT; i++) {
             for (int j = 0; j < LENGTH; j++) {
-                buttons[i][j].setPreferredSize(new Dimension(buttonWidth, buttonHeight));
+                gameButtons[i][j].setPreferredSize(new Dimension(buttonWidth, buttonHeight));
             }
         }
 

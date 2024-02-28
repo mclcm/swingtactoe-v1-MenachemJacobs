@@ -1,10 +1,9 @@
 package view;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 
-public class ButtonBuilder {
+public class GameButtonBuilder {
 
     public static JButton[][] initButtons(JPanel buttonPanel, ActionListener ae, int height, int length) {
 
