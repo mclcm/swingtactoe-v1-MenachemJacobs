@@ -126,29 +126,13 @@ public class TicTacToe extends JFrame {
         buttonPanel.setPreferredSize(new Dimension(500, 200));
 
 
-        buttons = new ButtonBuilder().initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+        buttons = ButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
 
         labelPanel.add(lbl);
 
         restartButton.addActionListener(e -> restartGame());
 
         labelPanel.add(restartButton);
-    }
-
-    /**
-     * Initializes the buttons grid.
-     */
-    private void initButtons() {
-        buttons = new JButton[HEIGHT][LENGTH];
-
-        // Initialize buttons and add ActionListener
-        for (int i = 0; i < HEIGHT; i++) {
-            for (int j = 0; j < LENGTH; j++) {
-                buttons[i][j] = new MyButton(j, i);
-                buttons[i][j].addActionListener(this::mouseClickHandler);
-                buttonPanel.add(buttons[i][j]);
-            }
-        }
     }
 
     /**
@@ -257,7 +241,7 @@ public class TicTacToe extends JFrame {
     private void restartGame() {
         buttonPanel.removeAll();
 
-        buttons = new ButtonBuilder().initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+        buttons = ButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
         handleResize();
 
         //Reset game state

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 public class ButtonBuilder {
 
-    public JButton[][] initButtons(JPanel buttonPanel,ActionListener ae, int height, int length) {
+    public static JButton[][] initButtons(JPanel buttonPanel, ActionListener ae, int height, int length) {
 
         JButton[][] buttons = new JButton[height][length];
 
