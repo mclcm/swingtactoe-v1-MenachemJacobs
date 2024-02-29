@@ -1,6 +1,7 @@
 package view;
 
 import Serialization.SerializeGame;
+import Serialization.TicTacWrapper;
 import model.GameStateLogic;
 
 import javax.swing.*;
@@ -25,13 +26,13 @@ public class GameButtonBuilder {
         return buttons;
     }
 
-    public static JButton buildSaveButton(TicTacToe view, GameStateLogic gameState, ScoreKeeper winsRecord){
+    public static JButton buildSaveButton(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length){
         JButton saveButton = new JButton("Save");
 
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SerializeGame.serialize(view, gameState, winsRecord);
+                SerializeGame.serialize(gameState, winsRecord, height, length);
             }
         });
 
@@ -45,7 +46,17 @@ public class GameButtonBuilder {
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SerializeGame.deserialize();
+                TicTacWrapper container = SerializeGame.deserialize();
+
+                //TicTacViewParent view = container.getView();
+                if(container != null) {
+                    GameStateLogic model = container.model();
+                    ScoreKeeper scoreKeeper = container.currentScore();
+                    int height = container.height();
+                    int length = container.length();
+                }else{
+                    System.out.println("Some how an empty shell has been saved");
+                }
             }
         });
 

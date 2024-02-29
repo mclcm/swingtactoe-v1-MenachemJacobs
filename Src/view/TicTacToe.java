@@ -12,11 +12,11 @@ import model.*;
  * This class represents a Tic Tac Toe game application.
  */
 public class TicTacToe extends TicTacViewParent {
-    private final int LENGTH = 3;
-    private final int HEIGHT = 3;
+    private final int LENGTH;
+    private final int HEIGHT;
 
-    GameStateLogic gameState = new GameStateLogic(HEIGHT, LENGTH);
-    ScoreKeeper scoreTracker = new ScoreKeeper();
+    private GameStateLogic gameState;
+    private final ScoreKeeper scoreTracker;
 
     JLabel lbl;
     JButton[][] gameButtons;
@@ -27,6 +27,24 @@ public class TicTacToe extends TicTacViewParent {
      * Constructs a new TicTacToe game.
      */
     public TicTacToe() {
+        LENGTH = 3;
+        HEIGHT = 3;
+        gameState = new GameStateLogic(HEIGHT, LENGTH);
+        scoreTracker = new ScoreKeeper();
+
+        universalConstruction();
+    }
+
+    public TicTacToe (GameStateLogic priorGame, ScoreKeeper priorWinRecord, int height, int length){
+        LENGTH = length;
+        HEIGHT = height;
+        gameState = priorGame;
+        scoreTracker = priorWinRecord;
+
+        universalConstruction();
+    }
+
+    private void universalConstruction(){
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
@@ -94,12 +112,12 @@ public class TicTacToe extends TicTacViewParent {
         }
     }
 
-    private JPanel arrangeHeadPanel(){
+    private JPanel arrangeHeadPanel() {
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BorderLayout());
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton saveButton = GameButtonBuilder.buildSaveButton(this, gameState, scoreTracker);
+        JButton saveButton = GameButtonBuilder.buildSaveButton(gameState, scoreTracker, HEIGHT, LENGTH);
         JButton loadButton = GameButtonBuilder.buildLoadButton(this);
 
         headerButtons.add(saveButton);
@@ -117,7 +135,7 @@ public class TicTacToe extends TicTacViewParent {
         return headerPanel;
     }
 
-    private JPanel arrangeButtonPanel(){
+    private JPanel arrangeButtonPanel() {
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         buttonPanel.setPreferredSize(new Dimension(500, 200));
 
@@ -175,7 +193,7 @@ public class TicTacToe extends TicTacViewParent {
      * initializing new buttons, handling resize,
      * and resetting the game state.
      */
-    void restartGame() {
+    private void restartGame() {
         buttonPanel.removeAll();
 
         gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
@@ -204,14 +222,6 @@ public class TicTacToe extends TicTacViewParent {
         // Refresh button panel
         buttonPanel.revalidate();
         buttonPanel.repaint();
-    }
-
-    /**
-     * restore the deserialized the elements of the current game.
-     */
-    public void deSerializeGame(GameStateLogic gameState, ScoreKeeper scoreTracker) {
-        this.scoreTracker = scoreTracker;
-        this.gameState = gameState;
     }
 
     /**
