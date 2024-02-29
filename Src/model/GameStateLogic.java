@@ -73,7 +73,7 @@ public class GameStateLogic implements Serializable {
     }
 
     public String buttonTextSetter(int cellValue){
-        return !isXTurn ? "X" : "O";
+        return cellValue == 1 ? "X" : "O";
     }
 
     /**

@@ -148,7 +148,7 @@ public class TicTacToe extends JFrame {
     }
 
     private JPanel arrangeLabelPanel() {
-        lbl = new JLabel("It is player X turn");
+        lbl = new JLabel(gameState.lblUpdater());
 
         JPanel labelPanel = new JPanel();
         JButton restartButton = new JButton("Start over?");

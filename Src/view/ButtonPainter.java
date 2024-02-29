@@ -77,17 +77,20 @@ public class ButtonPainter {
         btnToPaint.setBackground(Color.orange);
     }
 
-    static void reloadPainter(JButton[][] gameButtons, GameStateLogic analogueBoard){
+    static void reloadPainter(JButton[][] gameButtons, GameStateLogic analogueBoard) {
         int buttonVal;
         TicTacToe.MyButton castedButton;
 
-        for (JButton[] buttonRow : gameButtons){
-            for (JButton button: buttonRow){
+        for (JButton[] buttonRow : gameButtons) {
+            for (JButton button : buttonRow) {
                 castedButton = (TicTacToe.MyButton) button;
                 buttonVal = analogueBoard.getCellVal(castedButton.getXPos(), castedButton.getYPos());
 
-                if( buttonVal != StaticStateVars.getCellDefaultVal())
-                    button.setText(analogueBoard.buttonTextSetter(buttonVal));
+
+                if (buttonVal != StaticStateVars.getCellDefaultVal()) {
+                    castedButton.setText(analogueBoard.buttonTextSetter(buttonVal));
+                    castedButton.setEnabled(false);
+                }
             }
         }
 
