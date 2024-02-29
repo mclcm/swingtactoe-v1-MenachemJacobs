@@ -25,15 +25,12 @@ public class SerializeGame{
 
         //add code here to serialize object
         try {
-            //This is a generic out-stream to file
+            //Creat a generic out-stream to file and an objects to the out-stream
             FileOutputStream fileOutStream = new FileOutputStream(fileName);
-            //This will write objects to the out-stream
             ObjectOutputStream objOutStream = new ObjectOutputStream(fileOutStream);
 
-            //Store the input in a wrapper
+            //Store the input in a wrapper and write it to the out-stream with the object writer
             TicTacWrapper container = new TicTacWrapper(gameState, winsRecord, height, length);
-
-            //Write the objects to the out-stream with the object writer
             objOutStream.writeObject(container);
 
             //glad to see c standard close file sticks around
@@ -74,6 +71,7 @@ public class SerializeGame{
      */
     private static void directoryManagement() {
         File directory = new File(directoryName);
+
         if (!directory.exists()) {
             directory.mkdir();
         }

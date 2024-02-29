@@ -33,6 +33,7 @@ public class TicTacToe extends TicTacViewParent {
         scoreTracker = new ScoreKeeper();
 
         universalConstruction();
+        setVisible(true);
     }
 
     public TicTacToe (GameStateLogic priorGame, ScoreKeeper priorWinRecord, int height, int length){
@@ -60,7 +61,6 @@ public class TicTacToe extends TicTacViewParent {
 
         setSize(500, 300);
         pack();
-        setVisible(true);
 
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -118,7 +118,8 @@ public class TicTacToe extends TicTacViewParent {
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton saveButton = GameButtonBuilder.buildSaveButton(gameState, scoreTracker, HEIGHT, LENGTH);
-        JButton loadButton = GameButtonBuilder.buildLoadButton(this);
+        //TODO this doesn't do anything yet, but it should in story 2
+        JButton loadButton = GameButtonBuilder.buildLoadButton(this,"game");
 
         headerButtons.add(saveButton);
         headerButtons.add(loadButton);
