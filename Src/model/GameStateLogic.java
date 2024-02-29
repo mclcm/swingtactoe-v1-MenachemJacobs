@@ -17,14 +17,13 @@ public class GameStateLogic implements Serializable {
     private int turnCounter = 0;
 
     //Logical analogue of the GUI board
-    private final int[][] logicalBoard;
+    final int[][] logicalBoard;
 
     //minimum number of turns need to win the game
     private final int minNumOfTurns;
 
-    private final int xVal = 1;
-    private final int oVal = -1;
-
+    static final int xVal = 1;
+    static final int oVal = -1;
     /**
      * Constructs a new game state logic object.
      *
@@ -36,7 +35,7 @@ public class GameStateLogic implements Serializable {
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
         logicalBoard = new int[height][length];
-        gameState = VictoryCodes.ONGOING;
+        gameState = StaticStateVars.ONGOING;
 
         //for x to win, he needs to fill either a row or columns worth of spaces. To take that many turns, o has to have gone at least one less than that number of times.
         minNumOfTurns = Math.min(logicalBoard.length, logicalBoard[0].length) * 2 - 1;
@@ -53,7 +52,7 @@ public class GameStateLogic implements Serializable {
     public String btnClicked(JButton clickedButton, int xPos, int yPos) {
 
         //One would hope that the GUI implementing this class would have run the check on its end, but there is no way to know
-        if ((logicalBoard[yPos][xPos] == 0) && gameState == VictoryCodes.ONGOING) {
+        if ((logicalBoard[yPos][xPos] == 0) && gameState == StaticStateVars.ONGOING) {
 
             //set the value on the logicalBoard
             logicalBoard[yPos][xPos] = isXTurn ? xVal : oVal;
@@ -66,11 +65,15 @@ public class GameStateLogic implements Serializable {
             isXTurn = !isXTurn;
 
             //update the text in the clicked button.
-            return !isXTurn ? "X" : "O";
+            return buttonTextSetter(!isXTurn ? xVal : oVal) ;
         }
 
         //Ideally, clicking a disabled button would do nothing, but the responsibility for checking that is delegated too far up stream
         return clickedButton.getText();
+    }
+
+    public String buttonTextSetter(int cellValue){
+        return !isXTurn ? "X" : "O";
     }
 
     /**
@@ -87,7 +90,7 @@ public class GameStateLogic implements Serializable {
 
         //if no one won but the board is full call a cats eye
         if (turnCounter >= logicalBoard.length * logicalBoard[0].length - 1 && gameState == 0)
-            gameState = VictoryCodes.CATS_EYE;
+            gameState = StaticStateVars.CATS_EYE;
     }
 
     /**
@@ -97,8 +100,8 @@ public class GameStateLogic implements Serializable {
      * @return The text to be displayed on the information label.
      */
     public String lblUpdater() {
-        if (gameState == VictoryCodes.CATS_EYE) return "Game is over, cat's eye";
-        else if (gameState != VictoryCodes.ONGOING) return "Game is over, " + (!isXTurn ? "X" : "O") + " won";
+        if (gameState == StaticStateVars.CATS_EYE) return "Game is over, cat's eye";
+        else if (gameState != StaticStateVars.ONGOING) return "Game is over, " + (!isXTurn ? "X" : "O") + " won";
 
         return "It is player " + (isXTurn ? "X's" : "O's") + " turn";
     }
@@ -112,15 +115,6 @@ public class GameStateLogic implements Serializable {
      */
     public int getValAtPos(int x, int y) {
         return logicalBoard[y][x];
-    }
-
-    /**
-     * Checks if the game is over.
-     *
-     * @return {@code true} if the game is over, {@code false} otherwise.
-     */
-    public boolean getGameIsOver() {
-        return gameState != VictoryCodes.ONGOING;
     }
 
     /**
@@ -144,5 +138,10 @@ public class GameStateLogic implements Serializable {
      */
     public int getGameState() {
         return gameState;
+    }
+
+    //TODO this might be backwards
+    public int getCellVal(int xPos, int yPos){
+        return logicalBoard[yPos][xPos];
     }
 }

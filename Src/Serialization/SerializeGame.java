@@ -2,7 +2,6 @@ package Serialization;
 
 import model.GameStateLogic;
 import view.ScoreKeeper;
-import view.TicTacViewParent;
 
 import java.io.*;
 

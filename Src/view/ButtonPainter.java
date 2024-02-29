@@ -1,6 +1,7 @@
 package view;
 
-import model.VictoryCodes;
+import model.GameStateLogic;
+import model.StaticStateVars;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +17,7 @@ public class ButtonPainter {
         int loopLimit = Math.min(height, length);
 
         //rank win.
-        if (endGameCondition % VictoryCodes.getWinCode("rank") == 0) {
+        if (endGameCondition % StaticStateVars.getWinCode("rank") == 0) {
             // Rank win: repaint buttons in the same row
             for (int i = 0; i < length; i++) {
                 dryPaintBtn(buttons[clickedButton.getYPos()][i]);
@@ -24,7 +25,7 @@ public class ButtonPainter {
         }
 
         //file win.
-        if (endGameCondition % VictoryCodes.getWinCode("file") == 0) {
+        if (endGameCondition % StaticStateVars.getWinCode("file") == 0) {
             // File win: repaint buttons in the same column
             for (JButton[] button : buttons) {
                 dryPaintBtn(button[clickedButton.getXPos()]);
@@ -32,7 +33,7 @@ public class ButtonPainter {
         }
 
         //dexter win.
-        if (endGameCondition % VictoryCodes.getWinCode("dexter") == 0) {
+        if (endGameCondition % StaticStateVars.getWinCode("dexter") == 0) {
             // Dexter win: repaint buttons in the main diagonal
             for (int i = 0; i < loopLimit; i++) {
                 dryPaintBtn(buttons[i][i]);
@@ -40,7 +41,7 @@ public class ButtonPainter {
         }
 
         //sinister win.
-        if (endGameCondition % VictoryCodes.getWinCode("sinister") == 0) {
+        if (endGameCondition % StaticStateVars.getWinCode("sinister") == 0) {
             // Sinister win: repaint buttons in the secondary diagonal
             for (int i = 0; i < loopLimit; i++) {
                 dryPaintBtn(buttons[i][length - 1 - i]);
@@ -49,7 +50,7 @@ public class ButtonPainter {
 
         if (height != length) {
             //dexterAscendant win.
-            if (endGameCondition % VictoryCodes.getWinCode("aDexter") == 0) {
+            if (endGameCondition % StaticStateVars.getWinCode("aDexter") == 0) {
                 // Dexter Ascendant win: repaint buttons in the ascending diagonal from bottom left to top right
                 for (int i = 0; i < loopLimit; i++) {
                     dryPaintBtn(buttons[height - 1 - i][i]);
@@ -57,7 +58,7 @@ public class ButtonPainter {
             }
 
             //sinisterAscendant win.
-            if (endGameCondition % VictoryCodes.getWinCode("aSinister") == 0) {
+            if (endGameCondition % StaticStateVars.getWinCode("aSinister") == 0) {
                 // Sinister Ascendant win: repaint buttons in the ascending diagonal from top left to bottom right
                 for (int i = 0; i < loopLimit; i++) {
                     dryPaintBtn(buttons[height - 1 - i][length - 1 - i]);
@@ -74,5 +75,21 @@ public class ButtonPainter {
     private static void dryPaintBtn(JButton btnToPaint) {
         btnToPaint.setEnabled(true);
         btnToPaint.setBackground(Color.orange);
+    }
+
+    static void reloadPainter(JButton[][] gameButtons, GameStateLogic analogueBoard){
+        int buttonVal;
+        TicTacToe.MyButton castedButton;
+
+        for (JButton[] buttonRow : gameButtons){
+            for (JButton button: buttonRow){
+                castedButton = (TicTacToe.MyButton) button;
+                buttonVal = analogueBoard.getCellVal(castedButton.getXPos(), castedButton.getYPos());
+
+                if( buttonVal != StaticStateVars.getCellDefaultVal())
+                    button.setText(analogueBoard.buttonTextSetter(buttonVal));
+            }
+        }
+
     }
 }

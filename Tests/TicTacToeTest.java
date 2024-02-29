@@ -1,4 +1,5 @@
 import model.GameStateLogic;
+import model.StaticStateVars;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +40,7 @@ class TicTacToeTest {
     void gameNotOver(){
         turnTaker(2,1);
 
-        Assertions.assertFalse(testingGame.getGameIsOver(), "A is being scored incorrectly by the game over handler");
+        Assertions.assertFalse((testingGame.getGameState() != StaticStateVars.getWinCode("ongoing")), "A is being scored incorrectly by the game over handler");
         Assertions.assertEquals("It is player O's turn", testingGame.lblUpdater(), "lblUpdater is changing the lbl despite game not ending");
     }
 

@@ -11,7 +11,7 @@ import model.*;
 /**
  * This class represents a Tic Tac Toe game application.
  */
-public class TicTacToe extends TicTacViewParent {
+public class TicTacToe extends JFrame {
     private final int LENGTH;
     private final int HEIGHT;
 
@@ -43,6 +43,7 @@ public class TicTacToe extends TicTacViewParent {
         scoreTracker = priorWinRecord;
 
         universalConstruction();
+        ButtonPainter.reloadPainter(gameButtons, gameState);
     }
 
     private void universalConstruction(){
