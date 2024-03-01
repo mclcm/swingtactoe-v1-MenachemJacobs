@@ -7,6 +7,7 @@ import model.GameStateLogic;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 /**
  * Utility class for creating game buttons and associated actions.
@@ -47,17 +48,24 @@ public class GameButtonBuilder {
      * @param length     The length of the game board.
      * @return The "Save" JButton.
      */
-    public static JButton buildSaveButton(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length){
+    public static JButton buildSaveButton(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length) {
         JButton saveButton = new JButton("Save");
 
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SerializeGame.serialize(gameState, winsRecord, height, length);
+                sButtonFunctionality(gameState, winsRecord, height, length);
             }
         });
 
         return saveButton;
+    }
+
+    private static void sButtonFunctionality(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length) {
+        String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
+
+        if (saveFileName != null && !saveFileName.trim().isEmpty())
+            SerializeGame.serialize(saveFileName, gameState, winsRecord, height, length);
     }
 
     /**
@@ -67,13 +75,13 @@ public class GameButtonBuilder {
      * @param gameToRestore The identifier of the game to be restored (e.g., filename).
      * @return The "Load" JButton.
      */
-    public static JButton buildLoadButton(TicTacToe currentGame, String gameToRestore){
+    public static JButton buildLoadButton(TicTacToe currentGame, String gameToRestore) {
         JButton loadButton = new JButton("Load");
 
         loadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                restoreGame(currentGame, gameToRestore);
+                lButtonFunctionality(currentGame);
             }
         });
 
@@ -83,24 +91,39 @@ public class GameButtonBuilder {
     /**
      * Restores a previously saved game state and updates the current game instance.
      *
-     * @param currentGame  The current TicTacToe game instance.
-     * @param gameToRestore The identifier of the game to be restored (e.g., filename).
+     * @param currentGame The current TicTacToe game instance.
      */
-    private static void restoreGame(TicTacToe currentGame, String gameToRestore){
-        TicTacWrapper container = SerializeGame.deserialize();
+    private static void lButtonFunctionality(TicTacToe currentGame) {
+        JFileChooser gamesMenu = new JFileChooser("savedGames");
+        String gameToRestore;
+        TicTacWrapper container = null;
 
-        if(container != null) {
-            GameStateLogic model = container.model();
-            ScoreKeeper scoreKeeper = container.currentScore();
-            int height = container.height();
-            int length = container.length();
+        gamesMenu.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-            TicTacToe gameRestored = new TicTacToe(model, scoreKeeper, height, length);
-            gameRestored.setVisible(true);
+        // Show open dialog
+        int returnValue = gamesMenu.showOpenDialog(null);
 
-            currentGame.dispose();
-        }else{
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            gameToRestore = gamesMenu.getSelectedFile().getName();
+            container = SerializeGame.deserialize(gameToRestore);
+        }
+
+        if (container != null) {
+            setUpNewGame(container, currentGame);
+        } else {
             System.out.println("Somehow an empty shell has been saved");
         }
+    }
+
+    public static void setUpNewGame(TicTacWrapper container, TicTacToe currentGame) {
+        GameStateLogic model = container.model();
+        ScoreKeeper scoreKeeper = container.currentScore();
+        int height = container.height();
+        int length = container.length();
+
+        TicTacToe gameRestored = new TicTacToe(model, scoreKeeper, height, length);
+        gameRestored.setVisible(true);
+
+        currentGame.dispose();
     }
 }

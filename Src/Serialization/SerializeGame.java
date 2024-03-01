@@ -5,34 +5,39 @@ import view.ScoreKeeper;
 
 import java.io.*;
 
-public class SerializeGame{
+/**
+ * The SerializeGame class handles serialization and deserialization of game states.
+ */
+public class SerializeGame {
     private static final String directoryName = "SavedGames"; // Directory name for properties file.
 
-    //Uses string manipulation wizardry to put file in the correct folder
-    private static final String fileName = directoryName + File.separator + "savedGame.ser";
 
     /**
-     * Serializes the game state, including the TicTacViewParent, GameStateLogic, and ScoreKeeper objects,
+     * Serializes the game state, including the GameStateLogic and ScoreKeeper objects,
      * into a file specified by the fileName variable.
      * If the file doesn't exist, it creates one. If the file already exists, it overwrites it.
      *
-     * @param gameState The GameStateLogic object representing the game state.
+     * @param fN         The filename for the serialized game.
+     * @param gameState  The GameStateLogic object representing the game state.
      * @param winsRecord The ScoreKeeper object representing the game score.
+     * @param height     The height of the game board.
+     * @param length     The length of the game board.
      */
-    public static void serialize(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length) {
+    public static void serialize(String fN, GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length) {
+        String fileName = directoryName + File.separator + fN + ".ser";
         directoryManagement();
 
         //add code here to serialize object
         try {
-            //Creat a generic out-stream to file and an objects to the out-stream
+            //Create a file output stream and an object output stream
             FileOutputStream fileOutStream = new FileOutputStream(fileName);
             ObjectOutputStream objOutStream = new ObjectOutputStream(fileOutStream);
 
-            //Store the input in a wrapper and write it to the out-stream with the object writer
+            //Create a wrapper object and write it to the object output stream
             TicTacWrapper container = new TicTacWrapper(gameState, winsRecord, height, length);
             objOutStream.writeObject(container);
 
-            //glad to see c standard close file sticks around
+            //Close the streams
             objOutStream.close();
             fileOutStream.close();
 
@@ -44,22 +49,24 @@ public class SerializeGame{
     /**
      * Deserializes the game state from a file.
      *
-     * @return The deserialized TicTacWrapper object containing the game state.
+     * @param fN The filename of the serialized game state.
+     * @return The deserialized TicTacWrapper object containing the game state, or {@code null} if deserialization fails.
      * @throws FileNotFoundException If the file containing the serialized game state is not found.
      */
-    public static TicTacWrapper deserialize() {
-        File savedGame = new File(fileName);
+    public static TicTacWrapper deserialize(String fN) {
+        File savedGame = new File(directoryName + File.separator + fN);
 
         if (!savedGame.exists()) {
             System.out.println("File not found");
         } else {
-            try (ObjectInputStream objInStream = new ObjectInputStream(new FileInputStream(fileName))) {
-                System.out.println("Deserialized success");
+            System.out.println("File found");
 
+            try (ObjectInputStream objInStream = new ObjectInputStream(new FileInputStream(savedGame))) {
                 return (TicTacWrapper) objInStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
         }
 
         return null;

@@ -37,7 +37,8 @@ public class GameStateLogic implements Serializable {
         logicalBoard = new int[height][length];
         gameState = StaticStateVars.ONGOING;
 
-        //for x to win, he needs to fill either a row or columns worth of spaces. To take that many turns, o has to have gone at least one less than that number of times.
+        //For x to win, he needs to fill either a row or columns worth of spaces.
+        //To take that many turns, o has to have gone at least one less than that number of times.
         minNumOfTurns = Math.min(logicalBoard.length, logicalBoard[0].length) * 2 - 1;
     }
 
@@ -128,19 +129,11 @@ public class GameStateLogic implements Serializable {
 
     /**
      * Retrieves the current state of the game.
-     *
-     * @return An integer representing the current state of the game:
-     * - 0 for an ongoing game,
-     * - 2 for a row win, 3 for a column win,
-     * - 5 for a diagonal win (Dexter), 7 for a diagonal win (Sinister),
-     * - 11 for a diagonal win (DexterAscendant), 13 for a diagonal win (SinisterAscendant),
-     * - (-1) for a tie game (cat's eye).
      */
     public int getGameState() {
         return gameState;
     }
 
-    //TODO this might be backwards
     public int getCellVal(int xPos, int yPos){
         return logicalBoard[yPos][xPos];
     }

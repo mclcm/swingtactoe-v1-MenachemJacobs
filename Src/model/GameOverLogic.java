@@ -38,7 +38,8 @@ public class GameOverLogic {
 
         returnVal *= diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
 
-        //The code on the outside interprets 0 as being the 'no win' value, will the code on the inside uses 1, meaning that the values need to be exchanged before heading out
+        //The code on the outside interprets 0 as being the 'no win' value, will the code on the inside uses 1,
+        //meaning that the values need to be exchanged before heading out
         return returnVal == 1 ? 0 : returnVal;
     }
 
