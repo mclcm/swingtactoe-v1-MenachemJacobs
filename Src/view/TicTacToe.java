@@ -36,6 +36,14 @@ public class TicTacToe extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Constructs a TicTacToe game with prior game state and win record.
+     *
+     * @param priorGame      The prior game state.
+     * @param priorWinRecord The prior win record.
+     * @param height         The height of the game board.
+     * @param length         The length of the game board.
+     */
     public TicTacToe (GameStateLogic priorGame, ScoreKeeper priorWinRecord, int height, int length){
         LENGTH = length;
         HEIGHT = height;
@@ -46,6 +54,11 @@ public class TicTacToe extends JFrame {
         ButtonPainter.reloadPainter(gameButtons, gameState);
     }
 
+    /**
+     * Performs universal construction tasks for setting up the Tic Tac Toe game window.
+     * It sets the title, layout, adds panels, sets size and position, and handles resizing.
+     * Throws an IllegalArgumentException if the board dimensions are smaller than 1.
+     */
     private void universalConstruction(){
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
@@ -78,10 +91,8 @@ public class TicTacToe extends JFrame {
      */
     public static class MyButton extends JButton {
 
-        //xPos of this button. Analogous to this button's Length position in the board
-        private final int xPos;
-        //xPos of this button. Analogous to this button's Height position in the board
-        private final int yPos;
+        private final int xPos;     //xPos of this button. Analogous to this button's Length position in the board
+        private final int yPos;     //xPos of this button. Analogous to this button's Height position in the board
 
         /**
          * Constructs a new MyButton.
@@ -113,6 +124,11 @@ public class TicTacToe extends JFrame {
         }
     }
 
+    /**
+     * Arranges the header panel containing save and load buttons, and the game title.
+     *
+     * @return The JPanel containing the header components.
+     */
     private JPanel arrangeHeadPanel() {
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BorderLayout());
@@ -137,6 +153,11 @@ public class TicTacToe extends JFrame {
         return headerPanel;
     }
 
+    /**
+     * Arranges the button panel containing the Tic Tac Toe game buttons.
+     *
+     * @return The JPanel containing the game buttons.
+     */
     private JPanel arrangeButtonPanel() {
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         buttonPanel.setPreferredSize(new Dimension(500, 200));
@@ -147,6 +168,11 @@ public class TicTacToe extends JFrame {
         return buttonPanel;
     }
 
+    /**
+     * Arranges the label panel containing the game state label and restart button.
+     *
+     * @return The JPanel containing the game state label and restart button.
+     */
     private JPanel arrangeLabelPanel() {
         lbl = new JLabel(gameState.lblUpdater());
 

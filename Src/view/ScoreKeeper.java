@@ -85,23 +85,31 @@ public class ScoreKeeper implements Serializable{
     }
 
     /**
-     * Prompts for player names and handles them recursively until valid names are provided.
+     * Prompts the user for player names and handles them recursively until valid names are provided.
+     * If both names are legal, they are assigned to xPlayer and oPlayer variables, and the handleNames method is called.
+     * If one or more names are illegal (empty or null), the user is prompted again.
+     * If no names are provided (both inputs are null), default names are used.
      */
     private void miniPopUpLooper(){
         String input1 = JOptionPane.showInputDialog("Enter name for X player:");
+
+        //if the first input prompt is cancelled out or is blank, the default names are used
+        if(input1 == null || input1.trim().isEmpty()) {
+            handleNames(xPlayer, oPlayer);
+            return;
+        }
+
         String input2 = JOptionPane.showInputDialog("Enter name for O player:");
 
-        //Where both names are legal, handle them. If one or more is illegal, prompt again. If nothing is done, the default names will be used
-        if (input1 != null && !input1.trim().isEmpty() && input2 != null && !input2.trim().isEmpty()) {
+        //Where both names are legal, handle them. If either input is illegal, prompt again.
+        if (input2 != null && !input2.trim().isEmpty()) {
             xPlayer = input1;
             oPlayer = input2;
 
             handleNames(input1, input2);
-        } else if (input1 != null || input2 != null) {
+        }else{
             JOptionPane.showMessageDialog(null, "If you are going to use names, they need to not be blank");
             miniPopUpLooper();
-        } else{
-            handleNames(xPlayer, oPlayer);
         }
     }
 
