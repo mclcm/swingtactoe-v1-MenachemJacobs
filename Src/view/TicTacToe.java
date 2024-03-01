@@ -74,12 +74,12 @@ public class TicTacToe extends JFrame {
         setLocationRelativeTo(null);
 
         setSize(500, 300);
-        pack();
+        //pack();
 
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                super.componentResized(e);
+                //super.componentResized(e);
                 handleResize();
             }
         });
@@ -224,12 +224,12 @@ public class TicTacToe extends JFrame {
     private void restartGame() {
         buttonPanel.removeAll();
 
-        gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
-        handleResize();
-        lbl.setText("It is player X turn");
-
         //Reset game state
         gameState = new GameStateLogic(HEIGHT, LENGTH);
+
+        gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+        handleResize();
+        lbl.setText(gameState.lblUpdater());
     }
 
     /**

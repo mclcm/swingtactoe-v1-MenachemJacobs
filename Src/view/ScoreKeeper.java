@@ -7,12 +7,13 @@ import java.util.Properties;
 /**
  * The view.ScoreKeeper class manages player scores in a Tic Tac Toe game.
  */
-public class ScoreKeeper implements Serializable{
+public class ScoreKeeper implements Serializable {
     private Properties scores; // Properties object to store player wins for this session
     private static final String directoryName = "Properties Folder"; // Directory name for properties file.
 
     //Uses string manipulation wizardry to put file in the correct folder
-    private static final String fileName = directoryName + File.separator + "scores.properties";
+    private final String fileName = directoryName + File.separator + "scores.properties";
+    private boolean hasBeenAVictory = false;
 
     String xPlayer = "Player X Default Name"; // Default name for Player X
     String oPlayer = "Player O Default Name"; // Default name for Player O
@@ -48,7 +49,7 @@ public class ScoreKeeper implements Serializable{
     }
 
     /**
-     * Creates a new scores file if it doesn't exist.
+     * Creates a new scores file if it doesn't yet exist.
      */
     private void createNewScoresFile() {
         File directory = new File(directoryName);
@@ -71,7 +72,7 @@ public class ScoreKeeper implements Serializable{
     }
 
     /**
-     * Displays a popup message and prompts for player names.
+     * Displays the overall winner of the last session with a winner and prompts for player names.
      */
     private void newPopUp() {
         // Check if the scores file is not blank
@@ -90,12 +91,11 @@ public class ScoreKeeper implements Serializable{
      * If one or more names are illegal (empty or null), the user is prompted again.
      * If no names are provided (both inputs are null), default names are used.
      */
-    private void miniPopUpLooper(){
+    private void miniPopUpLooper() {
         String input1 = JOptionPane.showInputDialog("Enter name for X player:");
 
         //if the first input prompt is cancelled out or is blank, the default names are used
-        if(input1 == null || input1.trim().isEmpty()) {
-            handleNames(xPlayer, oPlayer);
+        if (input1 == null || input1.trim().isEmpty()) {
             return;
         }
 
@@ -105,9 +105,7 @@ public class ScoreKeeper implements Serializable{
         if (input2 != null && !input2.trim().isEmpty()) {
             xPlayer = input1;
             oPlayer = input2;
-
-            handleNames(input1, input2);
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "If you are going to use names, they need to not be blank");
             miniPopUpLooper();
         }
@@ -116,16 +114,13 @@ public class ScoreKeeper implements Serializable{
     /**
      * Handles provided player names.
      * Clears existing scores and sets initial scores for provided players.
-     *
-     * @param playerX The name of Player X.
-     * @param playerO The name of Player O.
      */
-    private void handleNames(String playerX, String playerO) {
+    private void handleNames() {
         scores.clear();
 
         //init player scores to zero
-        scores.setProperty(playerX, "0");
-        scores.setProperty(playerO, "0");
+        scores.setProperty(xPlayer, "0");
+        scores.setProperty(oPlayer, "0");
 
         saveScores();
     }
@@ -133,7 +128,7 @@ public class ScoreKeeper implements Serializable{
     /**
      * Finds which player from the last session had the greater score.
      *
-     * @return A message indicating the player with the greatest score.
+     * @return A message indicating the player with the greatest score in the last session that had a winner.
      */
     private String findHighestKey() {
         String returnMessage = "In the last session, the scores were tied.";
@@ -164,6 +159,11 @@ public class ScoreKeeper implements Serializable{
      * @param xTurn A boolean indicating if it's Player X's turn.
      */
     public void incrementScore(Boolean xTurn) {
+        if (!hasBeenAVictory) {
+            hasBeenAVictory = true;
+            handleNames();
+        }
+
         String currentPlayer = !xTurn ? xPlayer : oPlayer;
         int currentScore = Integer.parseInt(scores.getProperty(currentPlayer));
         scores.setProperty(currentPlayer, String.valueOf(++currentScore));

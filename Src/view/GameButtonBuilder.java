@@ -100,7 +100,7 @@ public class GameButtonBuilder {
 
             currentGame.dispose();
         }else{
-            System.out.println("Some how an empty shell has been saved");
+            System.out.println("Somehow an empty shell has been saved");
         }
     }
 }
