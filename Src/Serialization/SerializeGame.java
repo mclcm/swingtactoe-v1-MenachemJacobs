@@ -11,7 +11,6 @@ import java.io.*;
 public class SerializeGame {
     private static final String directoryName = "SavedGames"; // Directory name for properties file.
 
-
     /**
      * Serializes the game state, including the GameStateLogic and ScoreKeeper objects,
      * into a file specified by the fileName variable.

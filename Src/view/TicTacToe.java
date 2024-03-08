@@ -3,6 +3,7 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -70,6 +71,7 @@ public class TicTacToe extends JFrame {
         add(arrangeHeadPanel(), BorderLayout.NORTH);
         add(arrangeButtonPanel(), BorderLayout.CENTER);
         add(arrangeLabelPanel(), BorderLayout.SOUTH);
+        //add(arrangeTimerPanel(), BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
 
@@ -188,6 +190,13 @@ public class TicTacToe extends JFrame {
         return labelPanel;
     }
 
+    private JPanel arrangeTimerPanel(){
+        ActionListener al = null;
+        WarningPanel timerPanel = new MovePressure(al, 3);
+
+        return timerPanel;
+    }
+
     /**
      * Handles the mouse click event on buttons.
      *
@@ -258,6 +267,6 @@ public class TicTacToe extends JFrame {
      * @param args Command-line arguments (unused).
      */
     public static void main(String[] args) {
-        java.awt.EventQueue.invokeLater(TicTacToe::new);
+        EventQueue.invokeLater(TicTacToe::new);
     }
 }
