@@ -25,6 +25,8 @@ public class TicTacToe extends JFrame {
     int lightInterval = -1;
     String warningMessage = "\n";
 
+    Timer span;
+
     /**
      * Constructs a new TicTacToe game.
      */
@@ -86,10 +88,11 @@ public class TicTacToe extends JFrame {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                //super.componentResized(e);
                 handleResize();
             }
         });
+
+        span.start();
     }
 
 
@@ -147,11 +150,8 @@ public class TicTacToe extends JFrame {
         headerButtons.add(saveButton);
         headerButtons.add(loadButton);
 
-        //JPanel centerPanel = new JPanel(new BorderLayout());
         JLabel title = new JLabel("TicTacToe");
         title.setHorizontalAlignment(SwingConstants.CENTER);
-
-        //centerPanel.add(title);
 
         headerPanel.add(headerButtons, BorderLayout.LINE_START);
         headerPanel.add(title, BorderLayout.CENTER);
@@ -191,10 +191,10 @@ public class TicTacToe extends JFrame {
         labelPanel.add(lbl);
         labelPanel.add(restartButton);
 
-        if (lightInterval != -1 && !warningMessage.equals("\n"))
-            labelPanel.add(new MovePressure(lightInterval, warningMessage));
-        else
-            labelPanel.add(new MovePressure());
+        MovePressure warningPad = (lightInterval != -1 && !warningMessage.equals("\n")) ? new MovePressure(lightInterval, warningMessage) : new MovePressure();
+        span = warningPad.getTimer();
+
+        labelPanel.add(warningPad);
 
         return labelPanel;
     }
@@ -206,6 +206,8 @@ public class TicTacToe extends JFrame {
      */
     private void mouseClickHandler(ActionEvent ae) {
         MyButton clickedButton = (MyButton) ae.getSource();
+
+        //span.restart();
 
         //if game is not over and the current button has not been clicked before, update text and label
         if (gameState.getGameState() == 0 && gameState.getValAtPos(clickedButton.getXPos(), clickedButton.getYPos()) == 0) {
@@ -285,8 +287,6 @@ public class TicTacToe extends JFrame {
         final int finalLightInterval = lightInterval;
         final String finalWarningMessage = warningMessage;
 
-        EventQueue.invokeLater(() -> {
-            TicTacToe ticTacToe = new TicTacToe(finalLightInterval, finalWarningMessage);
-        });
+        EventQueue.invokeLater(() -> new TicTacToe(finalLightInterval, finalWarningMessage));
     }
 }

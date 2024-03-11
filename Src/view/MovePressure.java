@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class MovePressure extends WarningPanel {
     private int colorIndex = 0;
@@ -16,20 +17,31 @@ public class MovePressure extends WarningPanel {
     }
 
     private void initialize(int length, String passedMessage) {
-        setBackground(colorList[0]);
+        setBackground(colorList[colorIndex++]);
         JLabel myMessage = new JLabel(passedMessage);
         add(myMessage);
 
-        span = new Timer(length, this);
-        //span.start();
+        //convert input into seconds
+        span = new Timer(length * 1000, this);
     }
 
-    private void iterateColor() {
-        setBackground(colorList[colorIndex++]);
+    public Timer getTimer(){
+        return span;
     }
 
     private void setColors(Color[] passedColors) {
         colorList = passedColors;
+    }
+
+    /**
+     * Invoked when an action occurs.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(colorIndex < colorList.length)
+            setBackground(colorList[colorIndex++]);
     }
 
     @Override

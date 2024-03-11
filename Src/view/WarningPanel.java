@@ -15,9 +15,7 @@ public abstract class WarningPanel extends JPanel implements ActionListener {
      * @param e the event to be processed
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
+    public abstract void actionPerformed(ActionEvent e);
 
     public abstract String getWarning();
 }
