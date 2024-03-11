@@ -72,18 +72,12 @@ public class GameButtonBuilder {
      * Builds a "Load" JButton with an ActionListener to restore a previously saved game state.
      *
      * @param currentGame   The current TicTacToe game instance.
-     * @param gameToRestore The identifier of the game to be restored (e.g., filename).
      * @return The "Load" JButton.
      */
-    public static JButton buildLoadButton(TicTacToe currentGame, String gameToRestore) {
+    public static JButton buildLoadButton(TicTacToe currentGame) {
         JButton loadButton = new JButton("Load");
 
-        loadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                lButtonFunctionality(currentGame);
-            }
-        });
+        loadButton.addActionListener(e -> lButtonFunctionality(currentGame));
 
         return loadButton;
     }

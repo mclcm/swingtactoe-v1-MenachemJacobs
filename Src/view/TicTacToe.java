@@ -137,8 +137,7 @@ public class TicTacToe extends JFrame {
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JButton saveButton = GameButtonBuilder.buildSaveButton(gameState, scoreTracker, HEIGHT, LENGTH);
-        //TODO this doesn't do anything yet, but it should in story 2
-        JButton loadButton = GameButtonBuilder.buildLoadButton(this,"game");
+        JButton loadButton = GameButtonBuilder.buildLoadButton(this);
 
         headerButtons.add(saveButton);
         headerButtons.add(loadButton);
@@ -187,12 +186,14 @@ public class TicTacToe extends JFrame {
         labelPanel.add(lbl);
         labelPanel.add(restartButton);
 
+        labelPanel.add(new MovePressure(3));
+
         return labelPanel;
     }
 
     private JPanel arrangeTimerPanel(){
         ActionListener al = null;
-        WarningPanel timerPanel = new MovePressure(al, 3);
+        WarningPanel timerPanel = new MovePressure(3);
 
         return timerPanel;
     }
