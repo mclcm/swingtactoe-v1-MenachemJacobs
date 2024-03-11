@@ -4,34 +4,33 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MovePressure extends WarningPanel {
-    int lightInterval;
-    int colorIndex = 0;
-
-    MovePressure(int length, String passedMessage) {
-        lightInterval = length;
-
-        setBackground(colorList[0]);
-        JLabel myMessage = new JLabel();
-        myMessage.setText(passedMessage);
-        add(myMessage);
-
-        span = new Timer(3, this);
-    }
+    private int colorIndex = 0;
+    private static final int DEFAULT_LENGTH = 3;
 
     MovePressure() {
-        setBackground(colorList[0]);
-        JLabel myMessage = new JLabel();
-        myMessage.setText(getWarning());
-        add(myMessage);
-
-        span = new Timer(3, this);
+        initialize(DEFAULT_LENGTH, getWarning());
     }
 
-    private void changeColor(){
+    MovePressure(int length, String passedMessage) {
+        initialize(length, passedMessage);
+    }
+
+    private void initialize(int length, String passedMessage) {
+        setBackground(colorList[0]);
+        JLabel myMessage = new JLabel(passedMessage);
+        add(myMessage);
+
+        span = new Timer(length, this);
+        //span.start();
+    }
+
+    private void iterateColor() {
         setBackground(colorList[colorIndex++]);
     }
 
-    private void setColors(Color[] passedColors){colorList = passedColors;}
+    private void setColors(Color[] passedColors) {
+        colorList = passedColors;
+    }
 
     @Override
     public String getWarning() {

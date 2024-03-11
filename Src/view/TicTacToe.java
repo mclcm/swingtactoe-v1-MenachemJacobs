@@ -76,7 +76,7 @@ public class TicTacToe extends JFrame {
 
         add(arrangeHeadPanel(), BorderLayout.NORTH);
         add(arrangeButtonPanel(), BorderLayout.CENTER);
-        add(arrangeLabelPanel(), BorderLayout.SOUTH);
+        add(arrangeStatusPanel(), BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
 
@@ -179,7 +179,7 @@ public class TicTacToe extends JFrame {
      *
      * @return The JPanel containing the game state label and restart button.
      */
-    private JPanel arrangeLabelPanel() {
+    private JPanel arrangeStatusPanel() {
         lbl = new JLabel(gameState.lblUpdater());
 
         JPanel labelPanel = new JPanel();
@@ -191,7 +191,7 @@ public class TicTacToe extends JFrame {
         labelPanel.add(lbl);
         labelPanel.add(restartButton);
 
-        if (lightInterval != -1 || !warningMessage.equals("\n"))
+        if (lightInterval != -1 && !warningMessage.equals("\n"))
             labelPanel.add(new MovePressure(lightInterval, warningMessage));
         else
             labelPanel.add(new MovePressure());
