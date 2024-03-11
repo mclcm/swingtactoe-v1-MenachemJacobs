@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 
 public abstract class WarningPanel extends JPanel implements ActionListener {
     Timer span;
-    ActionListener al;
     Color[] colorList = new Color[]{Color.green, Color.yellow, Color.red};
 
     /**

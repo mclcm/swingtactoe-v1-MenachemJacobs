@@ -3,7 +3,6 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
@@ -23,17 +22,20 @@ public class TicTacToe extends JFrame {
     JButton[][] gameButtons;
     JPanel buttonPanel;
 
+    int lightInterval = -1;
+    String warningMessage = "\n";
 
     /**
      * Constructs a new TicTacToe game.
      */
-    public TicTacToe() {
+    public TicTacToe(int lightInterval, String warningMessage) {
         LENGTH = 3;
         HEIGHT = 3;
+
         gameState = new GameStateLogic(HEIGHT, LENGTH);
         scoreTracker = new ScoreKeeper();
 
-        universalConstruction();
+        universalConstruction(lightInterval, warningMessage);
         setVisible(true);
     }
 
@@ -45,13 +47,14 @@ public class TicTacToe extends JFrame {
      * @param height         The height of the game board.
      * @param length         The length of the game board.
      */
-    public TicTacToe (GameStateLogic priorGame, ScoreKeeper priorWinRecord, int height, int length){
+    public TicTacToe(GameStateLogic priorGame, ScoreKeeper priorWinRecord, int height, int length, int lightInterval, String warningMessage) {
         LENGTH = length;
         HEIGHT = height;
+
         gameState = priorGame;
         scoreTracker = priorWinRecord;
 
-        universalConstruction();
+        universalConstruction(lightInterval, warningMessage);
         ButtonPainter.reloadPainter(gameButtons, gameState);
     }
 
@@ -60,9 +63,12 @@ public class TicTacToe extends JFrame {
      * It sets the title, layout, adds panels, sets size and position, and handles resizing.
      * Throws an IllegalArgumentException if the board dimensions are smaller than 1.
      */
-    private void universalConstruction(){
+    private void universalConstruction(int lightInterval, String warningMessage) {
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
+
+        this.lightInterval = lightInterval;
+        this.warningMessage = warningMessage;
 
         setTitle("Tic Tac Toe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +77,6 @@ public class TicTacToe extends JFrame {
         add(arrangeHeadPanel(), BorderLayout.NORTH);
         add(arrangeButtonPanel(), BorderLayout.CENTER);
         add(arrangeLabelPanel(), BorderLayout.SOUTH);
-        //add(arrangeTimerPanel(), BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
 
@@ -136,7 +141,7 @@ public class TicTacToe extends JFrame {
         headerPanel.setLayout(new BorderLayout());
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton saveButton = GameButtonBuilder.buildSaveButton(gameState, scoreTracker, HEIGHT, LENGTH);
+        JButton saveButton = GameButtonBuilder.buildSaveButton(gameState, scoreTracker, HEIGHT, LENGTH, lightInterval, warningMessage);
         JButton loadButton = GameButtonBuilder.buildLoadButton(this);
 
         headerButtons.add(saveButton);
@@ -186,16 +191,12 @@ public class TicTacToe extends JFrame {
         labelPanel.add(lbl);
         labelPanel.add(restartButton);
 
-        labelPanel.add(new MovePressure(3));
+        if (lightInterval != -1 || !warningMessage.equals("\n"))
+            labelPanel.add(new MovePressure(lightInterval, warningMessage));
+        else
+            labelPanel.add(new MovePressure());
 
         return labelPanel;
-    }
-
-    private JPanel arrangeTimerPanel(){
-        ActionListener al = null;
-        WarningPanel timerPanel = new MovePressure(3);
-
-        return timerPanel;
     }
 
     /**
@@ -268,6 +269,24 @@ public class TicTacToe extends JFrame {
      * @param args Command-line arguments (unused).
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(TicTacToe::new);
+        int lightInterval = -1;
+        String warningMessage = "\n";
+
+        if (args.length == 2) {
+            try {
+                lightInterval = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                System.err.println("Invalid val for lightInterval");
+            }
+
+            warningMessage = args[1];
+        }
+
+        final int finalLightInterval = lightInterval;
+        final String finalWarningMessage = warningMessage;
+
+        EventQueue.invokeLater(() -> {
+            TicTacToe ticTacToe = new TicTacToe(finalLightInterval, finalWarningMessage);
+        });
     }
 }

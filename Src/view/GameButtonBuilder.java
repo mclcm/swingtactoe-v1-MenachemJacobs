@@ -48,24 +48,19 @@ public class GameButtonBuilder {
      * @param length     The length of the game board.
      * @return The "Save" JButton.
      */
-    public static JButton buildSaveButton(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length) {
+    public static JButton buildSaveButton(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length, int lightInterval, String warningMessage) {
         JButton saveButton = new JButton("Save");
 
-        saveButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sButtonFunctionality(gameState, winsRecord, height, length);
-            }
-        });
+        saveButton.addActionListener(e -> sButtonFunctionality(gameState, winsRecord, height, length, lightInterval, warningMessage));
 
         return saveButton;
     }
 
-    private static void sButtonFunctionality(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length) {
+    private static void sButtonFunctionality(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length, int lightInterval, String warningMessage) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
 
         if (saveFileName != null && !saveFileName.trim().isEmpty())
-            SerializeGame.serialize(saveFileName, gameState, winsRecord, height, length);
+            SerializeGame.serialize(saveFileName, gameState, winsRecord, height, length, lightInterval, warningMessage);
     }
 
     /**
@@ -114,8 +109,10 @@ public class GameButtonBuilder {
         ScoreKeeper scoreKeeper = container.currentScore();
         int height = container.height();
         int length = container.length();
+        int lightInterval = container.lightInterval();
+        String warningMessage = container.warningMessage();
 
-        TicTacToe gameRestored = new TicTacToe(model, scoreKeeper, height, length);
+        TicTacToe gameRestored = new TicTacToe(model, scoreKeeper, height, length, lightInterval, warningMessage);
         gameRestored.setVisible(true);
 
         currentGame.dispose();

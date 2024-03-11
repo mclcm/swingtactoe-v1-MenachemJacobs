@@ -22,7 +22,7 @@ public class SerializeGame {
      * @param height     The height of the game board.
      * @param length     The length of the game board.
      */
-    public static void serialize(String fN, GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length) {
+    public static void serialize(String fN, GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length, int lightInterval, String warningMessage) {
         String fileName = directoryName + File.separator + fN + ".ser";
         directoryManagement();
 
@@ -33,7 +33,7 @@ public class SerializeGame {
             ObjectOutputStream objOutStream = new ObjectOutputStream(fileOutStream);
 
             //Create a wrapper object and write it to the object output stream
-            TicTacWrapper container = new TicTacWrapper(gameState, winsRecord, height, length);
+            TicTacWrapper container = new TicTacWrapper(gameState, winsRecord, height, length, lightInterval, warningMessage);
             objOutStream.writeObject(container);
 
             //Close the streams
