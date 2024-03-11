@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 public class MovePressure extends WarningPanel {
     private int colorIndex = 0;
     private static final int DEFAULT_LENGTH = 3;
+    Timer span;
 
     MovePressure() {
         initialize(DEFAULT_LENGTH, getWarning());
@@ -25,12 +26,14 @@ public class MovePressure extends WarningPanel {
         span = new Timer(length * 1000, this);
     }
 
-    public Timer getTimer(){
-        return span;
-    }
-
     private void setColors(Color[] passedColors) {
         colorList = passedColors;
+    }
+
+    public void restate(){
+        colorIndex = 0;
+        setBackground(colorList[colorIndex++]);
+        span.restart();
     }
 
     /**
@@ -42,10 +45,16 @@ public class MovePressure extends WarningPanel {
     public void actionPerformed(ActionEvent e) {
         if(colorIndex < colorList.length)
             setBackground(colorList[colorIndex++]);
+        else
+            span.stop();
     }
 
     @Override
     public String getWarning() {
         return "Move Time";
+    }
+
+    public void start() {
+        span.start();
     }
 }

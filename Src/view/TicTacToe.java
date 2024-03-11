@@ -25,7 +25,7 @@ public class TicTacToe extends JFrame {
     int lightInterval = -1;
     String warningMessage = "\n";
 
-    Timer span;
+    MovePressure myTimer;
 
     /**
      * Constructs a new TicTacToe game.
@@ -92,7 +92,7 @@ public class TicTacToe extends JFrame {
             }
         });
 
-        span.start();
+        myTimer.start();
     }
 
 
@@ -192,7 +192,7 @@ public class TicTacToe extends JFrame {
         labelPanel.add(restartButton);
 
         MovePressure warningPad = (lightInterval != -1 && !warningMessage.equals("\n")) ? new MovePressure(lightInterval, warningMessage) : new MovePressure();
-        span = warningPad.getTimer();
+        myTimer = warningPad;
 
         labelPanel.add(warningPad);
 
@@ -207,10 +207,10 @@ public class TicTacToe extends JFrame {
     private void mouseClickHandler(ActionEvent ae) {
         MyButton clickedButton = (MyButton) ae.getSource();
 
-        //span.restart();
-
         //if game is not over and the current button has not been clicked before, update text and label
         if (gameState.getGameState() == 0 && gameState.getValAtPos(clickedButton.getXPos(), clickedButton.getYPos()) == 0) {
+            myTimer.restate();
+
             clickedButton.setEnabled(false);
 
             // Update text on the clicked button and handle game state logic
