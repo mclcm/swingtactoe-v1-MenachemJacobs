@@ -20,15 +20,10 @@ public class SerializeGame {
      * into a file specified by the fileName variable.
      * If the file doesn't exist, it creates one. If the file already exists, it overwrites it.
      *
-     * @param fN             The filename for the serialized game.
-     * @param gameState      The GameStateLogic object representing the game state.
-     * @param winsRecord     The ScoreKeeper object representing the game score.
-     * @param height         The height of the game board.
-     * @param length         The length of the game board.
-     * @param lightInterval  The light interval for the game.
-     * @param warningMessage The warning message for the game.
+     * @param fN         The filename for the serialized game.
+     * @param gamePill   The Wrapped elements of the game to be saved
      */
-    public static void serialize(String fN, GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length, int lightInterval, String warningMessage) {
+    public static void serialize(String fN, TicTacWrapper gamePill) {
         String fileName = directoryName + File.separator + fN + ".ser";
         directoryManagement();
 
@@ -37,9 +32,8 @@ public class SerializeGame {
             FileOutputStream fileOutStream = new FileOutputStream(fileName);
             ObjectOutputStream objOutStream = new ObjectOutputStream(fileOutStream);
 
-            //Create a wrapper object and write it to the object output stream
-            TicTacWrapper container = new TicTacWrapper(gameState, winsRecord, height, length, lightInterval, warningMessage);
-            objOutStream.writeObject(container);
+            //Takes a wrapper object and writes it to the object output stream
+            objOutStream.writeObject(gamePill);
 
             //Close the streams
             objOutStream.close();

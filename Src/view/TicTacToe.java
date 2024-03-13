@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import Serialization.TicTacWrapper;
 import model.*;
 
 /**
@@ -194,7 +195,7 @@ public class TicTacToe extends JFrame {
         headerPanel.setLayout(new BorderLayout());
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton saveButton = GameButtonBuilder.buildSaveButton(gameState, scoreTracker, HEIGHT, LENGTH, lightInterval, warningMessage);
+        JButton saveButton = GameButtonBuilder.buildSaveButton(new TicTacWrapper(gameState, scoreTracker, HEIGHT, LENGTH, lightInterval, warningMessage) );
         JButton loadButton = GameButtonBuilder.buildLoadButton(this);
 
         headerButtons.add(saveButton);

@@ -42,18 +42,13 @@ public class GameButtonBuilder {
     /**
      * Builds a "Save" JButton with an ActionListener to serialize the game state.
      *
-     * @param gameState      The GameStateLogic representing the game state.
-     * @param winsRecord     The ScoreKeeper representing the game score.
-     * @param height         The height of the game board.
-     * @param length         The length of the game board.
-     * @param lightInterval  The light interval.
-     * @param warningMessage The warning message.
+     * @param gamePill   The Wrapped elements of the game to be saved
      * @return The "Save" JButton.
      */
-    public static JButton buildSaveButton(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length, int lightInterval, String warningMessage) {
+    public static JButton buildSaveButton(TicTacWrapper gamePill) {
         JButton saveButton = new JButton("Save");
 
-        saveButton.addActionListener(e -> sButtonFunctionality(gameState, winsRecord, height, length, lightInterval, warningMessage));
+        saveButton.addActionListener(e -> sButtonFunctionality(gamePill));
 
         return saveButton;
     }
@@ -61,18 +56,13 @@ public class GameButtonBuilder {
     /**
      * Performs the functionality of the "Save" button, allowing the user to save the game state.
      *
-     * @param gameState      The GameStateLogic representing the game state.
-     * @param winsRecord     The ScoreKeeper representing the game score.
-     * @param height         The height of the game board.
-     * @param length         The length of the game board.
-     * @param lightInterval  The light interval.
-     * @param warningMessage The warning message.
+     * @param gamePill   The Wrapped elements of the game to be saved.
      */
-    private static void sButtonFunctionality(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length, int lightInterval, String warningMessage) {
+    private static void sButtonFunctionality(TicTacWrapper gamePill) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
 
         if (saveFileName != null && !saveFileName.trim().isEmpty())
-            SerializeGame.serialize(saveFileName, gameState, winsRecord, height, length, lightInterval, warningMessage);
+            SerializeGame.serialize(saveFileName, gamePill);
     }
 
     /**
