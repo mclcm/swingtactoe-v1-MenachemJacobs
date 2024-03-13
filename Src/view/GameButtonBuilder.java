@@ -42,10 +42,12 @@ public class GameButtonBuilder {
     /**
      * Builds a "Save" JButton with an ActionListener to serialize the game state.
      *
-     * @param gameState  The GameStateLogic representing the game state.
-     * @param winsRecord The ScoreKeeper representing the game score.
-     * @param height     The height of the game board.
-     * @param length     The length of the game board.
+     * @param gameState      The GameStateLogic representing the game state.
+     * @param winsRecord     The ScoreKeeper representing the game score.
+     * @param height         The height of the game board.
+     * @param length         The length of the game board.
+     * @param lightInterval  The light interval.
+     * @param warningMessage The warning message.
      * @return The "Save" JButton.
      */
     public static JButton buildSaveButton(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length, int lightInterval, String warningMessage) {
@@ -56,6 +58,16 @@ public class GameButtonBuilder {
         return saveButton;
     }
 
+    /**
+     * Performs the functionality of the "Save" button, allowing the user to save the game state.
+     *
+     * @param gameState      The GameStateLogic representing the game state.
+     * @param winsRecord     The ScoreKeeper representing the game score.
+     * @param height         The height of the game board.
+     * @param length         The length of the game board.
+     * @param lightInterval  The light interval.
+     * @param warningMessage The warning message.
+     */
     private static void sButtonFunctionality(GameStateLogic gameState, ScoreKeeper winsRecord, int height, int length, int lightInterval, String warningMessage) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
 
@@ -66,7 +78,7 @@ public class GameButtonBuilder {
     /**
      * Builds a "Load" JButton with an ActionListener to restore a previously saved game state.
      *
-     * @param currentGame   The current TicTacToe game instance.
+     * @param currentGame The current TicTacToe game instance.
      * @return The "Load" JButton.
      */
     public static JButton buildLoadButton(TicTacToe currentGame) {
@@ -104,6 +116,12 @@ public class GameButtonBuilder {
         }
     }
 
+    /**
+     * Sets up a new game based on the provided game container and updates the current game instance.
+     *
+     * @param container    The TicTacWrapper containing the game state.
+     * @param currentGame  The current TicTacToe game instance.
+     */
     public static void setUpNewGame(TicTacWrapper container, TicTacToe currentGame) {
         GameStateLogic model = container.model();
         ScoreKeeper scoreKeeper = container.currentScore();

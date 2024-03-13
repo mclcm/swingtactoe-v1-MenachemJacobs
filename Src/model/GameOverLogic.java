@@ -14,15 +14,7 @@ public class GameOverLogic {
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param xPos         The x position of the last move.
      * @param yPos         The y position of the last move.
-     * @return An integer representing the game state:
-     * - 0 if the game is not ended.
-     * - 2 for a rank win.
-     * - 3 for a file win.
-     * - 5 for a main diagonal win.
-     * - 7 for a secondary diagonal win.
-     * - 11 for a diagonal win ascending from bottom left to top right.
-     * - 13 for a diagonal win ascending from top left to bottom right.
-     * or some product there of if more than one condition is met
+     * @return An integer representing the game state as defined in the static state class
      * @throws IllegalArgumentException If the clicked value remains 0, indicating it has not been set properly.
      */
     public static int isGameOver(int[][] logicalBoard, int xPos, int yPos) {
@@ -50,13 +42,7 @@ public class GameOverLogic {
      * @param xPos         The x position of the last move.
      * @param yPos         The y position of the last move.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
-     * @return An integer representing the game state:
-     * - 1 if no win condition is found.
-     * - 5 for a main diagonal win.
-     * - 7 for a secondary diagonal win.
-     * - 11 for a diagonal win ascending from bottom left to top right.
-     * - 13 for a diagonal win ascending from top left to bottom right.
-     * or some product there of if more than one condition is met
+     * @return An integer representing the game state as defined in the static state class.
      */
     private static int diagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue) {
         int returnVal = 1;
@@ -83,11 +69,7 @@ public class GameOverLogic {
      * @param yPos         The y position of the last move.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @param loopLimit    The loop limit to prevent out-of-bounds access.
-     * @return An integer representing the game state:
-     * - 1 if no win condition is found.
-     * - 11 for a diagonal win ascending from bottom left to top right.
-     * - 13 for a diagonal win ascending from top left to bottom right.
-     * or the product of those if both conditions are met.
+     * @return An integer representing the game state as defined in the static state class.
      */
     private static int obscureDiagonalsChecker(int[][] logicalBoard, int xPos, int yPos, int searchValue, int loopLimit) {
         int returnVal = 1;
@@ -109,10 +91,10 @@ public class GameOverLogic {
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @return An integer representing the game state:
      * - 1 if no win condition is found.
-     * - 2 if there is a win condition in the same row.
+     * - Unique value if there is a win condition in the same row.
      */
     private static int rankCheck(int[][] logicalBoard, int yPos, int searchValue) {
-        int gameIsOver = 2;
+        int gameIsOver = StaticStateVars.getWinCode("rank");
 
         for (int i = 0; i < logicalBoard[0].length; i++) {
             if (logicalBoard[yPos][i] != searchValue) {
@@ -132,10 +114,10 @@ public class GameOverLogic {
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @return An integer representing the game state:
      * - 1 if no win condition is found.
-     * - 3 if there is a win condition in the same column.
+     * - Unique value if there is a win condition in the same column.
      */
     private static int fileCheck(int[][] logicalBoard, int xPos, int searchValue) {
-        int gameIsOver = 3;
+        int gameIsOver = StaticStateVars.getWinCode("file");
 
         for (int[] row : logicalBoard) {
             if (row[xPos] != searchValue) {
@@ -155,10 +137,10 @@ public class GameOverLogic {
      * @param loopLimit    The limit for the loop iteration.
      * @return An integer representing the game state:
      * - 1 if no win condition is found.
-     * - 5 if there is a win condition in the main diagonal.
+     * - Unique value if there is a win condition in the main diagonal.
      */
     private static int dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = 5;
+        int gameIsOver = StaticStateVars.getWinCode("dexter");
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
@@ -179,10 +161,10 @@ public class GameOverLogic {
      * @param loopLimit    The limit for the loop iteration.
      * @return An integer representing the game state:
      * - 1 if no win condition is found.
-     * - 7 if there is a win condition in the secondary diagonal.
+     * - Unique value if there is a win condition in the secondary diagonal.
      */
     private static int sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = 7;
+        int gameIsOver = StaticStateVars.getWinCode("sinister");
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
@@ -205,10 +187,10 @@ public class GameOverLogic {
      * @param loopLimit    The limit for the loop iteration.
      * @return An integer representing the game state:
      * - 1 if no win condition is found.
-     * - 11 if there is a win condition in the diagonal ascending from bottom left to top right.
+     * - Unique value if there is a win condition in the diagonal ascending from bottom left to top right.
      */
     private static int dexterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = 11;
+        int gameIsOver = StaticStateVars.getWinCode("aDexter");
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
@@ -231,10 +213,10 @@ public class GameOverLogic {
      * @param loopLimit    The limit for the loop iteration.
      * @return An integer representing the game state:
      * - 1 if no win condition is found.
-     * - 13 if there is a win condition in the diagonal ascending from top left to bottom right.
+     * - Unique value if there is a win condition in the diagonal ascending from top left to bottom right.
      */
     private static int sinisterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = 13;
+        int gameIsOver = StaticStateVars.getWinCode("aSinister");
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {

@@ -4,10 +4,11 @@ import javax.swing.*;
 import java.io.Serializable;
 
 /**
- * This class manages the game state logic of the Tic Tac Toe game.
+ * Manages the game state logic of the Tic Tac Toe game.
+ * This class handles player turns, button clicks, and determines the game's outcome.
  */
 public class GameStateLogic implements Serializable {
-    //Game state uses the values maintained in the VictoryCodes class to represent the state of the game vis a vis ongoing or kind of end.
+    //Game state uses the values maintained in the StaticState vars class to represent the state of the game vis a vis ongoing or kind of end.
     private int gameState;
 
     //Track which player's turn it currently is
@@ -22,13 +23,17 @@ public class GameStateLogic implements Serializable {
     //minimum number of turns need to win the game
     private final int minNumOfTurns;
 
+    // Constant representing X's value on the game board
     static final int xVal = 1;
+    // Constant representing O's value on the game board
     static final int oVal = -1;
+
     /**
-     * Constructs a new game state logic object.
+     * Constructs a new game state logic object with the specified board dimensions.
      *
      * @param height The height of the game board.
      * @param length The length of the game board.
+     * @throws IllegalArgumentException if the board dimensions are smaller than 1.
      */
     public GameStateLogic(int height, int length) {
         if (height < 1 || length < 1)
@@ -73,6 +78,12 @@ public class GameStateLogic implements Serializable {
         return clickedButton.getText();
     }
 
+    /**
+     * Sets the text for the button based on the current player's turn.
+     *
+     * @param cellValue The value representing the player's move (1 for X, -1 for O).
+     * @return The text to be displayed on the button.
+     */
     public String buttonTextSetter(int cellValue){
         return cellValue == 1 ? "X" : "O";
     }
@@ -96,7 +107,6 @@ public class GameStateLogic implements Serializable {
 
     /**
      * Updates the label text based on the current turn or game state.
-     * If the game is over, returns the appropriate game over message.
      *
      * @return The text to be displayed on the information label.
      */
@@ -129,11 +139,20 @@ public class GameStateLogic implements Serializable {
 
     /**
      * Retrieves the current state of the game.
+     *
+     * @return The current state of the game.
      */
     public int getGameState() {
         return gameState;
     }
 
+    /**
+     * Retrieves the value at the specified position on the logical game board.
+     *
+     * @param xPos The x-coordinate of the position.
+     * @param yPos The y-coordinate of the position.
+     * @return The value at the specified position on the game board.
+     */
     public int getCellVal(int xPos, int yPos){
         return logicalBoard[yPos][xPos];
     }
