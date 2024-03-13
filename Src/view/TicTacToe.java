@@ -9,7 +9,24 @@ import java.awt.event.ComponentEvent;
 import model.*;
 
 /**
+ * <p>
  * This class represents a Tic Tac Toe game application.
+ * </p>
+ *
+ * <p>
+ * The TicTacToe class provides a graphical user interface for playing
+ * the classic game of Tic Tac Toe. It allows players to interact with
+ * the game board through buttons and delegates tracking game state, including player
+ * turns, wins, and restarts. The application is implemented using Java
+ * Swing for the user interface components.
+ * </p>
+ *
+ * <p> The class offers constructors for initializing a new game or resuming
+ * a previous one. It handles button clicks, updates game state, and
+ * manages UI components such as buttons, labels, and panels. Additionally,
+ * it supports customization of game parameters such as light interval
+ * and warning messages.
+ * </p>
  */
 public class TicTacToe extends JFrame {
     private final int LENGTH;
@@ -29,6 +46,14 @@ public class TicTacToe extends JFrame {
 
     /**
      * Constructs a new TicTacToe game.
+     * <p>
+     * This constructor initializes a new Tic Tac Toe game with default
+     * dimensions and creates a new game state logic and score tracker.
+     * It sets up the game window with the specified light interval and warning
+     * message, and makes the window visible to start the game.
+     *
+     * @param lightInterval  The interval for displaying warnings or messages.
+     * @param warningMessage The message to display as a warning during the game.
      */
     public TicTacToe(int lightInterval, String warningMessage) {
         LENGTH = 3;
@@ -43,11 +68,19 @@ public class TicTacToe extends JFrame {
 
     /**
      * Constructs a TicTacToe game with prior game state and win record.
+     * <p>
+     * This constructor initializes a Tic Tac Toe game with the provided
+     * prior game state and win record. It allows customization of the
+     * game board dimensions and sets up the game window with the specified
+     * light interval and warning message. Additionally, it reloads the
+     * button painter to reflect the prior game state.
      *
      * @param priorGame      The prior game state.
      * @param priorWinRecord The prior win record.
      * @param height         The height of the game board.
      * @param length         The length of the game board.
+     * @param lightInterval  The interval for displaying warnings or messages.
+     * @param warningMessage The message to display as a warning during the game.
      */
     public TicTacToe(GameStateLogic priorGame, ScoreKeeper priorWinRecord, int height, int length, int lightInterval, String warningMessage) {
         LENGTH = length;
@@ -62,13 +95,24 @@ public class TicTacToe extends JFrame {
 
     /**
      * Performs universal construction tasks for setting up the Tic Tac Toe game window.
-     * It sets the title, layout, adds panels, sets size and position, and handles resizing.
-     * Throws an IllegalArgumentException if the board dimensions are smaller than 1.
+     * <p>
+     * This method handles the initialization of the game window by setting the title,
+     * layout, and adding panels for the game components. It also sets the size and
+     * position of the window, handles resizing, and starts a timer for updating game
+     * warnings or messages. If the board dimensions are smaller than 1, it throws an
+     * IllegalArgumentException.
+     *
+     * @param lightInterval  The interval for displaying warnings or messages.
+     * @param warningMessage The message to display as a warning during the game.
+     * @throws IllegalArgumentException If the board dimensions are smaller than 1.
      */
     private void universalConstruction(int lightInterval, String warningMessage) {
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
+        //I don't like that this is done here.
+        // The rest of the method, except the timer start which I also do not like, is for setting window elements.
+        //I would encapsulate, but the two parts needs to happen at the beginning and end respectively.
         this.lightInterval = lightInterval;
         this.warningMessage = warningMessage;
 
@@ -98,6 +142,9 @@ public class TicTacToe extends JFrame {
 
     /**
      * Custom JButton class with additional properties.
+     * <p>
+     * The MyButton class extends JButton and adds properties to represent
+     * the position of the button on a game board, and getters on those values.
      */
     public static class MyButton extends JButton {
 
@@ -136,6 +183,9 @@ public class TicTacToe extends JFrame {
 
     /**
      * Arranges the header panel containing save and load buttons, and the game title.
+     * <p>
+     * This method creates and configures a JPanel to hold the header components.
+     * It adds save and load buttons for game state management, and a title label displaying the game title.
      *
      * @return The JPanel containing the header components.
      */
@@ -161,6 +211,11 @@ public class TicTacToe extends JFrame {
 
     /**
      * Arranges the button panel containing the Tic Tac Toe game buttons.
+     * <p>
+     * This method configures a JPanel to hold the game buttons for the game window.
+     * It sets up the layout and dimensions of the panel and initializes the game buttons using the GameButtonBuilder class.
+     * The game buttons are attached to the panel, and their click event handler is set to the mouseClickHandler method
+     * of the TicTacToe class.
      *
      * @return The JPanel containing the game buttons.
      */
@@ -176,6 +231,10 @@ public class TicTacToe extends JFrame {
 
     /**
      * Arranges the label panel containing the game state label and restart button.
+     * <p>
+     * This method configures a JPanel to hold the game state label and restart button.
+     * It initializes a JLabel to display the current game state, adds a restart button
+     * for restarting the game, and adds a warning pad (if applicable) for displaying warnings or messages during the game.
      *
      * @return The JPanel containing the game state label and restart button.
      */
@@ -201,8 +260,15 @@ public class TicTacToe extends JFrame {
 
     /**
      * Handles the mouse click event on buttons.
+     * <p>
+     * This method is called when a button is clicked in the game window.
+     * If the game is not over and the clicked button has not been clicked before, it updates
+     * the button text, disables the button, updates the game state label, and checks
+     * if the game has ended. If the game has ended by means other than a draw, it
+     * repaints the buttons to indicate the winning combination and increments the
+     * win record. This method is associated with the mouse click event on game buttons.
      *
-     * @param ae The MouseEvent object representing the click event.
+     * @param ae The ActionEvent object representing the click event.
      */
     private void mouseClickHandler(ActionEvent ae) {
         MyButton clickedButton = (MyButton) ae.getSource();
@@ -231,17 +297,21 @@ public class TicTacToe extends JFrame {
 
     /**
      * Restarts the game by clearing the button panel,
-     * initializing new buttons, handling resize,
-     * and resetting the game state.
+     * initializing new buttons, handling resize, and resetting the game state.
      */
     private void restartGame() {
+        //clear button panel
         buttonPanel.removeAll();
 
         //Reset game state
         gameState = new GameStateLogic(HEIGHT, LENGTH);
 
+        //init new buttons.
         gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+
         handleResize();
+
+        //update game state label
         lbl.setText(gameState.lblUpdater());
     }
 
@@ -268,12 +338,17 @@ public class TicTacToe extends JFrame {
     /**
      * Main method to launch the application.
      *
-     * @param args Command-line arguments (unused).
+     * @param args Command-line arguments.
+     *             The first argument is expected to be the light interval,
+     *             an integer representing the interval for changing the color on the movePressure panel.
+     *             The second argument is expected to be the warning message,
+     *             a string representing the message to display as a warning during the game.
      */
     public static void main(String[] args) {
         int lightInterval = -1;
         String warningMessage = "\n";
 
+        //parse command-line args
         if (args.length == 2) {
             try {
                 lightInterval = Integer.parseInt(args[0]);

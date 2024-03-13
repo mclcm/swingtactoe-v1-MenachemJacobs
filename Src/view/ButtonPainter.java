@@ -6,12 +6,18 @@ import model.StaticStateVars;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The ButtonPainter class provides methods for painting buttons in a TicTacToe game interface.
+ */
 public class ButtonPainter {
     /**
      * Repaints the buttons involved in the end game based on the given end game condition.
      *
+     * @param buttons          The 2D array of JButtons representing the game board.
      * @param clickedButton    The button that was clicked to trigger the end game condition.
      * @param endGameCondition The condition indicating the type of win (rank, file, diagonal, and/or the ascendants).
+     * @param height           The height of the game board.
+     * @param length           The length of the game board.
      */
     public static void victoryPainter(JButton[][] buttons, TicTacToe.MyButton clickedButton, int endGameCondition, int height, int length) {
         int loopLimit = Math.min(height, length);
@@ -24,7 +30,7 @@ public class ButtonPainter {
             }
         }
 
-        //file win.
+        //File win.
         if (endGameCondition % StaticStateVars.getWinCode("file") == 0) {
             // File win: repaint buttons in the same column
             for (JButton[] button : buttons) {
@@ -32,7 +38,7 @@ public class ButtonPainter {
             }
         }
 
-        //dexter win.
+        //Dexter win.
         if (endGameCondition % StaticStateVars.getWinCode("dexter") == 0) {
             // Dexter win: repaint buttons in the main diagonal
             for (int i = 0; i < loopLimit; i++) {
@@ -40,7 +46,7 @@ public class ButtonPainter {
             }
         }
 
-        //sinister win.
+        //Sinister win.
         if (endGameCondition % StaticStateVars.getWinCode("sinister") == 0) {
             // Sinister win: repaint buttons in the secondary diagonal
             for (int i = 0; i < loopLimit; i++) {
@@ -48,18 +54,19 @@ public class ButtonPainter {
             }
         }
 
+        //special checks for where board is not a square
         if (height != length) {
-            //dexterAscendant win.
+            //DexterAscendant win.
             if (endGameCondition % StaticStateVars.getWinCode("aDexter") == 0) {
-                // Dexter Ascendant win: repaint buttons in the ascending diagonal from bottom left to top right
+                //Dexter Ascendant win: repaint buttons in the ascending diagonal from bottom left to top right
                 for (int i = 0; i < loopLimit; i++) {
                     dryPaintBtn(buttons[height - 1 - i][i]);
                 }
             }
 
-            //sinisterAscendant win.
+            //SinisterAscendant win.
             if (endGameCondition % StaticStateVars.getWinCode("aSinister") == 0) {
-                // Sinister Ascendant win: repaint buttons in the ascending diagonal from top left to bottom right
+                //Sinister Ascendant win: repaint buttons in the ascending diagonal from top left to bottom right
                 for (int i = 0; i < loopLimit; i++) {
                     dryPaintBtn(buttons[height - 1 - i][length - 1 - i]);
                 }
@@ -77,6 +84,12 @@ public class ButtonPainter {
         btnToPaint.setBackground(Color.orange);
     }
 
+    /**
+     * Reloads the state of the buttons based on the provided game state.
+     *
+     * @param gameButtons   The 2D array of JButtons representing the game board.
+     * @param analogueBoard The GameStateLogic object representing the game state.
+     */
     static void reloadPainter(JButton[][] gameButtons, GameStateLogic analogueBoard) {
         int buttonVal;
         TicTacToe.MyButton castedButton;
@@ -93,6 +106,5 @@ public class ButtonPainter {
                 }
             }
         }
-
     }
 }
