@@ -30,9 +30,9 @@ public class GameOverLogic {
 
         returnVal *= diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
 
-        //The code on the outside interprets 0 as being the 'no win' value, will the code on the inside uses 1,
+        //The code on the outside uses a StaticStateVar var as the 'no win' value, will the code on the inside uses 1,
         //meaning that the values need to be exchanged before heading out
-        return returnVal == 1 ? 0 : returnVal;
+        return returnVal == 1 ? StaticStateVar.ONGOING : returnVal;
     }
 
     /**
@@ -94,7 +94,7 @@ public class GameOverLogic {
      * - Unique value if there is a win condition in the same row.
      */
     private static int rankCheck(int[][] logicalBoard, int yPos, int searchValue) {
-        int gameIsOver = StaticStateVars.getWinCode("rank");
+        int gameIsOver = StaticStateVar.RANK_WIN;
 
         for (int i = 0; i < logicalBoard[0].length; i++) {
             if (logicalBoard[yPos][i] != searchValue) {
@@ -117,7 +117,7 @@ public class GameOverLogic {
      * - Unique value if there is a win condition in the same column.
      */
     private static int fileCheck(int[][] logicalBoard, int xPos, int searchValue) {
-        int gameIsOver = StaticStateVars.getWinCode("file");
+        int gameIsOver = StaticStateVar.FILE_WIN;
 
         for (int[] row : logicalBoard) {
             if (row[xPos] != searchValue) {
@@ -140,7 +140,7 @@ public class GameOverLogic {
      * - Unique value if there is a win condition in the main diagonal.
      */
     private static int dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = StaticStateVars.getWinCode("dexter");
+        int gameIsOver = StaticStateVar.DEXTER_WIN;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
@@ -164,7 +164,7 @@ public class GameOverLogic {
      * - Unique value if there is a win condition in the secondary diagonal.
      */
     private static int sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = StaticStateVars.getWinCode("sinister");
+        int gameIsOver = StaticStateVar.SINISTER_WIN;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
@@ -190,7 +190,7 @@ public class GameOverLogic {
      * - Unique value if there is a win condition in the diagonal ascending from bottom left to top right.
      */
     private static int dexterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = StaticStateVars.getWinCode("aDexter");
+        int gameIsOver = StaticStateVar.DEXTER_ASCENDANT_WIN;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {
@@ -216,7 +216,7 @@ public class GameOverLogic {
      * - Unique value if there is a win condition in the diagonal ascending from top left to bottom right.
      */
     private static int sinisterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
-        int gameIsOver = StaticStateVars.getWinCode("aSinister");
+        int gameIsOver = StaticStateVar.SINISTER_ASCENDANT_WIN;
 
         //should count until either the rows or columns run out
         for (int i = 0; i < loopLimit; i++) {

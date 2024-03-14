@@ -1,8 +1,5 @@
 package Serialization;
 
-import model.GameStateLogic;
-import view.ScoreKeeper;
-
 import java.io.*;
 
 /**
@@ -13,18 +10,18 @@ public class SerializeGame {
     /**
      * The directory name for saving serialized game files.
      */
-    private static final String directoryName = "SavedGames"; // Directory name for properties file.
+    private static final String DIRECTORY_NAME = "SavedGames"; // Directory name for properties file.
 
     /**
      * Serializes the game state, including the GameStateLogic and ScoreKeeper objects,
      * into a file specified by the fileName variable.
      * If the file doesn't exist, it creates one. If the file already exists, it overwrites it.
      *
-     * @param fN         The filename for the serialized game.
-     * @param gamePill   The Wrapped elements of the game to be saved
+     * @param fN       The filename for the serialized game.
+     * @param gamePill The Wrapped elements of the game to be saved
      */
     public static void serialize(String fN, TicTacWrapper gamePill) {
-        String fileName = directoryName + File.separator + fN + ".ser";
+        String fileName = DIRECTORY_NAME + File.separator + fN + ".ser";
         directoryManagement();
 
         try {
@@ -49,10 +46,11 @@ public class SerializeGame {
      *
      * @param fN The filename of the serialized game state.
      * @return The deserialized TicTacWrapper object containing the game state, or {@code null} if deserialization fails.
+     * //TODO how should I handle this
      * @throws FileNotFoundException If the file containing the serialized game state is not found.
      */
     public static TicTacWrapper deserialize(String fN) {
-        File savedGame = new File(directoryName + File.separator + fN);
+        File savedGame = new File(DIRECTORY_NAME + File.separator + fN);
 
         if (!savedGame.exists()) {
             System.out.println("File not found");
@@ -73,10 +71,8 @@ public class SerializeGame {
      * Creates the directory for storing saved games if it doesn't exist.
      */
     private static void directoryManagement() {
-        File directory = new File(directoryName);
+        File directory = new File(DIRECTORY_NAME);
 
-        if (!directory.exists()) {
-            directory.mkdir();
-        }
+        if (!directory.exists()) directory.mkdir();
     }
 }

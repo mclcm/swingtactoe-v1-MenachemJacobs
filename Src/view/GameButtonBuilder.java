@@ -5,9 +5,7 @@ import Serialization.TicTacWrapper;
 import model.GameStateLogic;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 /**
  * Utility class for creating game buttons and associated actions.
@@ -23,7 +21,7 @@ public class GameButtonBuilder {
      * @param length      The length of the game board.
      * @return A 2D array of initialized JButtons representing the game board.
      */
-    public static JButton[][] initButtons(JPanel buttonPanel, ActionListener ae, int height, int length) {
+    public static JButton[][] initGameButtons(JPanel buttonPanel, ActionListener ae, int height, int length) {
 
         JButton[][] buttons = new JButton[height][length];
 
@@ -42,13 +40,13 @@ public class GameButtonBuilder {
     /**
      * Builds a "Save" JButton with an ActionListener to serialize the game state.
      *
-     * @param gamePill   The Wrapped elements of the game to be saved
+     * @param wrappedGame   The Wrapped elements of the game to be saved
      * @return The "Save" JButton.
      */
-    public static JButton buildSaveButton(TicTacWrapper gamePill) {
+    public static JButton buildSaveButton(TicTacWrapper wrappedGame) {
         JButton saveButton = new JButton("Save");
 
-        saveButton.addActionListener(e -> sButtonFunctionality(gamePill));
+        saveButton.addActionListener(e -> sButtonFunctionality(wrappedGame));
 
         return saveButton;
     }

@@ -57,6 +57,7 @@ public class TicTacToe extends JFrame {
      * @param warningMessage The message to display as a warning during the game.
      */
     public TicTacToe(int lightInterval, String warningMessage) {
+        //Default values of Height and Length
         LENGTH = 3;
         HEIGHT = 3;
 
@@ -76,18 +77,18 @@ public class TicTacToe extends JFrame {
      * light interval and warning message. Additionally, it reloads the
      * button painter to reflect the prior game state.
      *
-     * @param priorGame      The prior game state.
+     * @param priorGameState      The prior game state.
      * @param priorWinRecord The prior win record.
      * @param height         The height of the game board.
      * @param length         The length of the game board.
      * @param lightInterval  The interval for displaying warnings or messages.
      * @param warningMessage The message to display as a warning during the game.
      */
-    public TicTacToe(GameStateLogic priorGame, ScoreKeeper priorWinRecord, int height, int length, int lightInterval, String warningMessage) {
-        LENGTH = length;
+    public TicTacToe(GameStateLogic priorGameState, ScoreKeeper priorWinRecord, int height, int length, int lightInterval, String warningMessage) {
         HEIGHT = height;
+        LENGTH = length;
 
-        gameState = priorGame;
+        gameState = priorGameState;
         scoreTracker = priorWinRecord;
 
         universalConstruction(lightInterval, warningMessage);
@@ -113,7 +114,7 @@ public class TicTacToe extends JFrame {
 
         //I don't like that this is done here.
         // The rest of the method, except the timer start which I also do not like, is for setting window elements.
-        //I would encapsulate, but the two parts needs to happen at the beginning and end respectively.
+        //I would encapsulate the three lines, but the two first two need to happen at the beginning and the last at the end.
         this.lightInterval = lightInterval;
         this.warningMessage = warningMessage;
 
@@ -126,7 +127,6 @@ public class TicTacToe extends JFrame {
         add(arrangeStatusPanel(), BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
-
         setSize(500, 300);
         //pack();
 
@@ -139,7 +139,6 @@ public class TicTacToe extends JFrame {
 
         myTimer.start();
     }
-
 
     /**
      * Custom JButton class with additional properties.
@@ -181,6 +180,7 @@ public class TicTacToe extends JFrame {
             return yPos;
         }
     }
+
 
     /**
      * Arranges the header panel containing save and load buttons, and the game title.
@@ -225,13 +225,13 @@ public class TicTacToe extends JFrame {
         buttonPanel.setPreferredSize(new Dimension(500, 200));
 
         //This line takes the buttonPanel and attaches the game buttons to it.
-        gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+        gameButtons = GameButtonBuilder.initGameButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
 
         return buttonPanel;
     }
 
     /**
-     * Arranges the label panel containing the game state label and restart button.
+     * Arranges the status panel containing the game state label and restart button.
      * <p>
      * This method configures a JPanel to hold the game state label and restart button.
      * It initializes a JLabel to display the current game state, adds a restart button
@@ -308,7 +308,7 @@ public class TicTacToe extends JFrame {
         gameState = new GameStateLogic(HEIGHT, LENGTH);
 
         //init new buttons.
-        gameButtons = GameButtonBuilder.initButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
+        gameButtons = GameButtonBuilder.initGameButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
 
         handleResize();
 
@@ -346,6 +346,7 @@ public class TicTacToe extends JFrame {
      *             a string representing the message to display as a warning during the game.
      */
     public static void main(String[] args) {
+        //Default values will be recognized as impossible and the true defaults will be used.
         int lightInterval = -1;
         String warningMessage = "\n";
 
