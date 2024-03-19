@@ -43,10 +43,10 @@ public class GameButtonBuilder {
      * @param wrappedGame   The Wrapped elements of the game to be saved
      * @return The "Save" JButton.
      */
-    public static JButton buildSaveButton(TicTacWrapper wrappedGame) {
+    public static JButton buildSaveButton(TicTacToe ongoingGame) {
         JButton saveButton = new JButton("Save");
 
-        saveButton.addActionListener(e -> sButtonFunctionality(wrappedGame));
+        saveButton.addActionListener(e -> sButtonFunctionality(ongoingGame));
 
         return saveButton;
     }
@@ -56,8 +56,9 @@ public class GameButtonBuilder {
      *
      * @param gamePill   The Wrapped elements of the game to be saved.
      */
-    private static void sButtonFunctionality(TicTacWrapper gamePill) {
+    private static void sButtonFunctionality(TicTacToe onGoingGame) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
+        TicTacWrapper gamePill = onGoingGame.provideWrapper();
 
         if (saveFileName != null && !saveFileName.trim().isEmpty())
             SerializeGame.serialize(saveFileName, gamePill);
@@ -111,14 +112,8 @@ public class GameButtonBuilder {
      * @param currentGame  The current TicTacToe game instance.
      */
     public static void setUpNewGame(TicTacWrapper container, TicTacToe currentGame) {
-        GameStateLogic model = container.model();
-        ScoreKeeper scoreKeeper = container.currentScore();
-        int height = container.height();
-        int length = container.length();
-        int lightInterval = container.lightInterval();
-        String warningMessage = container.warningMessage();
-
-        TicTacToe gameRestored = new TicTacToe(model, scoreKeeper, height, length, lightInterval, warningMessage);
+        TicTacToe gameRestored = new TicTacToe(container);
+        System.out.println(container.winningButton());
         gameRestored.setVisible(true);
 
         currentGame.dispose();

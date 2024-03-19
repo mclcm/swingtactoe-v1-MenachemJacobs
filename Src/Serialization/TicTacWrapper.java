@@ -2,6 +2,7 @@ package Serialization;
 
 import model.GameStateLogic;
 import view.ScoreKeeper;
+import view.TicTacToe;
 
 import java.io.*;
 
@@ -10,5 +11,5 @@ import java.io.*;
  * current score, board dimensions, light interval, and warning message of a Tic Tac Toe game.
  */
 public record TicTacWrapper(GameStateLogic model, ScoreKeeper currentScore, int height,
-                            int length, int lightInterval, String warningMessage) implements Serializable {
+                            int length, TicTacToe.MyButton winningButton, int lightInterval, String warningMessage) implements Serializable {
 }

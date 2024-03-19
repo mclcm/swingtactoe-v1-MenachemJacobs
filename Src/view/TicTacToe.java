@@ -45,6 +45,8 @@ public class TicTacToe extends JFrame {
 
     MovePressure myTimer;
 
+    MyButton winningButton = null;
+
     /**
      * Constructs a new TicTacToe game.
      * <p>
@@ -84,15 +86,24 @@ public class TicTacToe extends JFrame {
      * @param lightInterval  The interval for displaying warnings or messages.
      * @param warningMessage The message to display as a warning during the game.
      */
-    public TicTacToe(GameStateLogic priorGameState, ScoreKeeper priorWinRecord, int height, int length, int lightInterval, String warningMessage) {
-        HEIGHT = height;
-        LENGTH = length;
+    public TicTacToe(TicTacWrapper priorGame) {
+        HEIGHT = priorGame.height();
+        LENGTH = priorGame.length();
 
-        gameState = priorGameState;
-        scoreTracker = priorWinRecord;
+        this.winningButton = priorGame.winningButton();
 
-        universalConstruction(lightInterval, warningMessage);
+        gameState = priorGame.model();
+        scoreTracker = priorGame.currentScore();
+
+        universalConstruction(priorGame.lightInterval(), priorGame.warningMessage());
         ButtonPainter.reloadPainter(gameButtons, gameState);
+
+        if (winningButton != null) {
+            // Repaint buttons based on the end game condition
+            ButtonPainter.victoryPainter(gameButtons, winningButton, gameState.getGameState(), HEIGHT, LENGTH);
+            //win record only increase if game ended for reason other than cats eye
+            scoreTracker.incrementScore(gameState.getXTurn());
+        }
     }
 
     /**
@@ -195,7 +206,7 @@ public class TicTacToe extends JFrame {
         headerPanel.setLayout(new BorderLayout());
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton saveButton = GameButtonBuilder.buildSaveButton(new TicTacWrapper(gameState, scoreTracker, HEIGHT, LENGTH, lightInterval, warningMessage) );
+        JButton saveButton = GameButtonBuilder.buildSaveButton(this);
         JButton loadButton = GameButtonBuilder.buildLoadButton(this);
 
         headerButtons.add(saveButton);
@@ -288,6 +299,8 @@ public class TicTacToe extends JFrame {
 
             //check if game has ended by means other than cats eye
             if (gameState.getGameState() > 0) {
+                winningButton = clickedButton;
+
                 // Repaint buttons based on the end game condition
                 ButtonPainter.victoryPainter(gameButtons, clickedButton, gameState.getGameState(), HEIGHT, LENGTH);
                 //win record only increase if game ended for reason other than cats eye
@@ -334,6 +347,10 @@ public class TicTacToe extends JFrame {
         // Refresh button panel
         buttonPanel.revalidate();
         buttonPanel.repaint();
+    }
+
+    public TicTacWrapper provideWrapper(){
+        return new TicTacWrapper(gameState, scoreTracker, HEIGHT, LENGTH, winningButton, lightInterval, warningMessage);
     }
 
     /**
