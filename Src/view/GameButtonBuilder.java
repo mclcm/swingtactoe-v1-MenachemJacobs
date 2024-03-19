@@ -40,13 +40,13 @@ public class GameButtonBuilder {
     /**
      * Builds a "Save" JButton with an ActionListener to serialize the game state.
      *
-     * @param wrappedGame   The Wrapped elements of the game to be saved
+     * @param onGoingGame   The TicTacToe instance to be saved.
      * @return The "Save" JButton.
      */
-    public static JButton buildSaveButton(TicTacToe ongoingGame) {
+    public static JButton buildSaveButton(TicTacToe onGoingGame) {
         JButton saveButton = new JButton("Save");
 
-        saveButton.addActionListener(e -> sButtonFunctionality(ongoingGame));
+        saveButton.addActionListener(e -> sButtonFunctionality(onGoingGame));
 
         return saveButton;
     }
@@ -54,11 +54,12 @@ public class GameButtonBuilder {
     /**
      * Performs the functionality of the "Save" button, allowing the user to save the game state.
      *
-     * @param gamePill   The Wrapped elements of the game to be saved.
+     * @param onGoingGame   The TicTacToe instance to be saved.
      */
     private static void sButtonFunctionality(TicTacToe onGoingGame) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
         TicTacWrapper gamePill = onGoingGame.provideWrapper();
+        System.out.println(gamePill.winningButton());
 
         if (saveFileName != null && !saveFileName.trim().isEmpty())
             SerializeGame.serialize(saveFileName, gamePill);

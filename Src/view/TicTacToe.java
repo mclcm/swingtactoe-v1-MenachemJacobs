@@ -79,12 +79,7 @@ public class TicTacToe extends JFrame {
      * light interval and warning message. Additionally, it reloads the
      * button painter to reflect the prior game state.
      *
-     * @param priorGameState      The prior game state.
-     * @param priorWinRecord The prior win record.
-     * @param height         The height of the game board.
-     * @param length         The length of the game board.
-     * @param lightInterval  The interval for displaying warnings or messages.
-     * @param warningMessage The message to display as a warning during the game.
+     * @param priorGame The Wrapped elements of the game to be loaded in.
      */
     public TicTacToe(TicTacWrapper priorGame) {
         HEIGHT = priorGame.height();
