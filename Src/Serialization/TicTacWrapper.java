@@ -12,5 +12,6 @@ import java.io.*;
  * current score, board dimensions, light interval, and warning message of a Tic Tac Toe game.
  */
 public record TicTacWrapper(GameStateLogic model, ScoreKeeper scoreRecord, int height,
-                            int length, JButton winningButton, int lightInterval, String warningMessage) implements Serializable {
+                            int length, JButton winningButton, int lightInterval,
+                            String warningMessage) implements Serializable {
 }

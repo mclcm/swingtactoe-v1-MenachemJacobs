@@ -38,23 +38,29 @@ public class GameButtonBuilder {
     }
 
     /**
-     * Builds a "Save" JButton with an ActionListener to serialize the game state.
+     * Builds a "Load" or a "Save" JButton with an ActionListener to implement proper functionality.
+     * A load button will restore a previously saved game state. A save button will serialize the current game state.
      *
-     * @param onGoingGame   The TicTacToe instance to be saved.
-     * @return The "Save" JButton.
+     * @param currentGame The current TicTacToe game instance.
+     * @param isSaveOp    A boolean value, passed to reflect if a Save of a Load button should be built.
+     * @return The "Load" JButton.
      */
-    public static JButton buildSaveButton(TicTacToe onGoingGame) {
-        JButton saveButton = new JButton("Save");
+    public static JButton buildLorSButton(TicTacToe currentGame, boolean isSaveOp) {
+        JButton LSButton = new JButton(isSaveOp ? "Save" : "Load");
 
-        saveButton.addActionListener(e -> sButtonFunctionality(onGoingGame));
+        if (isSaveOp)
+            LSButton.addActionListener(e -> sButtonFunctionality(currentGame));
 
-        return saveButton;
+        if (!isSaveOp)
+            LSButton.addActionListener(e -> lButtonFunctionality(currentGame));
+
+        return LSButton;
     }
 
     /**
      * Performs the functionality of the "Save" button, allowing the user to save the game state.
      *
-     * @param onGoingGame   The TicTacToe instance to be saved.
+     * @param onGoingGame The TicTacToe instance to be saved.
      */
     private static void sButtonFunctionality(TicTacToe onGoingGame) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
@@ -62,20 +68,6 @@ public class GameButtonBuilder {
 
         if (saveFileName != null && !saveFileName.trim().isEmpty())
             SerializeGame.serialize(saveFileName, gamePill);
-    }
-
-    /**
-     * Builds a "Load" JButton with an ActionListener to restore a previously saved game state.
-     *
-     * @param currentGame The current TicTacToe game instance.
-     * @return The "Load" JButton.
-     */
-    public static JButton buildLoadButton(TicTacToe currentGame) {
-        JButton loadButton = new JButton("Load");
-
-        loadButton.addActionListener(e -> lButtonFunctionality(currentGame));
-
-        return loadButton;
     }
 
     /**
@@ -108,8 +100,8 @@ public class GameButtonBuilder {
     /**
      * Sets up a new game based on the provided game container and updates the current game instance.
      *
-     * @param container    The TicTacWrapper containing the game state.
-     * @param currentGame  The current TicTacToe game instance.
+     * @param container   The TicTacWrapper containing the game state.
+     * @param currentGame The current TicTacToe game instance.
      */
     public static void setUpNewGame(TicTacWrapper container, TicTacToe currentGame) {
         TicTacToe gameRestored = new TicTacToe(container);

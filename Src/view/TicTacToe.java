@@ -199,8 +199,8 @@ public class TicTacToe extends JFrame {
         headerPanel.setLayout(new BorderLayout());
 
         JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton saveButton = GameButtonBuilder.buildSaveButton(this);
-        JButton loadButton = GameButtonBuilder.buildLoadButton(this);
+        JButton saveButton = GameButtonBuilder.buildLorSButton(this, true);
+        JButton loadButton = GameButtonBuilder.buildLorSButton(this, false);
 
         headerButtons.add(saveButton);
         headerButtons.add(loadButton);
@@ -342,7 +342,7 @@ public class TicTacToe extends JFrame {
         buttonPanel.repaint();
     }
 
-    public TicTacWrapper provideWrapper(){
+    public TicTacWrapper provideWrapper() {
         return new TicTacWrapper(gameState, scoreTracker, HEIGHT, LENGTH, winningButton, lightInterval, warningMessage);
     }
 
