@@ -85,19 +85,17 @@ public class TicTacToe extends JFrame {
         HEIGHT = priorGame.height();
         LENGTH = priorGame.length();
 
-        this.winningButton = priorGame.winningButton();
+        this.winningButton = (MyButton) priorGame.winningButton();
 
         gameState = priorGame.model();
-        scoreTracker = priorGame.currentScore();
+        scoreTracker = priorGame.scoreRecord();
 
         universalConstruction(priorGame.lightInterval(), priorGame.warningMessage());
         ButtonPainter.reloadPainter(gameButtons, gameState);
 
         if (winningButton != null) {
             // Repaint buttons based on the end game condition
-            ButtonPainter.victoryPainter(gameButtons, winningButton, gameState.getGameState(), HEIGHT, LENGTH);
-            //win record only increase if game ended for reason other than cats eye
-            scoreTracker.incrementScore(gameState.getXTurn());
+            ButtonPainter.victoryPainter(gameButtons, winningButton, gameState.getGameStateCode(), HEIGHT, LENGTH);
         }
     }
 
@@ -281,7 +279,7 @@ public class TicTacToe extends JFrame {
         MyButton clickedButton = (MyButton) ae.getSource();
 
         //if game is not over and the current button has not been clicked before, update text and label
-        if (gameState.getGameState() == 0 && gameState.getValAtPos(clickedButton.getXPos(), clickedButton.getYPos()) == 0) {
+        if (gameState.getGameStateCode() == 0 && gameState.getValAtPos(clickedButton.getXPos(), clickedButton.getYPos()) == 0) {
             myTimer.restate();
 
             clickedButton.setEnabled(false);
@@ -293,11 +291,11 @@ public class TicTacToe extends JFrame {
             lbl.setText(gameState.lblUpdater());
 
             //check if game has ended by means other than cats eye
-            if (gameState.getGameState() > 0) {
+            if (gameState.getGameStateCode() > 0) {
                 winningButton = clickedButton;
 
                 // Repaint buttons based on the end game condition
-                ButtonPainter.victoryPainter(gameButtons, clickedButton, gameState.getGameState(), HEIGHT, LENGTH);
+                ButtonPainter.victoryPainter(gameButtons, clickedButton, gameState.getGameStateCode(), HEIGHT, LENGTH);
                 //win record only increase if game ended for reason other than cats eye
                 scoreTracker.incrementScore(gameState.getXTurn());
             }

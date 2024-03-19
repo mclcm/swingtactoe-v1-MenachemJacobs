@@ -142,7 +142,7 @@ public class GameStateLogic implements Serializable {
      *
      * @return The current state of the game.
      */
-    public int getGameState() {
+    public int getGameStateCode() {
         return gameState;
     }
 

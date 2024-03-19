@@ -59,7 +59,6 @@ public class GameButtonBuilder {
     private static void sButtonFunctionality(TicTacToe onGoingGame) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
         TicTacWrapper gamePill = onGoingGame.provideWrapper();
-        System.out.println(gamePill.winningButton());
 
         if (saveFileName != null && !saveFileName.trim().isEmpty())
             SerializeGame.serialize(saveFileName, gamePill);
@@ -114,7 +113,6 @@ public class GameButtonBuilder {
      */
     public static void setUpNewGame(TicTacWrapper container, TicTacToe currentGame) {
         TicTacToe gameRestored = new TicTacToe(container);
-        System.out.println(container.winningButton());
         gameRestored.setVisible(true);
 
         currentGame.dispose();

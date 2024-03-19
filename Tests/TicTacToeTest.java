@@ -40,7 +40,7 @@ class TicTacToeTest {
     void gameNotOver(){
         turnTaker(2,1);
 
-        Assertions.assertFalse((testingGame.getGameState() != StaticStateVars.getWinCode("ongoing")), "A is being scored incorrectly by the game over handler");
+        Assertions.assertFalse((testingGame.getGameStateCode() != StaticStateVars.getWinCode("ongoing")), "A is being scored incorrectly by the game over handler");
         Assertions.assertEquals("It is player O's turn", testingGame.lblUpdater(), "lblUpdater is changing the lbl despite game not ending");
     }
 
@@ -50,7 +50,7 @@ class TicTacToeTest {
         setBoard(state);
         testingGame.gameOverHandler(1, 1);
 
-        Assertions.assertEquals(state, testingGame.getGameState(), "A rank win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameStateCode(), "A rank win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Rank win isn't reflected properly in the lblUpdater");
     }
 
@@ -60,7 +60,7 @@ class TicTacToeTest {
         setBoard(state);
         testingGame.gameOverHandler(1, 1);
 
-        Assertions.assertEquals(state, testingGame.getGameState(), "A file win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameStateCode(), "A file win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "File win isn't reflected properly in the lblUpdater");
     }
 
@@ -70,7 +70,7 @@ class TicTacToeTest {
         setBoard(state);
         testingGame.gameOverHandler(1, 1);
 
-        Assertions.assertEquals(state, testingGame.getGameState(), "A dexter win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameStateCode(), "A dexter win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Dexter win isn't reflected properly in the lblUpdater");
     }
 
@@ -80,7 +80,7 @@ class TicTacToeTest {
         setBoard(state);
         testingGame.gameOverHandler(1, 1);
 
-        Assertions.assertEquals(state, testingGame.getGameState(), "A sinister win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameStateCode(), "A sinister win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Sinister win isn't reflected properly in the lblUpdater");
     }
 
@@ -90,7 +90,7 @@ class TicTacToeTest {
         setBoard(state);
         testingGame.gameOverHandler(1, 1);
 
-        Assertions.assertEquals(state, testingGame.getGameState(), "A sinister win is not being scored correctly by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameStateCode(), "A sinister win is not being scored correctly by the game over handler");
         Assertions.assertEquals("Game is over, X won", testingGame.lblUpdater(), "Cross win isn't reflected properly in the lblUpdater");
     }
 
@@ -99,7 +99,7 @@ class TicTacToeTest {
         state = -1;
         setBoard(state);
 
-        Assertions.assertEquals(state, testingGame.getGameState(), "A cats eye is not being correctly scored by the game over handler");
+        Assertions.assertEquals(state, testingGame.getGameStateCode(), "A cats eye is not being correctly scored by the game over handler");
         Assertions.assertEquals("Game is over, cat's eye", testingGame.lblUpdater(), "Cat's Eye reflected properly in the lblUpdater");
     }
 

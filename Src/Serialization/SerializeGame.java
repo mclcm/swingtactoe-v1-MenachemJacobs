@@ -25,7 +25,7 @@ public class SerializeGame {
         directoryManagement();
 
         try {
-            //Create a file output stream and an object output stream
+            //Create a file output stream and an object output stream to it
             FileOutputStream fileOutStream = new FileOutputStream(fileName);
             ObjectOutputStream objOutStream = new ObjectOutputStream(fileOutStream);
 
