@@ -11,6 +11,46 @@ import java.awt.event.ActionListener;
  * Utility class for creating game buttons and associated actions.
  */
 public class GameButtonBuilder {
+    /**
+     * Custom JButton class with additional properties.
+     * <p>
+     * The MyButton class extends JButton and adds properties to represent
+     * the position of the button on a game board, and getters on those values.
+     */
+    public static class MyButton extends JButton {
+
+        private final int xPos;     //xPos of this button. Analogous to this button's Length position in the board
+        private final int yPos;     //xPos of this button. Analogous to this button's Height position in the board
+
+        /**
+         * Constructs a new MyButton.
+         *
+         * @param xPos The x position of the button.
+         * @param yPos The y position of the button.
+         */
+        public MyButton(int xPos, int yPos) {
+            this.xPos = xPos;
+            this.yPos = yPos;
+        }
+
+        /**
+         * Get the x position of the button.
+         *
+         * @return The x position.
+         */
+        public int getXPos() {
+            return xPos;
+        }
+
+        /**
+         * Get the y position of the button.
+         *
+         * @return The y position.
+         */
+        public int getYPos() {
+            return yPos;
+        }
+    }
 
     /**
      * Initializes buttons for the game board and attaches an ActionListener to each button.
@@ -28,7 +68,7 @@ public class GameButtonBuilder {
         // Initialize buttons and add ActionListener
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < length; j++) {
-                buttons[i][j] = new TicTacToe.MyButton(j, i);
+                buttons[i][j] = new MyButton(j, i);
                 buttons[i][j].addActionListener(ae);
                 buttonPanel.add(buttons[i][j]);
             }

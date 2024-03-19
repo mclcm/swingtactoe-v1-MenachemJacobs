@@ -42,10 +42,9 @@ public class TicTacToe extends JFrame {
 
     int lightInterval = -1;
     String warningMessage = "\n";
-
     MovePressure myTimer;
 
-    MyButton winningButton = null;
+    GameButtonBuilder.MyButton winningButton = null;
 
     /**
      * Constructs a new TicTacToe game.
@@ -85,7 +84,7 @@ public class TicTacToe extends JFrame {
         HEIGHT = priorGame.height();
         LENGTH = priorGame.length();
 
-        this.winningButton = (MyButton) priorGame.winningButton();
+        this.winningButton = (GameButtonBuilder.MyButton) priorGame.winningButton();
 
         gameState = priorGame.model();
         scoreTracker = priorGame.scoreRecord();
@@ -93,10 +92,10 @@ public class TicTacToe extends JFrame {
         universalConstruction(priorGame.lightInterval(), priorGame.warningMessage());
         ButtonPainter.reloadPainter(gameButtons, gameState);
 
-        if (winningButton != null) {
+        if (winningButton != null)
             // Repaint buttons based on the end game condition
             ButtonPainter.victoryPainter(gameButtons, winningButton, gameState.getGameStateCode(), HEIGHT, LENGTH);
-        }
+
     }
 
     /**
@@ -143,48 +142,6 @@ public class TicTacToe extends JFrame {
 
         myTimer.start();
     }
-
-    /**
-     * Custom JButton class with additional properties.
-     * <p>
-     * The MyButton class extends JButton and adds properties to represent
-     * the position of the button on a game board, and getters on those values.
-     */
-    public static class MyButton extends JButton {
-
-        private final int xPos;     //xPos of this button. Analogous to this button's Length position in the board
-        private final int yPos;     //xPos of this button. Analogous to this button's Height position in the board
-
-        /**
-         * Constructs a new MyButton.
-         *
-         * @param xPos The x position of the button.
-         * @param yPos The y position of the button.
-         */
-        public MyButton(int xPos, int yPos) {
-            this.xPos = xPos;
-            this.yPos = yPos;
-        }
-
-        /**
-         * Get the x position of the button.
-         *
-         * @return The x position.
-         */
-        public int getXPos() {
-            return xPos;
-        }
-
-        /**
-         * Get the y position of the button.
-         *
-         * @return The y position.
-         */
-        public int getYPos() {
-            return yPos;
-        }
-    }
-
 
     /**
      * Arranges the header panel containing save and load buttons, and the game title.
@@ -276,7 +233,7 @@ public class TicTacToe extends JFrame {
      * @param ae The ActionEvent object representing the click event.
      */
     private void mouseClickHandler(ActionEvent ae) {
-        MyButton clickedButton = (MyButton) ae.getSource();
+        GameButtonBuilder.MyButton clickedButton = (GameButtonBuilder.MyButton) ae.getSource();
 
         //if game is not over and the current button has not been clicked before, update text and label
         if (gameState.getGameStateCode() == 0 && gameState.getValAtPos(clickedButton.getXPos(), clickedButton.getYPos()) == 0) {

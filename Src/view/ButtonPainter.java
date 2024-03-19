@@ -19,7 +19,7 @@ public class ButtonPainter {
      * @param height           The height of the game board.
      * @param length           The length of the game board.
      */
-    public static void victoryPainter(JButton[][] buttons, TicTacToe.MyButton clickedButton, int endGameCondition, int height, int length) {
+    public static void victoryPainter(JButton[][] buttons, GameButtonBuilder.MyButton clickedButton, int endGameCondition, int height, int length) {
         int loopLimit = Math.min(height, length);
 
         //rank win.
@@ -92,11 +92,11 @@ public class ButtonPainter {
      */
     static void reloadPainter(JButton[][] gameButtons, GameStateLogic analogueBoard) {
         int buttonVal;
-        TicTacToe.MyButton castedButton;
+        GameButtonBuilder.MyButton castedButton;
 
         for (JButton[] buttonRow : gameButtons) {
             for (JButton button : buttonRow) {
-                castedButton = (TicTacToe.MyButton) button;
+                castedButton = (GameButtonBuilder.MyButton) button;
                 buttonVal = analogueBoard.getCellVal(castedButton.getXPos(), castedButton.getYPos());
 
 

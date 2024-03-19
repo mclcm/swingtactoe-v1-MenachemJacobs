@@ -71,7 +71,7 @@ public class GameStateLogic implements Serializable {
             isXTurn = !isXTurn;
 
             //update the text in the clicked button.
-            return buttonTextSetter(!isXTurn ? xVal : oVal) ;
+            return buttonTextSetter(!isXTurn ? xVal : oVal);
         }
 
         //Ideally, clicking a disabled button would do nothing, but the responsibility for checking that is delegated too far up stream
@@ -84,7 +84,7 @@ public class GameStateLogic implements Serializable {
      * @param cellValue The value representing the player's move (1 for X, -1 for O).
      * @return The text to be displayed on the button.
      */
-    public String buttonTextSetter(int cellValue){
+    public String buttonTextSetter(int cellValue) {
         return cellValue == 1 ? "X" : "O";
     }
 
@@ -153,7 +153,7 @@ public class GameStateLogic implements Serializable {
      * @param yPos The y-coordinate of the position.
      * @return The value at the specified position on the game board.
      */
-    public int getCellVal(int xPos, int yPos){
+    public int getCellVal(int xPos, int yPos) {
         return LOGICAL_BOARD[yPos][xPos];
     }
 }
