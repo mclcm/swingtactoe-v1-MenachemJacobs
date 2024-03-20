@@ -83,7 +83,7 @@ public class TicTacToe extends JFrame {
         HEIGHT = priorGame.height();
         LENGTH = priorGame.length();
 
-        this.winningButton = (GameButtonBuilder.MyButton) priorGame.winningButton();
+        winningButton = (GameButtonBuilder.MyButton) priorGame.winningButton();
 
         gameState = priorGame.model();
         scoreTracker = priorGame.scoreRecord();
@@ -124,8 +124,11 @@ public class TicTacToe extends JFrame {
         setLayout(new BorderLayout());
 
         add(PanelBuilder.arrangeHeadPanel(this), BorderLayout.NORTH);
-        add(PanelBuilder.arrangeButtonPanel(gameButtons, HEIGHT, LENGTH, this::mouseClickHandler), BorderLayout.CENTER);
-        add(PanelBuilder.arrangeStatusPanel(), BorderLayout.SOUTH);
+
+        buttonPanel = PanelBuilder.arrangeButtonPanel(this, HEIGHT, LENGTH, this::mouseClickHandler);
+        add(buttonPanel, BorderLayout.CENTER);
+
+        add(PanelBuilder.arrangeStatusPanel(this, gameState, lightInterval, warningMessage, e -> restartGame()), BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
         setSize(500, 300);
@@ -139,7 +142,6 @@ public class TicTacToe extends JFrame {
 
         myTimer.start();
     }
-
 
     /**
      * Handles the mouse click event on buttons.

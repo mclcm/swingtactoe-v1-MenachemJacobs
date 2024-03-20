@@ -1,8 +1,9 @@
 package view;
 
+import model.GameStateLogic;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PanelBuilder {
@@ -45,12 +46,12 @@ public class PanelBuilder {
      *
      * @return The JPanel containing the game buttons.
      */
-    public static JPanel arrangeButtonPanel(JButton[][] gameButtons, int height, int length, ActionListener mouseClickHandler) {
+    public static JPanel arrangeButtonPanel(TicTacToe currentGame, int height, int length, ActionListener mouseClickHandler) {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         buttonPanel.setPreferredSize(new Dimension(500, 200));
 
         //This line takes the buttonPanel and attaches the game buttons to it.
-        gameButtons = GameButtonBuilder.initGameButtons(buttonPanel, mouseClickHandler, height, length);
+        currentGame.gameButtons = GameButtonBuilder.initGameButtons(buttonPanel, mouseClickHandler, height, length);
 
         return buttonPanel;
     }
@@ -64,20 +65,20 @@ public class PanelBuilder {
      *
      * @return The JPanel containing the game state label and restart button.
      */
-    public static JPanel arrangeStatusPanel(JLabel lbl, ) {
-        lbl = new JLabel(gameState.lblUpdater());
+    public static JPanel arrangeStatusPanel(TicTacToe currentGame, GameStateLogic gameState, int lightInterval, String warningMessage, ActionListener e) {
+        currentGame.lbl = new JLabel(gameState.lblUpdater());
 
         JPanel labelPanel = new JPanel();
         JButton restartButton = new JButton("Start over?");
-        restartButton.addActionListener(e -> restartGame());
+        restartButton.addActionListener(e);
 
         labelPanel.setPreferredSize(new Dimension(500, 50));
 
-        labelPanel.add(lbl);
+        labelPanel.add(currentGame.lbl);
         labelPanel.add(restartButton);
 
         MovePressure warningPad = (lightInterval != -1 && !warningMessage.equals("\n")) ? new MovePressure(lightInterval, warningMessage) : new MovePressure();
-        myTimer = warningPad;
+        currentGame.myTimer = warningPad;
 
         labelPanel.add(warningPad);
 
