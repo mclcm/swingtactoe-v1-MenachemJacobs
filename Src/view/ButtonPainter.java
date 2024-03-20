@@ -21,20 +21,25 @@ public class ButtonPainter {
      */
     public static void victoryPainter(JButton[][] buttons, GameButtonBuilder.MyButton clickedButton, int endGameCondition, int height, int length) {
         int loopLimit = Math.min(height, length);
+        int selector;
 
         //rank win.
         if (endGameCondition % StaticStateVar.RANK_WIN == 0) {
+            selector = clickedButton.getYPos();
+
             // Rank win: repaint buttons in the same row
             for (int i = 0; i < length; i++) {
-                dryPaintBtn(buttons[clickedButton.getYPos()][i]);
+                dryPaintBtn(buttons[selector][i]);
             }
         }
 
         //File win.
         if (endGameCondition % StaticStateVar.FILE_WIN == 0) {
+            selector = clickedButton.getXPos();
+
             // File win: repaint buttons in the same column
             for (JButton[] button : buttons) {
-                dryPaintBtn(button[clickedButton.getXPos()]);
+                dryPaintBtn(button[selector]);
             }
         }
 

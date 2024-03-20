@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 
 /**
  * A warning panel indicating move pressure in a game.
- *
+ * <p>
  * This class extends the WarningPanel abstract class and represents a warning panel
  * used to indicate move pressure. It changes the background color over time
  * to signal advancing levels of pressure or urgency to the player.
@@ -34,7 +34,7 @@ public class MovePressure extends WarningPanel {
 
     /**
      * Initializes the MovePressure warning panel.
-     *
+     * <p>
      * This method configures the MovePressure warning panel with the specified duration
      * for each color and the message to be displayed. It sets the background color
      * of the panel, adds a JLabel with the passed message, and initializes a Timer
@@ -68,7 +68,7 @@ public class MovePressure extends WarningPanel {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(colorIndex < colorList.length)
+        if (colorIndex < colorList.length)
             setBackground(colorList[colorIndex++]);
         else
             span.stop();
@@ -77,7 +77,7 @@ public class MovePressure extends WarningPanel {
     /**
      * Resets the warning panel to its initial color, and resets the timer.
      */
-    public void restate(){
+    public void restate() {
         colorIndex = 0;
         setBackground(colorList[colorIndex++]);
         span.restart();

@@ -2,7 +2,6 @@ package view;
 
 import Serialization.SerializeGame;
 import Serialization.TicTacWrapper;
-import model.GameStateLogic;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;

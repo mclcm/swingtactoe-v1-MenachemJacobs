@@ -7,16 +7,20 @@ package model;
 public class GameOverLogic {
 
     /**
-     * Determines if the game is over based on the current state of the board.
+     * Determines if the game is over based on the current state of the board by checking for win conditions
+     * in rows, columns, and diagonals.
      * Each win condition has a distinctive prime return value, which is multiplied into the global return.
      * This ensures that each possible return state of the class is unique.
      *
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param xPos         The x position of the last move.
      * @param yPos         The y position of the last move.
-     * @return An integer representing the game state as defined in the static state class
-     * @throws IllegalArgumentException If the clicked value remains 0, indicating it has not been set properly.
-     */
+     * @return An integer representing the game state as defined in the static state class: <br>
+     * - {@link StaticStateVar#ONGOING} if the game is still in progress.<br>
+     * - A unique value indicating a win condition ({@link StaticStateVar#RANK_WIN},
+     *   {@link StaticStateVar#FILE_WIN}, etc.).
+     *  @throws IllegalArgumentException If the clicked value remains 0, indicating it has not been set properly.
+     *  */
     public static int isGameOver(int[][] logicalBoard, int xPos, int yPos) {
         int returnVal = 1;
 
@@ -30,7 +34,7 @@ public class GameOverLogic {
 
         returnVal *= diagonalsChecker(logicalBoard, xPos, yPos, searchValue);
 
-        //The code on the outside uses a StaticStateVar var as the 'no win' value, will the code on the inside uses 1,
+        //The code on the outside uses a StaticStateVar var as the 'no win' value, while the code on the inside uses 1,
         //meaning that the values need to be exchanged before heading out
         return returnVal == 1 ? StaticStateVar.ONGOING : returnVal;
     }
@@ -89,9 +93,9 @@ public class GameOverLogic {
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param yPos         The y position of the last move.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
-     * @return An integer representing the game state:
-     * - 1 if no win condition is found.
-     * - Unique value if there is a win condition in the same row.
+     * @return An integer representing the game state: <br>
+     * - {@link StaticStateVar#RANK_WIN} if a win condition is found in the same row.<br>
+     * - {@code 1} if no win condition is found.
      */
     private static int rankCheck(int[][] logicalBoard, int yPos, int searchValue) {
         int gameIsOver = StaticStateVar.RANK_WIN;
@@ -112,9 +116,9 @@ public class GameOverLogic {
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param xPos         The x position of the last move.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
-     * @return An integer representing the game state:
-     * - 1 if no win condition is found.
-     * - Unique value if there is a win condition in the same column.
+     * @return An integer representing the game state:<br>
+     * - {@link StaticStateVar#FILE_WIN} if a win condition is found in the same row.<br>
+     * - {@code 1} if no win condition is found.
      */
     private static int fileCheck(int[][] logicalBoard, int xPos, int searchValue) {
         int gameIsOver = StaticStateVar.FILE_WIN;
@@ -135,9 +139,9 @@ public class GameOverLogic {
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @param loopLimit    The limit for the loop iteration.
-     * @return An integer representing the game state:
-     * - 1 if no win condition is found.
-     * - Unique value if there is a win condition in the main diagonal.
+     * @return An integer representing the game state:<br>
+     * - {@link StaticStateVar#DEXTER_WIN} if a win condition is found in the same row.<br>
+     * - {@code 1} if no win condition is found.
      */
     private static int dexterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = StaticStateVar.DEXTER_WIN;
@@ -159,9 +163,9 @@ public class GameOverLogic {
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @param loopLimit    The limit for the loop iteration.
-     * @return An integer representing the game state:
-     * - 1 if no win condition is found.
-     * - Unique value if there is a win condition in the secondary diagonal.
+     * @return An integer representing the game state:<br>
+     * - {@link StaticStateVar#SINISTER_WIN} if a win condition is found in the same row.<br>
+     * - {@code 1} if no win condition is found.
      */
     private static int sinisterCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = StaticStateVar.SINISTER_WIN;
@@ -185,9 +189,9 @@ public class GameOverLogic {
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @param loopLimit    The limit for the loop iteration.
-     * @return An integer representing the game state:
-     * - 1 if no win condition is found.
-     * - Unique value if there is a win condition in the diagonal ascending from bottom left to top right.
+     * @return An integer representing the game state:<br>
+     *       - {@link StaticStateVar#DEXTER_ASCENDANT_WIN} if a win condition is found in the same row.<br>
+     *       - {@code 1} if no win condition is found.
      */
     private static int dexterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = StaticStateVar.DEXTER_ASCENDANT_WIN;
@@ -211,9 +215,9 @@ public class GameOverLogic {
      * @param logicalBoard The logical representation of the Tic Tac Toe board.
      * @param searchValue  The value to search for (either 1 for X or -1 for O).
      * @param loopLimit    The limit for the loop iteration.
-     * @return An integer representing the game state:
-     * - 1 if no win condition is found.
-     * - Unique value if there is a win condition in the diagonal ascending from top left to bottom right.
+     * @return An integer representing the game state:<br>
+     *       - {@link StaticStateVar#SINISTER_ASCENDANT_WIN} if a win condition is found in the same row.<br>
+     *       - {@code 1} if no win condition is found.
      */
     private static int sinisterAscendantCheck(int[][] logicalBoard, int searchValue, int loopLimit) {
         int gameIsOver = StaticStateVar.SINISTER_ASCENDANT_WIN;

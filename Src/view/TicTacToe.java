@@ -10,9 +10,7 @@ import Serialization.TicTacWrapper;
 import model.*;
 
 /**
- * <p>
- * This class represents a Tic Tac Toe game application.
- * </p>
+ * Represents a Tic Tac Toe game application.
  *
  * <p>
  * The TicTacToe class provides a graphical user interface for playing
@@ -22,7 +20,8 @@ import model.*;
  * Swing for the user interface components.
  * </p>
  *
- * <p> The class offers constructors for initializing a new game or resuming
+ * <p>
+ * The class offers constructors for initializing a new game or resuming
  * a previous one. It handles button clicks, updates game state, and
  * manages UI components such as buttons, labels, and panels. Additionally,
  * it supports customization of game parameters such as light interval
@@ -115,8 +114,7 @@ public class TicTacToe extends JFrame {
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
-        //I don't like that this is done here.
-        // The rest of the method, except the timer start which I also do not like, is for setting window elements.
+        //I don't like that this is done here. The rest of the method, (except the timer start which I also do not like), is for setting window elements.
         //I would encapsulate the three lines, but the two first two need to happen at the beginning and the last at the end.
         this.lightInterval = lightInterval;
         this.warningMessage = warningMessage;
@@ -125,13 +123,12 @@ public class TicTacToe extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        add(arrangeHeadPanel(), BorderLayout.NORTH);
-        add(arrangeButtonPanel(), BorderLayout.CENTER);
-        add(arrangeStatusPanel(), BorderLayout.SOUTH);
+        add(PanelBuilder.arrangeHeadPanel(this), BorderLayout.NORTH);
+        add(PanelBuilder.arrangeButtonPanel(gameButtons, HEIGHT, LENGTH, this::mouseClickHandler), BorderLayout.CENTER);
+        add(PanelBuilder.arrangeStatusPanel(), BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
         setSize(500, 300);
-        //pack();
 
         addComponentListener(new ComponentAdapter() {
             @Override
@@ -143,82 +140,6 @@ public class TicTacToe extends JFrame {
         myTimer.start();
     }
 
-    /**
-     * Arranges the header panel containing save and load buttons, and the game title.
-     * <p>
-     * This method creates and configures a JPanel to hold the header components.
-     * It adds save and load buttons for game state management, and a title label displaying the game title.
-     *
-     * @return The JPanel containing the header components.
-     */
-    private JPanel arrangeHeadPanel() {
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new BorderLayout());
-
-        JPanel headerButtons = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JButton saveButton = GameButtonBuilder.buildLorSButton(this, true);
-        JButton loadButton = GameButtonBuilder.buildLorSButton(this, false);
-
-        headerButtons.add(saveButton);
-        headerButtons.add(loadButton);
-
-        JLabel title = new JLabel("TicTacToe");
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-
-        headerPanel.add(headerButtons, BorderLayout.LINE_START);
-        headerPanel.add(title, BorderLayout.CENTER);
-
-        return headerPanel;
-    }
-
-    /**
-     * Arranges the button panel containing the Tic Tac Toe game buttons.
-     * <p>
-     * This method configures a JPanel to hold the game buttons for the game window.
-     * It sets up the layout and dimensions of the panel and initializes the game buttons using the GameButtonBuilder class.
-     * The game buttons are attached to the panel, and their click event handler is set to the mouseClickHandler method
-     * of the TicTacToe class.
-     *
-     * @return The JPanel containing the game buttons.
-     */
-    private JPanel arrangeButtonPanel() {
-        buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        buttonPanel.setPreferredSize(new Dimension(500, 200));
-
-        //This line takes the buttonPanel and attaches the game buttons to it.
-        gameButtons = GameButtonBuilder.initGameButtons(buttonPanel, this::mouseClickHandler, HEIGHT, LENGTH);
-
-        return buttonPanel;
-    }
-
-    /**
-     * Arranges the status panel containing the game state label and restart button.
-     * <p>
-     * This method configures a JPanel to hold the game state label and restart button.
-     * It initializes a JLabel to display the current game state, adds a restart button
-     * for restarting the game, and adds a warning pad (if applicable) for displaying warnings or messages during the game.
-     *
-     * @return The JPanel containing the game state label and restart button.
-     */
-    private JPanel arrangeStatusPanel() {
-        lbl = new JLabel(gameState.lblUpdater());
-
-        JPanel labelPanel = new JPanel();
-        JButton restartButton = new JButton("Start over?");
-        restartButton.addActionListener(e -> restartGame());
-
-        labelPanel.setPreferredSize(new Dimension(500, 50));
-
-        labelPanel.add(lbl);
-        labelPanel.add(restartButton);
-
-        MovePressure warningPad = (lightInterval != -1 && !warningMessage.equals("\n")) ? new MovePressure(lightInterval, warningMessage) : new MovePressure();
-        myTimer = warningPad;
-
-        labelPanel.add(warningPad);
-
-        return labelPanel;
-    }
 
     /**
      * Handles the mouse click event on buttons.
@@ -229,19 +150,20 @@ public class TicTacToe extends JFrame {
      * if the game has ended. If the game has ended by means other than a draw, it
      * repaints the buttons to indicate the winning combination and increments the
      * win record. This method is associated with the mouse click event on game buttons.
+     * </p>
      *
      * @param ae The ActionEvent object representing the click event.
      */
     private void mouseClickHandler(ActionEvent ae) {
         GameButtonBuilder.MyButton clickedButton = (GameButtonBuilder.MyButton) ae.getSource();
 
-        //if game is not over and the current button has not been clicked before, update text and label
+        //if game is not over and the current button has not been clicked before, restart the timer and update text and label
+        //then  check if the game has ended in a way that requires repainting
         if (gameState.getGameStateCode() == 0 && gameState.getValAtPos(clickedButton.getXPos(), clickedButton.getYPos()) == 0) {
             myTimer.restate();
 
+            // Update paint and text on the clicked button and handle game state logic
             clickedButton.setEnabled(false);
-
-            // Update text on the clicked button and handle game state logic
             clickedButton.setText(gameState.btnClicked(clickedButton, clickedButton.getXPos(), clickedButton.getYPos()));
 
             // Update label text to reflect the current game state
@@ -249,14 +171,23 @@ public class TicTacToe extends JFrame {
 
             //check if game has ended by means other than cats eye
             if (gameState.getGameStateCode() > 0) {
-                winningButton = clickedButton;
-
-                // Repaint buttons based on the end game condition
-                ButtonPainter.victoryPainter(gameButtons, clickedButton, gameState.getGameStateCode(), HEIGHT, LENGTH);
-                //win record only increase if game ended for reason other than cats eye
-                scoreTracker.incrementScore(gameState.getXTurn());
+                gameHasBeenWonLogic(clickedButton);
             }
         }
+    }
+
+    /**
+     * When a game has been won 3 things must be tracked: The winning button, the board repaint, the win record.
+     *
+     * @param clickedButton the button clicked to end the game.
+     */
+    private void gameHasBeenWonLogic(GameButtonBuilder.MyButton clickedButton) {
+        winningButton = clickedButton;
+
+        // Repaint buttons based on the end game condition
+        ButtonPainter.victoryPainter(gameButtons, clickedButton, gameState.getGameStateCode(), HEIGHT, LENGTH);
+        //win record only increase if game ended for reason other than cats eye
+        scoreTracker.incrementScore(gameState.getXTurn());
     }
 
     /**

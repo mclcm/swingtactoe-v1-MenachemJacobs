@@ -85,7 +85,7 @@ public class GameStateLogic implements Serializable {
      * @return The text to be displayed on the button.
      */
     public String buttonTextSetter(int cellValue) {
-        return cellValue == 1 ? "X" : "O";
+        return cellValue == xVal ? "X" : "O";
     }
 
     /**
