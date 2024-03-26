@@ -1,7 +1,7 @@
 package view;
 
 import Serialization.SerializeGame;
-import Serialization.TicTacWrapper;
+import Serialization.TicTacRecord;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -103,7 +103,7 @@ public class GameButtonBuilder {
      */
     private static void sButtonFunctionality(TicTacToe onGoingGame) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
-        TicTacWrapper gamePill = onGoingGame.provideWrapper();
+        TicTacRecord gamePill = onGoingGame.provideWrapper();
 
         if (saveFileName != null && !saveFileName.trim().isEmpty())
             SerializeGame.serialize(saveFileName, gamePill);
@@ -117,7 +117,7 @@ public class GameButtonBuilder {
     private static void lButtonFunctionality(TicTacToe currentGame) {
         JFileChooser gamesMenu = new JFileChooser("savedGames");
         String gameToRestore;
-        TicTacWrapper container = null;
+        TicTacRecord container = null;
 
         gamesMenu.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -142,7 +142,7 @@ public class GameButtonBuilder {
      * @param container   The TicTacWrapper containing the game state.
      * @param currentGame The current TicTacToe game instance.
      */
-    public static void setUpNewGame(TicTacWrapper container, TicTacToe currentGame) {
+    public static void setUpNewGame(TicTacRecord container, TicTacToe currentGame) {
         TicTacToe gameRestored = new TicTacToe(container);
         gameRestored.setVisible(true);
 

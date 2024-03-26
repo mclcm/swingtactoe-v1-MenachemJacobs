@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import Serialization.TicTacWrapper;
+import Serialization.TicTacRecord;
 import model.*;
 
 /**
@@ -79,12 +79,11 @@ public class TicTacToe extends JFrame {
      *
      * @param priorGame The Wrapped elements of the game to be loaded in.
      */
-    public TicTacToe(TicTacWrapper priorGame) {
+    public TicTacToe(TicTacRecord priorGame) {
         HEIGHT = priorGame.height();
         LENGTH = priorGame.length();
 
         winningButton = (GameButtonBuilder.MyButton) priorGame.winningButton();
-
         gameState = priorGame.model();
         scoreTracker = priorGame.scoreRecord();
 
@@ -106,18 +105,18 @@ public class TicTacToe extends JFrame {
      * warnings or messages. If the board dimensions are smaller than 1, it throws an
      * IllegalArgumentException.
      *
-     * @param lightInterval  The interval for displaying warnings or messages.
-     * @param warningMessage The message to display as a warning during the game.
+     * @param interval  The interval for displaying warnings or messages.
+     * @param wMessage The message to display as a warning during the game.
      * @throws IllegalArgumentException If the board dimensions are smaller than 1.
      */
-    private void universalConstruction(int lightInterval, String warningMessage) {
+    private void universalConstruction(int interval, String wMessage) {
         if (HEIGHT < 1 || LENGTH < 1)
             throw new IllegalArgumentException("Board can not have dimensions smaller than 1");
 
         //I don't like that this is done here. The rest of the method, (except the timer start which I also do not like), is for setting window elements.
         //I would encapsulate the three lines, but the two first two need to happen at the beginning and the last at the end.
-        this.lightInterval = lightInterval;
-        this.warningMessage = warningMessage;
+        lightInterval = interval;
+        warningMessage = wMessage;
 
         setTitle("Tic Tac Toe");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,7 +127,7 @@ public class TicTacToe extends JFrame {
         buttonPanel = PanelBuilder.arrangeButtonPanel(this, HEIGHT, LENGTH, this::mouseClickHandler);
         add(buttonPanel, BorderLayout.CENTER);
 
-        add(PanelBuilder.arrangeStatusPanel(this, gameState, lightInterval, warningMessage, e -> restartGame()), BorderLayout.SOUTH);
+        add(PanelBuilder.arrangeStatusPanel(this, gameState, interval, wMessage, e -> restartGame()), BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
         setSize(500, 300);
@@ -210,6 +209,7 @@ public class TicTacToe extends JFrame {
 
         //update game state label
         lbl.setText(gameState.lblUpdater());
+        myTimer.restate();
     }
 
     /**
@@ -232,8 +232,8 @@ public class TicTacToe extends JFrame {
         buttonPanel.repaint();
     }
 
-    public TicTacWrapper provideWrapper() {
-        return new TicTacWrapper(gameState, scoreTracker, HEIGHT, LENGTH, winningButton, lightInterval, warningMessage);
+    public TicTacRecord provideWrapper() {
+        return new TicTacRecord(gameState, scoreTracker, HEIGHT, LENGTH, winningButton, lightInterval, warningMessage);
     }
 
     /**

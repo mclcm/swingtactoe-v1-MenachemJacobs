@@ -77,10 +77,9 @@ public class PanelBuilder {
         labelPanel.add(currentGame.lbl);
         labelPanel.add(restartButton);
 
-        MovePressure warningPad = (lightInterval != -1 && !warningMessage.equals("\n")) ? new MovePressure(lightInterval, warningMessage) : new MovePressure();
-        currentGame.myTimer = warningPad;
+        currentGame.myTimer = (lightInterval != -1 && !warningMessage.equals("\n")) ? new MovePressure(lightInterval, warningMessage) : new MovePressure();
 
-        labelPanel.add(warningPad);
+        labelPanel.add(currentGame.myTimer);
 
         return labelPanel;
     }

@@ -20,7 +20,7 @@ public class SerializeGame {
      * @param fN       The filename for the serialized game.
      * @param gamePill The Wrapped elements of the game to be saved
      */
-    public static void serialize(String fN, TicTacWrapper gamePill) {
+    public static void serialize(String fN, TicTacRecord gamePill) {
         String fileName = DIRECTORY_NAME + File.separator + fN + ".ser";
         directoryManagement();
 
@@ -29,7 +29,7 @@ public class SerializeGame {
             FileOutputStream fileOutStream = new FileOutputStream(fileName);
             ObjectOutputStream objOutStream = new ObjectOutputStream(fileOutStream);
 
-            //Takes a wrapper object and writes it to the object output stream
+            //Takes a record and writes it to the object output stream
             objOutStream.writeObject(gamePill);
 
             //Close the streams
@@ -44,20 +44,20 @@ public class SerializeGame {
     /**
      * Deserializes the game state from a file.
      *
-     * @param fN The filename of the serialized game state.
+     * @param fileName The filename of the serialized game state.
      * @return The deserialized TicTacWrapper object containing the game state, or {@code null} if deserialization fails.
      * //TODO how should I handle this
      * @throws FileNotFoundException If the file containing the serialized game state is not found.
      */
-    public static TicTacWrapper deserialize(String fN) {
-        File savedGame = new File(DIRECTORY_NAME + File.separator + fN);
+    public static TicTacRecord deserialize(String fileName) {
+        File savedGame = new File(DIRECTORY_NAME + File.separator + fileName);
 
         if (!savedGame.exists()) {
             System.out.println("File not found");
         } else {
 
             try (ObjectInputStream objInStream = new ObjectInputStream(new FileInputStream(savedGame))) {
-                return (TicTacWrapper) objInStream.readObject();
+                return (TicTacRecord) objInStream.readObject();
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
