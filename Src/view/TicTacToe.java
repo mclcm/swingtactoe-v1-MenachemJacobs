@@ -232,7 +232,7 @@ public class TicTacToe extends JFrame {
         buttonPanel.repaint();
     }
 
-    public TicTacRecord provideWrapper() {
+    public TicTacRecord provideRecord() {
         return new TicTacRecord(gameState, scoreTracker, HEIGHT, LENGTH, winningButton, lightInterval, warningMessage);
     }
 

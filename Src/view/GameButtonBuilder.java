@@ -103,10 +103,10 @@ public class GameButtonBuilder {
      */
     private static void sButtonFunctionality(TicTacToe onGoingGame) {
         String saveFileName = JOptionPane.showInputDialog("What name do you want to save the file under?");
-        TicTacRecord gamePill = onGoingGame.provideWrapper();
+        TicTacRecord gameRecord = onGoingGame.provideRecord();
 
         if (saveFileName != null && !saveFileName.trim().isEmpty())
-            SerializeGame.serialize(saveFileName, gamePill);
+            SerializeGame.serialize(saveFileName, gameRecord);
     }
 
     /**

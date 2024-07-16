@@ -18,9 +18,9 @@ public class SerializeGame {
      * If the file doesn't exist, it creates one. If the file already exists, it overwrites it.
      *
      * @param fN       The filename for the serialized game.
-     * @param gamePill The Wrapped elements of the game to be saved
+     * @param gameRecord The Wrapped elements of the game to be saved
      */
-    public static void serialize(String fN, TicTacRecord gamePill) {
+    public static void serialize(String fN, TicTacRecord gameRecord) {
         String fileName = DIRECTORY_NAME + File.separator + fN + ".ser";
         directoryManagement();
 
@@ -30,7 +30,7 @@ public class SerializeGame {
             ObjectOutputStream objOutStream = new ObjectOutputStream(fileOutStream);
 
             //Takes a record and writes it to the object output stream
-            objOutStream.writeObject(gamePill);
+            objOutStream.writeObject(gameRecord);
 
             //Close the streams
             objOutStream.close();
